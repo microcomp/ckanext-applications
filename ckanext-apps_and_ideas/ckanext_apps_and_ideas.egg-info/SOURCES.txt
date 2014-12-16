@@ -1,0 +1,12 @@
+setup.py
+ckanext/__init__.py
+ckanext/apps_and_ideas/__init__.py
+ckanext/apps_and_ideas/apps.py
+ckanext/apps_and_ideas/plugin.py
+ckanext_apps_and_ideas.egg-info/PKG-INFO
+ckanext_apps_and_ideas.egg-info/SOURCES.txt
+ckanext_apps_and_ideas.egg-info/dependency_links.txt
+ckanext_apps_and_ideas.egg-info/entry_points.txt
+ckanext_apps_and_ideas.egg-info/namespace_packages.txt
+ckanext_apps_and_ideas.egg-info/not-zip-safe
+ckanext_apps_and_ideas.egg-info/top_level.txt

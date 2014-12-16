@@ -1,0 +1,34 @@
+
+{% import 'macros/form.html' as form %}
+
+<form class="dataset-form form-horizontal" method="post" data-module="basic-form">
+  {% block error_summary %}
+    {% if error_summary | count %}
+      <div class="alert alert-error error-explanation">
+        <p>{{ _('The form contains invalid entries:') }}</p>
+        <ul>
+          {% for key, error in error_summary.items() %}
+            <li>{{ key }}: {{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  {% endblock %}
+
+  {% block fields %}
+    {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value="", error="", classes=['control-full']) }}
+    {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value="", error="", classes=['control-full']) }}
+    {{ form.input('image_url', label=_('Image URL'), id='field-image-url', placeholder=_('http://example.com/image.png'), value="", error="", classes=['control-full']) }}
+    {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value="", error="") }}
+    {{ form.select('type', label=_('Type'), id='field-types', selected="", options=c.list, error="") }}
+    {{ form.input('datasets', label=_('Datasets'), id='field-datasets', placeholder=_('default'), value="", error="", classes=['control-full']) }}
+  {% endblock %}
+
+  <div class="form-actions">
+    {% block delete_button %}
+      
+    {% endblock %}
+    {#{ h.nav_link(_('Cancel'), controller='related', action='list', id="", class_='btn') }#}
+    <button class="btn btn-primary" type="submit" name="save">{% block button_text %}{{ _('Save') }}{% endblock %}</button>
+  </div>
+</form>

@@ -1,0 +1,6 @@
+
+        [ckan.plugins]
+        # Add plugins here, e.g.
+        apps_and_ideas=ckanext.apps_and_ideas.plugin:AppsAndIdeasPlugin
+	
+    

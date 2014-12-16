@@ -1,0 +1,2 @@
+ckanext
+ckanext.apps_and_ideas

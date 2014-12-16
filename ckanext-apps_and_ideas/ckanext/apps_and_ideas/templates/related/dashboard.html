@@ -1,0 +1,270 @@
+{% ckan_extends %}
+{% import 'macros/form.html' as form %}
+{% set page = c.page %}
+
+
+{% block subtitle %}
+  {% if c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
+    {{ _('Apps') }}
+  {% else %}
+    {{ _('Apps & Ideas') }}
+  {% endif %}
+{% endblock %}
+
+{% block breadcrumb_content %}
+  {% if c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
+    <li><a href='/apps'>{{ _('Applications') }}</a> <a class="btn btn-primary" href="/apps/new" style="color:white;"> new app</a></li>
+  {% elif c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+    <li><a href='/apps'>{{ _('Applications') }}</a> / {{ c.title }}</li>
+  {% else %}
+    <li>{{ _('Apps & Ideas') }}</li>
+  {% endif %}
+{% endblock %}
+
+
+{% block primary_content %}
+{% if c.action == "new_app" %}
+{#
+
+FORM
+
+  #}
+
+    
+      <section class="module">
+
+          <div class="module-content">
+             <h1> New app </h1>
+            <form class="dataset-form form-horizontal" method="post" data-module="basic-form">
+              {% block error_summary %}
+                {% if error_summary | count %}
+                  <div class="alert alert-error error-explanation">
+                    <p>{{ _('The form contains invalid entries:') }}</p>
+                    <ul>
+                      {% for key, error in error_summary.items() %}
+                        <li>{{ key }}: {{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              {% endblock %}
+
+              {% block fields %}
+                {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value="", error="", classes=['control-full']) }}
+                {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value="", error="", classes=['control-full']) }}
+                {{ form.input('image_url', label=_('Image URL'), id='field-image-url', placeholder=_('http://example.com/image.png'), value="", error="", classes=['control-full']) }}
+                {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value="", error="") }}
+                {#{ form.select('type', label=_('Type'), id='field-types', selected="", options="application", error="", readonly='true') }#}
+
+
+
+                {% block package_basic_fields_tags %}
+                  {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
+                  {{ form.input('tag_string', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value='', error='', classes=['control-full'], attrs=tag_attrs) }}
+                {% endblock %}
+
+                {#{ form.input('datasets', label=_('Datasets'), id='field-datasets', placeholder=_('default'), value="", error="", classes=['control-full']) }#}
+              {% endblock %}
+
+              <div class="form-actions">
+                {% block delete_button %}
+                  
+                {% endblock %}
+                {#{ h.nav_link(_('Cancel'), controller='related', action='list', id="", class_='btn') }#}
+                <button class="btn btn-primary" type="submit" name="save">{% block button_text %}{{ _('Save') }}{% endblock %}</button>
+              </div>
+            </form>
+          </div>
+      </section>
+   </div> 
+ 
+ {#
+ 
+end of form
+
+ #} 
+{% else %}
+  <article class="module">
+    <div class="module-content">
+      <h1 class="page-heading">
+        {% block page_heading %}
+            {% if c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
+              {{ _('Applications') }}
+            {% elif c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+              
+            {% else %}
+              {{ _('Apps & Ideas') }}
+            {% endif %}
+        {% endblock %}
+      </h1>
+  {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+  {% else %}
+    <form class="section site-search simple-input" action="/apps/search" method="get">
+            <div class="field">
+              <label for="field-sitewide-search">Search Applications</label>
+              <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}" />
+              <button class="btn-search" type="submit"><i class="icon-search"></i></button>
+            </div>
+    </form>
+  {% endif %}
+
+  {% block related_items %}
+  
+      {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+        {# do nothing #}    
+        
+      {% else %}
+        {{super()}}
+      {%endif%}
+  {% endblock %}
+
+  {% block related_list %}
+    {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+      
+      <form class="form-horizontal">
+      <fieldset>
+
+      <!-- Form Name -->
+      <legend>{{c.title}}</legend>
+
+      <!-- Text input-->
+      <div class="control-group">
+        <label class="control-label" for="textinput">Tematický okruh</label>
+        <div class="controls">
+          <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.description==''%}{{_('no data')}}{%else%}{{c.description}}{%endif%}" readonly>
+        </div>
+      </div> 
+
+      <!-- Text input-->
+      <div class="control-group">
+        <label class="control-label" for="textinput">Pridané dna</label>
+        <div class="controls">
+          <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.created==''%}{{_('no data')}}{%else%}{{c.created}}{%endif%}" readonly>
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="control-group">
+        <label class="control-label" for="textinput">Autor</label>
+        <div class="controls">
+          <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.owner==''%}{{_('no data')}}{%else%}{{c.owner}}{%endif%}" readonly>
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="control-group">
+        <label class="control-label" for="textinput">Odkaz</label>
+        <div class="controls">
+          <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.url==''%}{{_('no data')}}{%else%}{{c.url}}{%endif%}" readonly>
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="control-group">
+        <label class="control-label" for="textinput">Použité datasety</label>
+        <div class="controls">
+          <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% for x in c.datasets%} {{x}}, {% endfor %}" readonly>
+        </div>
+      </div>
+      <div class="control-group">
+        
+        <div class="controls">
+          <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{{c.private}}" readonly
+        >
+        </div>
+      </div>
+
+      </fieldset>
+      {%if c.user==c.owner %}
+      <a class='btn btn-primary btn-small media-edit' href="/dataset/{{c.datasets[0]}}/related/edit/{{c.id}}" >Edit</a>
+      {%endif%}
+      </form>
+    {% else %}
+      {{super()}}
+    {%endif%}
+  {% endblock %}
+          </div>
+
+  {% block page_pagination %}
+           {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+
+           {% else %}
+            {{ page.pager() }}
+            {%endif%}
+  {% endblock %}
+        </article>
+    {%endif%}
+
+    {######################################################################}
+{% endblock %}
+
+{% block secondary_content %}
+{%if c.controller == 'ckanext.apps_and_ideas.detail:DetailController'%}
+    {%if c.img == ''%}
+      {%else%}
+      <aside class="secondary span3">
+        <section class="module module-narrow module-shallow">
+          <h2 class="module-heading"> Image: </h1>
+            <div class="module-content">
+              <img src="{{c.img}}" alt="app custom image" />
+            </div>
+        </section>
+      </aside>
+      {%endif%}
+{% else %}
+  <section class="module module-narrow module-shallow">
+    <h2 class="module-heading">{{ _('What are applications?') }}</h2>
+    <div class="module-content">
+      {% trans %}
+        These are applications built with the datasets as well as ideas for
+        things that could be done with them.
+      {% endtrans %}
+    </div>
+  </section>
+
+  <section class="module module-narrow module-shallow">
+    <h2 class="module-heading">{{ _('Filter Results') }}</h2>
+    <form action="" method="get" class="module-content form-inline form-narrow">
+      <input type='hidden' name='page' value='1'/>
+     <div class="control-group" >
+{% if c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
+      <div class="control-group" hidden>
+{%else %}
+<div class="control-group">
+{% endif %}
+
+        <label for="field-type">{{ _('Filter by type') }}</label>
+        <select id="field-type" name="type">
+          <option value="">{{ _('Default') }}</option>
+          {% for option in c.type_options %}
+            <option value="{{ option.value }}"{% if c.filters.type == option.value %} selected="selected"{% endif %}>{{ option.text or option.value }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="field-sort">{{ _('Sort by') }}</label>
+        <select id="field-sort" name="sort">
+          <option value="">{{ _('Default') }}</option>
+          {% for option in c.sort_options %}
+            <option value="{{ option.value }}"{% if c.filters.sort == option.value %} selected="selected"{% endif %}>{{ option.text or option.value }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="field-featured" class="checkbox">
+          <input type="checkbox" id="field-featured" name="featured" {% if c.filters.get('featured') == 'on' %} checked="checked"{% endif %}></input>
+          {{ _('Only show featured items') }}
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary">{{ _('Apply') }}</button>
+        </div>
+    </form>
+  </section>
+ {%endif%}
+{% endblock %}
+
+
