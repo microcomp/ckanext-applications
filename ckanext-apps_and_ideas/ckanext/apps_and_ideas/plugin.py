@@ -20,6 +20,7 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
 	map.connect('apps_search','/apps/search', action='search', controller='ckanext.apps_and_ideas.apps:AppsController')
 	map.connect('app_page','/apps/detail', action='detail', controller='ckanext.apps_and_ideas.detail:DetailController')
 	map.connect('new_app','/apps/new', action='new_app', controller='ckanext.apps_and_ideas.detail:DetailController')
+	map.connect('new_app_in', '/apps/new/in', action='new_app_in', controller='ckanext.apps_and_ideas.detail:DetailController')
 
 	return map
 	 
