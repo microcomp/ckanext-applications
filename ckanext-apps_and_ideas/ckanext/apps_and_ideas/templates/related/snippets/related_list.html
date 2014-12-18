@@ -1,3 +1,5 @@
+{%ckan_extends%}
+
 {#
 Renders a list of related item elements
 
@@ -18,3 +20,9 @@ Example:
 
   {% endfor %}
 </ul>
+ {% block form_actions %}
+    <div class="form-actions">
+      {% link_for _('Add Related Application'), controller='ckanext.apps_and_ideas.detail:DetailController', action='new_app',  class_='btn btn-primary' %}
+    </div>
+  {% endblock %}
+  {{super()}}

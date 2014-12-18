@@ -1,5 +1,10 @@
 import urllib
 
+import datetime
+import uuid
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 import ckan.model as model
 import ckan.logic as logic
 import ckan.lib.base as base
@@ -9,6 +14,13 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as toolkit
 from ckan.common import _, c
 import logging
+
+import json
+import os
+
+import ckan.logic
+
+data_path = "/data/"
 
 abort = base.abort
 _get_action = logic.get_action
@@ -90,16 +102,22 @@ class DetailController(base.BaseController):
         c.description = new_list[0]['description']
         c.url = new_list[0]['url']
         c.created = ('.').join(new_list[0]['created'].split('T')[0].split('-'))
-        owner_id = new_list[0]['owner_id']
+        self.owner_id = new_list[0]['owner_id']
+        owner_id = self.owner_id
         c.img = new_list[0]['image_url']
 
         c.owner = model.Session.query(model.User).filter(model.User.id == owner_id).first().name
-        ds_id = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == c.id).first().dataset_id
+        ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == c.id).all()
+        ds_id = []
+        for i in ds_ids:
+            ds_id.append(i.dataset_id)
         logging.warning(ds_id)
-        pack = model.Session.query(model.Package).filter(model.Package.id == ds_id).first()
-        c.datasets = pack.name
-        c.data = [c.datasets]
-        c.datasets = c.data
+        c.datasets = []
+
+        for i in ds_id:
+            pack = model.Session.query(model.Package).filter(model.Package.id == i).first()
+            c.datasets.append(pack.name)
+        #c.datasets = c.data
         private =  pack.private
         if private == 'f':
             c.private = 'Private'
@@ -111,6 +129,7 @@ class DetailController(base.BaseController):
         return base.render("related/dashboard.html")
         
     def new_app(self):
+        
         return base.render("related/dashboard.html")
 
     def  new_app_in(self):
@@ -118,21 +137,52 @@ class DetailController(base.BaseController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
         data_dict = {}
-        data = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
+        data = {}
+
+        related = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
+        data = related
         logging.warning('post data values:')
         logging.warning(data)
+        owner_id = c.userobj.id
+
         '''
-        insert into related... dataset
+            {'datasets': u'aaaasdasd', 'description': u'', 'title': u'', 'url': u'', 'image_url': u'', 'save': u''}
+        '''
         
-        app_id select from related
+        data_to_commit = model.related.Related()
 
-        for bla bla 
-            array.append ... select from package ID (name == name)
+        logging.warning(data_to_commit)   
 
-        for bla bla array
-            insert related dataset app_id array id
-        '''
+        data_to_commit.id = unicode(uuid.uuid4())
+        data_to_commit.title = data['title']
+        data_to_commit.description = data['description']
+        data_to_commit.url = data['url']
+        data_to_commit.image_url = data['image_url']
+        data_to_commit.created = datetime.datetime.now()
+        data_to_commit.owner_id = owner_id
+        data_to_commit.type = 'application'
+        
+        #related = logic.get_action(action_name)(context, data)
+        
+        model.Session.add(data_to_commit)
+            
+        related_ids = []
+        datasets = data['datasets'].split(',')
+        for i in datasets:
+            related_ids.append(model.Session.query(model.Package).filter(model.Package.name == i).first().id)
+        logging.warning(related_ids)
+        related_datasets = []
+        for i in range(len(related_ids)):
+            buffer = model.related.RelatedDataset()
+            related_datasets.append(buffer)
+        for i in range(len(related_ids)):
+            related_datasets[i].dataset_id = related_ids[i]
+            related_datasets[i].id = unicode(uuid.uuid4())
+            related_datasets[i].related_id = data_to_commit.id
+            related_datasets[i].status = 'active'
+            model.Session.add(related_datasets[i])
+        model.Session.commit()
         return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
 
-    
- 
+
+

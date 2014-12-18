@@ -362,6 +362,3 @@ class AppsController(base.BaseController):
     
 
         return base.render("related/dashboard.html")
-
-    
- 
