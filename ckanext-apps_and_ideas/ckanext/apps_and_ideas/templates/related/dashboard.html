@@ -33,14 +33,35 @@ FORM
     
       <section class="module">
 <script>
+function match(x, array){
+  for(var i = 0; i < array.length; i++){
+    if(x == array[i]){
+      return true
+    }
+  }
+  return false
+}
 function validateForm() {
     var title = document.forms["new_app_form"]["title"].value;
     var url = document.forms["new_app_form"]["url"].value;
     var dat = document.forms["new_app_form"]["datasets"].value;
-    if (title==null || title==""||url==null || url=="" || dat== "") {
+    var data_from_input = dat.split(',');
+    var new_array = []
+    for(var i = 0; i < data_from_input.length; i++){
+      if (match(data_from_input[i], datasets)){
+        new_array.push(data_from_input[i])
+      }
+    }
+    dat = new_array.join(',');
+    if (title==null || title==""||url==null || url=="") {
         alert("All fields are required!");
         return false;
     }
+    if (dat == ""){
+      alert("pls add some existing datasets");
+      return false
+    }
+    
 }
 </script>
           <div class="module-content">
@@ -58,6 +79,13 @@ function validateForm() {
                   </div>
                 {% endif %}
 
+                <script type="text/javascript">
+                    var datasets  = "{{c.app_names}}";
+                    datasets = datasets.replace(/u&#39;/g,'')
+                    datasets = datasets.replace(/&#39;/g,'')
+                    datasets = datasets.substring(1, datasets.length - 1);
+                    datasets = datasets.split(', ')
+                </script>
               {% endblock %}
 
               {% block fields %}
@@ -128,67 +156,68 @@ end of form
 
   {% block related_list %}
     {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
-      
-      <form class="form-horizontal">
-      <fieldset>
 
-      <!-- Form Name -->
-      <legend>{{c.title}}</legend>
+          <form class="form-horizontal">
+          <fieldset>
 
-      <!-- Text input-->
-      <div class="control-group">
-        <label class="control-label" for="textinput">{{_('Tematický okruh')}}</label>
-        <div class="controls">
-          <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.description==''%}{{_('no data')}}{%else%}{{c.description}}{%endif%}" readonly>
-        </div>
-      </div> 
+          <!-- Form Name -->
+          <legend>{{c.title}}</legend>
 
-      <!-- Text input-->
-      <div class="control-group">
-        <label class="control-label" for="textinput">{{_('Pridané dna')}}</label>
-        <div class="controls">
-          <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.created==''%}{{_('no data')}}{%else%}{{c.created}}{%endif%}" readonly>
-        </div>
-      </div>
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="textinput">{{_('Tematický okruh')}}</label>
+            <div class="controls">
+              <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.description==''%}{{_('no data')}}{%else%}{{c.description}}{%endif%}" readonly>
+            </div>
+          </div> 
 
-      <!-- Text input-->
-      <div class="control-group">
-        <label class="control-label" for="textinput">{{_('Autor')}}</label>
-        <div class="controls">
-          <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.owner==''%}{{_('no data')}}{%else%}{{c.owner}}{%endif%}" readonly>
-        </div>
-      </div>
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="textinput">{{_('Pridané dna')}}</label>
+            <div class="controls">
+              <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.created==''%}{{_('no data')}}{%else%}{{c.created}}{%endif%}" readonly>
+            </div>
+          </div>
 
-      <!-- Text input-->
-      <div class="control-group">
-        <label class="control-label">{{_('Odkaz')}}</label>
-        <div class="controls" style="padding-top: 0.3em; font-size:1.2em;">
-          <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.url==''%}{{_('no data')}}{%else%}{{c.url}}{%endif%}" readonly-->
-          <a href="{% if c.url==''%}#{%else%}{{c.url}}{%endif%}" style="padding-top: 1em;">{% if c.url==''%}{{_('no data')}}{%else%}{{c.url}}{%endif%}</a>
-        </div>
-      </div>
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="textinput">{{_('Autor')}}</label>
+            <div class="controls">
+              <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.owner==''%}{{_('no data')}}{%else%}{{c.owner}}{%endif%}" readonly>
+            </div>
+          </div>
 
-      <!-- Text input-->
-      <div class="control-group">
-        <label class="control-label" for="textinput">{{_('Použité datasety')}}</label>
-        <div class="controls" style="padding-top: 0.4em;font-size:1.2em;">
-          <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% for x in c.datasets%} {{x}}, {% endfor %}" readonly-->
-          <!--ul style="padding-top: 0.3em; list-style-type:none;padding-left: -1em; "-->
-            {% for x in c.datasets%} <!--li style="display:inline; padding-right: 0.3em;"--> <a href="/dataset/{{x}}"> {{x}}</a>,<!--/li--> {% endfor %}
-          <!--/ul-->
-        </div>
-      </div>
-      <div class="control-group">
-        
-        <div class="controls">
-          <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{{c.private}}" readonly
-        >
-        </div>
-      </div>
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label">{{_('Odkaz')}}</label>
+            <div class="controls" style="padding-top: 0.3em; font-size:1.2em;">
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.url==''%}{{_('no data')}}{%else%}{{c.url}}{%endif%}" readonly-->
+              <a href="{% if c.url==''%}#{%else%}{{c.url}}{%endif%}" style="padding-top: 1em;" target="_blank">{% if c.url==''%}{{_('no data')}}{%else%}{{c.url}}{%endif%}</a>
+            </div>
+          </div>
 
-      </fieldset>
-      {%if c.user==c.owner %}
-      <a class='btn btn-primary btn-small media-edit' href="/dataset/{{c.datasets[0]}}/related/edit/{{c.id}}" ><span class="fa fa-pencil" > </span> {{_('Edit')}}</a>
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="textinput">{{_('Použité datasety')}}</label>
+            <div class="controls" style="padding-top: 0.4em;font-size:1.2em;">
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% for x in c.datasets%} {{x}}, {% endfor %}" readonly-->
+              <!--ul style="padding-top: 0.3em; list-style-type:none;padding-left: -1em; "-->
+                {% for x in c.datasets%} <!--li style="display:inline; padding-right: 0.3em;"--> <a href="/dataset/{{x}}" target="_blank"> {{x}}</a>,<!--/li--> {% endfor %}
+              <!--/ul-->
+            </div>
+          </div>
+          <div class="control-group">
+            
+            <div class="controls">
+              <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{{c.private}}" readonly
+            >
+            </div>
+          </div>
+
+          </fieldset>
+          {%if c.user==c.owner %}
+          <a class='btn btn-primary btn-small media-edit' href="/apps/update?id={{c.id}}" ><span class="fa fa-pencil" > </span> {{_('Edit')}}</a>
+          
       {%endif%}
       </form>
     {% else %}

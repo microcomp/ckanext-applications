@@ -129,7 +129,11 @@ class DetailController(base.BaseController):
         return base.render("related/dashboard.html")
         
     def new_app(self):
-        
+        all_apps = model.Session.query(model.Package).filter(model.Package.name != "").all()
+        c.app_names = []
+        for i in all_apps:
+            c.app_names.append(i.name)
+        logging.warning(c.app_names)
         return base.render("related/dashboard.html")
 
     def  new_app_in(self):
@@ -169,7 +173,10 @@ class DetailController(base.BaseController):
         related_ids = []
         datasets = data['datasets'].split(',')
         for i in datasets:
-            related_ids.append(model.Session.query(model.Package).filter(model.Package.name == i).first().id)
+            id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
+            if id_query == None:
+                return toolkit.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='new_app')
+            related_ids.append(id_query.id)
         logging.warning(related_ids)
         related_datasets = []
         for i in range(len(related_ids)):
@@ -183,6 +190,52 @@ class DetailController(base.BaseController):
             model.Session.add(related_datasets[i])
         model.Session.commit()
         return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
+
+    def edit_app(self):
+        c.super_mega_ultimate_data_package = ""
+        id = base.request.params.get('id','')
+        data_from_db = model.Session.query(model.Related).filter(model.Related.id == id).first()
+        if data_from_db == None:
+            base.abort(404, _('Application not found'))
+
+        logging.warning(data_from_db)
+        data, errors, error_summary = {}, {}, {}
+        data["id"] = data_from_db.id
+        data["type"] = data_from_db.type
+        data["title"] = data_from_db.title
+        data["description"] = data_from_db.description
+        data["image_url"] = data_from_db.image_url
+        data["url"] = data_from_db.url
+        data["created"] = data_from_db.created
+        data["owner_id"] = data_from_db.owner_id
+        data["view_count"] = data_from_db.view_count
+        data["featured"] = data_from_db.featured
+
+        name_query = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == data["id"] ).all()
+        names = []
+        for i in name_query:
+            names.append(i.dataset_id)
+            
+        
+        dataset_names = []
+        for i in names:
+            query_data = model.Session.query(model.Package).filter(model.Package.id == i).first()
+            dataset_names.append(query_data.title)
+        logging.warning(dataset_names)
+        data['datasets'] = ",".join(dataset_names)
+        vars = {'data': data, 'errors': errors, 'error_summary': error_summary}
+        return base.render("related/update.html", extra_vars = vars)
+    def edit_app_do(self):
+        #
+        # - delete all related datasets
+        # + add new related datasets
+        # * update existing data
+        # //create new page for edit app do function
+        
+
+        pass
+        
+
 
 
 
