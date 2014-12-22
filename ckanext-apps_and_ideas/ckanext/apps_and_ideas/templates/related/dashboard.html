@@ -167,7 +167,7 @@ end of form
           <div class="control-group">
             <label class="control-label" for="textinput">{{_('Tematický okruh')}}</label>
             <div class="controls">
-              <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.description==''%}{{_('no data')}}{%else%}{{c.description}}{%endif%}" readonly>
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if c.description==''%}{{_('no data')}}{%else%}{{c.description}}{%endif%}</p><!--" readonly -->
             </div>
           </div> 
 
@@ -175,7 +175,7 @@ end of form
           <div class="control-group">
             <label class="control-label" for="textinput">{{_('Pridané dna')}}</label>
             <div class="controls">
-              <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.created==''%}{{_('no data')}}{%else%}{{c.created}}{%endif%}" readonly>
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if c.created==''%}{{_('no data')}}{%else%}{{c.created}}{%endif%}</p><!--" readonly-->
             </div>
           </div>
 
@@ -183,7 +183,7 @@ end of form
           <div class="control-group">
             <label class="control-label" for="textinput">{{_('Autor')}}</label>
             <div class="controls">
-              <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.owner==''%}{{_('no data')}}{%else%}{{c.owner}}{%endif%}" readonly>
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if c.owner==''%}{{_('no data')}}{%else%}{{c.owner}}{%endif%}</p><!--" readonly -->
             </div>
           </div>
 
@@ -209,8 +209,7 @@ end of form
           <div class="control-group">
             
             <div class="controls">
-              <input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{{c.private}}" readonly
-            >
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{{c.private}}</p><!--" readonly -->
             </div>
           </div>
 

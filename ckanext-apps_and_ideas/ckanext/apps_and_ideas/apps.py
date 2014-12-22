@@ -85,7 +85,6 @@ class AppsController(base.BaseController):
 
         return base.render("related/dashboard.html")
 
-   
     def dashboard(self):
         """ List all related items regardless of dataset """
         context = {'model': model, 'session': model.Session,
@@ -301,6 +300,7 @@ class AppsController(base.BaseController):
                 {"text": _("Paper"), "value": "paper"},
                 {"text": _("Post"), "value": "post"},
                 {"text": _("Visualization"), "value": "visualization"})
+
     def detail(self):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,

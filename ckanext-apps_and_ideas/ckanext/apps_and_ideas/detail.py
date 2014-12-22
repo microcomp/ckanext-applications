@@ -40,6 +40,7 @@ class DetailController(base.BaseController):
                 {"text": _("Paper"), "value": "paper"},
                 {"text": _("Post"), "value": "post"},
                 {"text": _("Visualization"), "value": "visualization"})
+
     def detail(self):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -98,6 +99,8 @@ class DetailController(base.BaseController):
             {'value': 'created_desc', 'text': _('Newest')},
             {'value': 'created_asc', 'text': _('Oldest')}
         )
+        if len(new_list) == 0:
+            base.abort(404, _('Application not found'))
         c.title = new_list[0]['title']
         c.description = new_list[0]['description']
         c.url = new_list[0]['url']
@@ -118,6 +121,9 @@ class DetailController(base.BaseController):
             pack = model.Session.query(model.Package).filter(model.Package.id == i).first()
             c.datasets.append(pack.name)
         #c.datasets = c.data
+        ''''
+            ERROR: aplikacia nema property private, len dataset moze private alebo Public!!!
+        '''
         private =  pack.private
         if private == 'f':
             c.private = 'Private'
@@ -170,9 +176,10 @@ class DetailController(base.BaseController):
         
         model.Session.add(data_to_commit)
             
-        related_ids = []
+        
         datasets = data['datasets'].split(',')
-        for i in datasets:
+        self.add_datasets(datasets,  data_to_commit.id)
+        '''for i in datasets:
             id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
             if id_query == None:
                 return toolkit.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='new_app')
@@ -188,16 +195,40 @@ class DetailController(base.BaseController):
             related_datasets[i].related_id = data_to_commit.id
             related_datasets[i].status = 'active'
             model.Session.add(related_datasets[i])
-        model.Session.commit()
+        model.Session.commit()'''
         return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
 
+    def add_datasets(self, datasets,  id):
+        related_ids = []
+        for i in datasets:
+            id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
+            if id_query == None:
+                logging.warning('redirecting...')
+                return toolkit.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='new_app')
+            related_ids.append(id_query.id)
+        logging.warning('related id-s:')
+        logging.warning(related_ids)
+        related_datasets = []
+        for i in range(len(related_ids)):
+            buffer = model.related.RelatedDataset()
+            related_datasets.append(buffer)
+        for i in range(len(related_ids)):
+            related_datasets[i].dataset_id = related_ids[i]
+            related_datasets[i].id = unicode(uuid.uuid4())
+            related_datasets[i].related_id = id
+            related_datasets[i].status = 'active'
+            model.Session.add(related_datasets[i])
+            
+        model.Session.commit()
+        return
+        
     def edit_app(self):
-        c.super_mega_ultimate_data_package = ""
+        
         id = base.request.params.get('id','')
         data_from_db = model.Session.query(model.Related).filter(model.Related.id == id).first()
         if data_from_db == None:
             base.abort(404, _('Application not found'))
-
+        
         logging.warning(data_from_db)
         data, errors, error_summary = {}, {}, {}
         data["id"] = data_from_db.id
@@ -210,7 +241,7 @@ class DetailController(base.BaseController):
         data["owner_id"] = data_from_db.owner_id
         data["view_count"] = data_from_db.view_count
         data["featured"] = data_from_db.featured
-
+        c.id = data["id"]
         name_query = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == data["id"] ).all()
         names = []
         for i in name_query:
@@ -220,20 +251,47 @@ class DetailController(base.BaseController):
         dataset_names = []
         for i in names:
             query_data = model.Session.query(model.Package).filter(model.Package.id == i).first()
-            dataset_names.append(query_data.title)
+            dataset_names.append(query_data.name)
         logging.warning(dataset_names)
         data['datasets'] = ",".join(dataset_names)
         vars = {'data': data, 'errors': errors, 'error_summary': error_summary}
         return base.render("related/update.html", extra_vars = vars)
-    def edit_app_do(self):
-        #
-        # - delete all related datasets
-        # + add new related datasets
-        # * update existing data
-        # //create new page for edit app do function
-        
 
-        pass
+    def edit_app_do(self):
+        
+        id = base.request.params.get('id','')
+        valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
+        if valid == None:
+            base.abort(404, _('Application not found'))
+        related_datasets = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
+        logging.warning('rows to delete...\n'+str(related_datasets))
+        for i in related_datasets:
+            model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.id == i.id).delete(synchronize_session=False)
+        model.Session.commit()
+        #all related items deleted...
+        data = {}
+
+        related = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
+        data = related
+        logging.warning('post data values:')
+        logging.warning(data)
+        #select the old value:
+        old_data = model.Session.query(model.Related).filter(model.Related.id == id).first()
+
+        logging.warning(type(old_data))
+
+        old_data.title = data["title"] 
+        old_data.description =data["description"]
+        old_data.image_url =data["image_url"] 
+        old_data.url =data["url"] 
+        #old_data.featured = data["featured"]
+        
+        #model.Session.add(old_data)
+        model.Session.commit()
+
+        datasets = data['datasets'].split(',')
+        self.add_datasets(datasets, id)
+        return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
         
 
 
