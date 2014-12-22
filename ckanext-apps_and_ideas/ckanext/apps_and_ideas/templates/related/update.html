@@ -17,6 +17,14 @@
     {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value=data.description, error=errors.description) }}
      {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
                   {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=data.datasets, error='', classes=['control-full'], attrs=tag_attrs) }}
+
+    <label class="control-label" for="publicity" >Publicity</label>
+   <select id="publicity" name="private" style="margin-left: 0.6em;">
+      
+        <option value="private">Private</option>
+        <option value="public">Public</option>
+    </select>
+      
   {% endblock %}
 
 

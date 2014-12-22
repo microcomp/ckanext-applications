@@ -18,6 +18,8 @@ import logging
 import json
 import os
 
+import db
+
 import ckan.logic
 
 data_path = "/data/"
@@ -25,7 +27,51 @@ data_path = "/data/"
 abort = base.abort
 _get_action = logic.get_action
 #log = logging.getLogger('ckanext_apps_and_ideas')
+def create_related_extra_table(context):
+    if db.related_extra_table is None:
+        db.init_db(context['model'])
+@ckan.logic.side_effect_free
+def new_related_extra(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra()
+    info.related_id = data_dict.get('related_id')
+    info.key = data_dict.get('key')
+    info.value = data_dict.get('value')
+    info.save()
+    session = context['session']
+    session.add(info)
+    session.commit()
+    return {"status":"success"}
 
+@ckan.logic.side_effect_free
+def mod_related_extra(context, data_dict):
+    '''create_related_extra_table(context)
+    info = db.RelatedExtra.filter_by(db.RelatedExtra().related_id == data_dict.get('related_id')).first()
+    info.related_id = data_dict.get('related_id')
+    info.key = data_dict.get('key')
+    info.value = data_dict.get('value')
+    info.save()
+    session = context['session']
+
+    #session.add(info)
+    session.commit()
+    return {"status":"success"}'''
+    #
+    #  TODO
+    #  UPDATE... add new funguje, ale update nie...
+    #
+    pass
+
+@ckan.logic.side_effect_free
+def get_related_extra(context, data_dict):
+    '''
+    This function retrieves extra information about given tag_id and
+    possibly more filtering criterias. 
+    '''
+    if db.related_extra_table is None:
+        db.init_db(context['model'])
+    res = db.RelatedExtra.get(**data_dict)
+    return res
 class DetailController(base.BaseController):  
 
     def _type_options(self):
@@ -142,6 +188,7 @@ class DetailController(base.BaseController):
         logging.warning(c.app_names)
         return base.render("related/dashboard.html")
 
+
     def  new_app_in(self):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -179,23 +226,7 @@ class DetailController(base.BaseController):
         
         datasets = data['datasets'].split(',')
         self.add_datasets(datasets,  data_to_commit.id)
-        '''for i in datasets:
-            id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
-            if id_query == None:
-                return toolkit.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='new_app')
-            related_ids.append(id_query.id)
-        logging.warning(related_ids)
-        related_datasets = []
-        for i in range(len(related_ids)):
-            buffer = model.related.RelatedDataset()
-            related_datasets.append(buffer)
-        for i in range(len(related_ids)):
-            related_datasets[i].dataset_id = related_ids[i]
-            related_datasets[i].id = unicode(uuid.uuid4())
-            related_datasets[i].related_id = data_to_commit.id
-            related_datasets[i].status = 'active'
-            model.Session.add(related_datasets[i])
-        model.Session.commit()'''
+        
         return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
 
     def add_datasets(self, datasets,  id):
@@ -287,6 +318,13 @@ class DetailController(base.BaseController):
         #old_data.featured = data["featured"]
         
         #model.Session.add(old_data)
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+
+        data_dict = {'related_id':id,'key':'privacy','value':data['private']}
+        mod_related_extra(context, data_dict)
+
         model.Session.commit()
 
         datasets = data['datasets'].split(',')
@@ -295,5 +333,9 @@ class DetailController(base.BaseController):
         
 
 
+'''
+-add new app -> add new line to related_extra (publicity -- private)
+-update -> update publicity (private/public)
 
+'''
 
