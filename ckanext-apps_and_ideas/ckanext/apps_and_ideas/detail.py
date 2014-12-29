@@ -27,6 +27,7 @@ data_path = "/data/"
 
 abort = base.abort
 _get_action = logic.get_action
+_check_access = logic.check_access
 #log = logging.getLogger('ckanext_apps_and_ideas')
 def create_related_extra_table(context):
     if db.related_extra_table is None:
@@ -188,6 +189,11 @@ class DetailController(base.BaseController):
         return base.render("related/dashboard.html")
         
     def new_app(self):
+        context = {'user' : c.user}
+        try:
+            _check_access('app_create', context)
+        except toolkit.NotAuthorized, e:
+            toolkit.abort(401, e.extra_msg)
         all_apps = model.Session.query(model.Package).filter(model.Package.name != "").all()
         c.app_names = []
         for i in all_apps:
@@ -199,7 +205,7 @@ class DetailController(base.BaseController):
         return base.render("related/dashboard.html")
 
 
-    def  new_app_in(self):
+    def new_app_in(self):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
@@ -275,6 +281,14 @@ class DetailController(base.BaseController):
         data_from_db = model.Session.query(model.Related).filter(model.Related.id == id).first()
         if data_from_db == None:
             base.abort(404, _('Application not found'))
+        
+        context = {'user' : c.user} 
+        data_dict = {'owner_id' : data_from_db.owner_id}
+        try:
+            _check_access('app_edit', context, data_dict)
+        except toolkit.NotAuthorized, e:
+            toolkit.abort(401, e.extra_msg)
+        
         
         logging.warning(data_from_db)
         data, errors, error_summary = {}, {}, {}
