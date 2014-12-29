@@ -4,7 +4,9 @@
 {% block primary_content_inner %}
 
   {{ super() }}
-<a href="/apps/new?dataset={{c.pkg.name}}" class="btn btn-primary" style="float:right;">{{_('Add new application')}}</a>
+  {% if h.check_access('app_create') %}
+	<a href="/apps/new?dataset={{c.pkg.name}}" class="btn btn-primary" style="float:right;">{{_('Add new application')}}</a>
+  {% endif %}
 <h2>{{_('Related items')}}</h2>
 <link rel="stylesheet" type="text/css" href="/box.css" />
 <h2 class="hide-heading">{% block page_heading %}{{ _('Related Media for {dataset}').format(dataset=h.dataset_display_name(c.pkg)) }}{% endblock %}</h2>
