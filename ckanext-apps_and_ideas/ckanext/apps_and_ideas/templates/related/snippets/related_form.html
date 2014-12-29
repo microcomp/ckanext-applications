@@ -7,10 +7,10 @@
 
   {% block fields %}
    {{super()}}
-    {#% block package_basic_fields_tags %#}
+   
                   {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
                   {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value='', error='', classes=['control-full'], attrs=tag_attrs) }}
-                {#% endblock %#}
+   
   {% endblock %}
 
   <div class="form-actions">

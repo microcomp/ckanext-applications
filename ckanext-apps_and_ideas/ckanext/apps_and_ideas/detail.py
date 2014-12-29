@@ -21,6 +21,7 @@ import os
 import db
 
 import ckan.logic
+import __builtin__
 
 data_path = "/data/"
 
@@ -36,7 +37,7 @@ def new_related_extra(context, data_dict):
     info = db.RelatedExtra()
     info.related_id = data_dict.get('related_id')
     info.key = data_dict.get('key')
-    info.value = data_dict.get('value')
+    info.value = __builtin__.value
     info.save()
     session = context['session']
     session.add(info)
@@ -45,22 +46,23 @@ def new_related_extra(context, data_dict):
 
 @ckan.logic.side_effect_free
 def mod_related_extra(context, data_dict):
-    '''create_related_extra_table(context)
-    info = db.RelatedExtra.filter_by(db.RelatedExtra().related_id == data_dict.get('related_id')).first()
-    info.related_id = data_dict.get('related_id')
-    info.key = data_dict.get('key')
-    info.value = data_dict.get('value')
-    info.save()
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**data_dict)
+    index = 0
+    for i in range(len(info)):
+        if info[i].key == 'privacy':
+            index == i
+    info[index].related_id = data_dict.get('related_id')
+    
+    info[index].key = data_dict.get('key')
+    info[index].value = __builtin__.value
+    info[index].save()
     session = context['session']
 
     #session.add(info)
     session.commit()
-    return {"status":"success"}'''
-    #
-    #  TODO
-    #  UPDATE... add new funguje, ale update nie...
-    #
-    pass
+    return {"status":"success"}
+    
 
 @ckan.logic.side_effect_free
 def get_related_extra(context, data_dict):
@@ -91,6 +93,7 @@ class DetailController(base.BaseController):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
+
         data_dict = {
             'type_filter': 'application',
             'sort': base.request.params.get('sort', ''),
@@ -170,11 +173,15 @@ class DetailController(base.BaseController):
         ''''
             ERROR: aplikacia nema property private, len dataset moze private alebo Public!!!
         '''
-        private =  pack.private
-        if private == 'f':
-            c.private = 'Private'
+
+        data_dict2 = {'related_id':c.id,'key':'privacy'}
+        privacy_list = get_related_extra(context, data_dict2)
+        if len(privacy_list) == 0:
+            c.private = "no information"
         else:
-            c.private = 'Public'
+            c.private = privacy_list[0].value
+        
+        
 
         logging.warning(c.datasets)
         logging.warning(c.private)
@@ -186,6 +193,9 @@ class DetailController(base.BaseController):
         for i in all_apps:
             c.app_names.append(i.name)
         logging.warning(c.app_names)
+
+        c.dataset = base.request.params.get('dataset','')
+
         return base.render("related/dashboard.html")
 
 
@@ -227,6 +237,12 @@ class DetailController(base.BaseController):
         datasets = data['datasets'].split(',')
         self.add_datasets(datasets,  data_to_commit.id)
         
+        data_dict = {'related_id':data_to_commit.id,'key':'privacy'}
+
+        __builtin__.value = 'private'
+        new_related_extra(context, data_dict)
+
+        model.Session.commit()
         return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
 
     def add_datasets(self, datasets,  id):
@@ -322,7 +338,9 @@ class DetailController(base.BaseController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
 
-        data_dict = {'related_id':id,'key':'privacy','value':data['private']}
+        data_dict = {'related_id':id,'key':'privacy'}
+
+        __builtin__.value = data['private']
         mod_related_extra(context, data_dict)
 
         model.Session.commit()
@@ -331,11 +349,3 @@ class DetailController(base.BaseController):
         self.add_datasets(datasets, id)
         return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
         
-
-
-'''
--add new app -> add new line to related_extra (publicity -- private)
--update -> update publicity (private/public)
-
-'''
-

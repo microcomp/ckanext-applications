@@ -98,7 +98,7 @@ function validateForm() {
 
                 {#% block package_basic_fields_tags %#}
                   {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
-                  {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value='', error='', classes=['control-full'], attrs=tag_attrs) }}
+                  {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=c.dataset, error='', classes=['control-full'], attrs=tag_attrs) }}
                 {#% endblock %#}
 
                 {#{ form.input('datasets', label=_('Datasets'), id='field-datasets', placeholder=_('default'), value="", error="", classes=['control-full']) }#}
@@ -167,7 +167,7 @@ end of form
 
           <!-- Text input-->
           <div class="control-group">
-            <label class="control-label" for="textinput">{{_('Tematický okruh')}}</label>
+            <label class="control-label" for="textinput">{{_('Description')}}</label>
             <div class="controls">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if c.description==''%}{{_('no data')}}{%else%}{{c.description}}{%endif%}</p><!--" readonly -->
             </div>
@@ -175,7 +175,7 @@ end of form
 
           <!-- Text input-->
           <div class="control-group">
-            <label class="control-label" for="textinput">{{_('Pridané dna')}}</label>
+            <label class="control-label" for="textinput">{{_('Date of creation')}}</label>
             <div class="controls">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if c.created==''%}{{_('no data')}}{%else%}{{c.created}}{%endif%}</p><!--" readonly-->
             </div>
@@ -183,7 +183,7 @@ end of form
 
           <!-- Text input-->
           <div class="control-group">
-            <label class="control-label" for="textinput">{{_('Autor')}}</label>
+            <label class="control-label" for="textinput">{{_('Author')}}</label>
             <div class="controls">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if c.owner==''%}{{_('no data')}}{%else%}{{c.owner}}{%endif%}</p><!--" readonly -->
             </div>
@@ -191,7 +191,7 @@ end of form
 
           <!-- Text input-->
           <div class="control-group">
-            <label class="control-label">{{_('Odkaz')}}</label>
+            <label class="control-label">{{_('URL')}}</label>
             <div class="controls" style="padding-top: 0.3em; font-size:1.2em;">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.url==''%}{{_('no data')}}{%else%}{{c.url}}{%endif%}" readonly-->
               <a href="{% if c.url==''%}#{%else%}{{c.url}}{%endif%}" style="padding-top: 1em;" target="_blank">{% if c.url==''%}{{_('no data')}}{%else%}{{c.url}}{%endif%}</a>
@@ -200,7 +200,7 @@ end of form
 
           <!-- Text input-->
           <div class="control-group">
-            <label class="control-label" for="textinput">{{_('Použité datasety')}}</label>
+            <label class="control-label" for="textinput">{{_('Datasets')}}</label>
             <div class="controls" style="padding-top: 0.4em;font-size:1.2em;">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% for x in c.datasets%} {{x}}, {% endfor %}" readonly-->
               <!--ul style="padding-top: 0.3em; list-style-type:none;padding-left: -1em; "-->
@@ -209,9 +209,11 @@ end of form
             </div>
           </div>
           <div class="control-group">
-            
+            <label class="control-label"> {{_('Status')}}</label>
             <div class="controls">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{{c.private}}</p><!--" readonly -->
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="-->
+
+              <p style="padding-top: 0.3em;font-size:1.2em;">{{c.private}}</p><!--" readonly -->
             </div>
           </div>
 
@@ -237,7 +239,6 @@ end of form
         </article>
     {%endif%}
 
-    {######################################################################}
 {% endblock %}
 
 {% block secondary_content %}
