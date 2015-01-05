@@ -32,7 +32,8 @@
 
               <div class="form-actions">
                 
-                {{ h.nav_link(_('Cancel'), controller='related', action='list', id="", class_='btn') }}
+                {#{ h.nav_link(_('Cancel'), controller='related', action='list', id="", class_='btn') }#}
+                <a class="btn" href="/apps" name="cancel" >{{ _('Cancel') }}</a>
                 <button class="btn btn-primary" type="submit" name="save">{{ _('Save') }}</button>
               </div>
             </form>
