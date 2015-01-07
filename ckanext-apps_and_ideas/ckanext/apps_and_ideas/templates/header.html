@@ -20,7 +20,7 @@
 	<!-- {{c.controller}} -->
 {% elif c.controller == 'organization' %}
 	{%if c.action == 'read' %}
-
+	{%elif c.action == 'activity'%}
 	{%else%}
 	<link rel="stylesheet" type="text/css" href="/box.css" />
 	{%endif%}
