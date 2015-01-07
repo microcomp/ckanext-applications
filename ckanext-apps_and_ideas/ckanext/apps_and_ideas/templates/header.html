@@ -26,7 +26,10 @@
 	{%endif%}
 	<!-- {{c.controller}} -->
 {% elif c.controller == 'group' %}
+{%if c.action == 'activity' %}
+{%else%}
 	<link rel="stylesheet" type="text/css" href="/box.css" />
+{%endif%}
 	<!-- {{c.controller}} -->
  {%else%}
 {%endif%}

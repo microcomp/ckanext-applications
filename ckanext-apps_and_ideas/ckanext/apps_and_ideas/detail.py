@@ -377,11 +377,19 @@ class DetailController(base.BaseController):
         id = base.request.params.get('id','')
         logging.warning('deleting...')
         logging.warning(id)
+
         valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
         if valid == None:
             logging.warning('application not found')
             base.abort(404, _('Application not found'))
 
+        context = {'user' : c.user} 
+        data_dict = {'owner_id' : valid.owner_id}
+        try:
+            _check_access('app_edit', context, data_dict)
+        except toolkit.NotAuthorized, e:
+            toolkit.abort(401, e.extra_msg)
+            
         rel = model.Session.query(model.Related).filter(model.Related.id == id).first()
         rel_datasets = model.Session.query(model.RelatedDataset).filter(model.Related.id == id).all()
         

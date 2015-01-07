@@ -221,13 +221,9 @@ end of form
           </fieldset>
           {%if h.check_access('app_edit', data_dict={'owner_id' : c.owner}) or c.user==c.owner %}
           <a class='btn btn-primary btn-small media-edit' href="/apps/update?id={{c.id}}" ><span class="fa fa-pencil" > </span> {{_('Edit')}}</a>
-<script src="/jquery.min.js"></script>
-<script src="/bootbox.js"></script>
-<script src="/bootstrap.min.js"></script>
-<script>
-
-
-</script>
+            <script src="/js/jquery.min.js"></script>
+            <script src="/js/bootbox.js"></script>
+            <script src="/js/bootstrap.min.js"></script>
 
           <a class='btn btn-primary btn-small media-delete' href="#" data-bb="confirm" onclick="bootbox.confirm('{{_("Are you sure?")}}', function(result){if(result){window.location.href='/apps/delete?id={{c.id}}';}})"><span class="fa fa-trash" > </span> {{_('Delete')}}</a>
       	  {%endif%}
