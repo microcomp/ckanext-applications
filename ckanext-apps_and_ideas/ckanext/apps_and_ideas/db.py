@@ -21,6 +21,13 @@ def init_db(model):
             '''Finds a single entity in the register.'''
             query = model.Session.query(cls).autoflush(False)
             return query.filter_by(**kw).all()
+        @classmethod
+        def delete(cls, **kw):
+            query = model.Session.query(cls).autoflush(False).filter_by(**kw).all()
+            for i in query:
+                model.Session.delete(i)
+            return
+
 
         @classmethod
         def related_extra(cls, **kw):

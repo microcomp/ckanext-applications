@@ -19,7 +19,11 @@
 	<link rel="stylesheet" type="text/css" href="/box.css" />
 	<!-- {{c.controller}} -->
 {% elif c.controller == 'organization' %}
+	{%if c.action == 'read' %}
+
+	{%else%}
 	<link rel="stylesheet" type="text/css" href="/box.css" />
+	{%endif%}
 	<!-- {{c.controller}} -->
 {% elif c.controller == 'group' %}
 	<link rel="stylesheet" type="text/css" href="/box.css" />
