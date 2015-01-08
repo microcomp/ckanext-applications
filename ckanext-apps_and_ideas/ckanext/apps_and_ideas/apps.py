@@ -48,6 +48,13 @@ def check_priv_related_extra(context, data_dict):
     
     logging.warning(info[index].value)
     return info[index].value == 'public'
+    
+def check(id):
+    context = context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+    data_dict = {'related_id':id,'key':'privacy'}
+    return check_priv_related_extra(context, data_dict)
 
 @ckan.logic.side_effect_free
 def mod_related_extra(context, data_dict):
@@ -208,7 +215,7 @@ class AppsController(base.BaseController):
             return search_url(params)
 
         public_list = []
-              
+
         for i in related_list:
             data_dict = {'related_id':i['id'],'key':'privacy'}
             if check_priv_related_extra(context, data_dict):
