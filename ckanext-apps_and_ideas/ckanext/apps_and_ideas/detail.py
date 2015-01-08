@@ -46,6 +46,19 @@ def new_related_extra(context, data_dict):
     return {"status":"success"}
 
 @ckan.logic.side_effect_free
+def check_priv_related_extra(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**data_dict)
+    index = 0
+    for i in range(len(info)):
+        if info[i].key == 'privacy':
+            index == i
+    info[index].related_id = data_dict.get('related_id')
+    
+    logging.warning(info[index].value)
+    return info[index].value == 'public'
+
+@ckan.logic.side_effect_free
 def mod_related_extra(context, data_dict):
     create_related_extra_table(context)
     info = db.RelatedExtra.get(**data_dict)
@@ -86,6 +99,49 @@ def get_related_extra(context, data_dict):
 
 
 class DetailController(base.BaseController):  
+    def list(self, id):
+        """ List all related items for a specific dataset """
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author,
+                   'auth_user_obj': c.userobj,
+                   'for_view': True}
+        data_dict = {'id': id}
+
+        try:
+            logic.check_access('package_show', context, data_dict)
+        except logic.NotFound:
+            base.abort(404, base._('Dataset not found'))
+        except logic.NotAuthorized:
+            base.abort(401, base._('Not authorized to see this page'))
+
+        try:
+            c.pkg_dict = logic.get_action('package_show')(context, data_dict)
+
+            c.pkg = context['package']
+            logging.warning(c.pkg)
+            c.resources_json = h.json.dumps(c.pkg_dict.get('resources', []))
+         
+        
+        except logic.NotFound:
+            base.abort(404, base._('Dataset not found'))
+        except logic.NotAuthorized:
+            base.abort(401, base._('Unauthorized to read package %s') % id)
+        logging.warning(c.pkg.related)
+
+        related_list = []
+        
+        for i in c.pkg.related:
+            data_dict = {'related_id':i.id,'key':'privacy'}
+            if check_priv_related_extra(context, data_dict):
+                related_list.append(i)
+            else:
+                try:
+                    logic.check_access('app_edit', context, data_dict)
+                    related_list.append(i)
+                except logic.NotAuthorized:
+                    logging.warning("access denied")
+        c.pkg.related = related_list
+        return base.render("package/related_list.html")
 
     def _type_options(self):
         '''
@@ -123,10 +179,19 @@ class DetailController(base.BaseController):
     
         related_list = logic.get_action('related_list')(context, data_dict)
         # Update ordering in the context
-       
+        '''
+        related_list = []
+        for i in related_list2:
+            if check_priv_related_extra(context, data_dict):
+                public_list.append(i)
+            else:
+                try:
+                    logic.check_access('app_edit', context, data_dict)
+                    public_list.append(i)
+                except logic.NotAuthorized:
+                    logging.warning("access denied")
 
-        
-
+        '''
         new_list = [x for x in related_list if id == x['id']]
         
         def search_url(params):
@@ -181,9 +246,7 @@ class DetailController(base.BaseController):
             pack = model.Session.query(model.Package).filter(model.Package.id == i).first()
             c.datasets.append(pack.name)
         #c.datasets = c.data
-        ''''
-            ERROR: aplikacia nema property private, len dataset moze private alebo Public!!!
-        '''
+        
 
         data_dict2 = {'related_id':c.id,'key':'privacy'}
         privacy_list = get_related_extra(context, data_dict2)
@@ -192,7 +255,14 @@ class DetailController(base.BaseController):
         else:
             c.private = privacy_list[0].value
         
-        
+        data_dict = {'related_id':c.id,'key':'privacy'}
+
+        if check_priv_related_extra(context, data_dict) == False:
+            try:
+                logic.check_access('app_edit', context, data_dict)
+            except logic.NotAuthorized:
+                logging.warning("access denied")
+                base.abort(404, ('Application not found'))
 
         logging.warning(c.datasets)
         logging.warning(c.private)
@@ -407,7 +477,7 @@ class DetailController(base.BaseController):
         model.Session.commit()
         return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
 
-
+        
 '''
 table: related
 table: related_datasets

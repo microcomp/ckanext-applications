@@ -1,5 +1,7 @@
 import urllib
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 import ckan.model as model
 import ckan.logic as logic
@@ -8,11 +10,83 @@ import ckan.lib.helpers as h
 import ckan.lib.navl.dictization_functions as df
 import ckan.plugins as p
 from ckan.common import _, c
+import ckan.plugins.toolkit as toolkit
+
 import logging
+import ckan.logic
+import __builtin__
+import db
 
 abort = base.abort
 _get_action = logic.get_action
 #log = logging.getLogger('ckanext_apps_and_ideas')
+def create_related_extra_table(context):
+    if db.related_extra_table is None:
+        db.init_db(context['model'])
+@ckan.logic.side_effect_free
+def new_related_extra(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra()
+    info.related_id = data_dict.get('related_id')
+    info.key = data_dict.get('key')
+    info.value = __builtin__.value
+    info.save()
+    session = context['session']
+    session.add(info)
+    session.commit()
+    return {"status":"success"}
+
+@ckan.logic.side_effect_free
+def check_priv_related_extra(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**data_dict)
+    index = 0
+    for i in range(len(info)):
+        if info[i].key == 'privacy':
+            index == i
+    info[index].related_id = data_dict.get('related_id')
+    
+    logging.warning(info[index].value)
+    return info[index].value == 'public'
+
+@ckan.logic.side_effect_free
+def mod_related_extra(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**data_dict)
+    index = 0
+    for i in range(len(info)):
+        if info[i].key == 'privacy':
+            index == i
+    info[index].related_id = data_dict.get('related_id')
+    
+    info[index].key = data_dict.get('key')
+    info[index].value = __builtin__.value
+    info[index].save()
+    session = context['session']
+
+    #session.add(info)
+    session.commit()
+    return {"status":"success"}
+
+@ckan.logic.side_effect_free
+def del_related_extra(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra.delete(**data_dict)
+    session = context['session']
+    session.commit()
+    return {"status":"success"}
+    
+
+@ckan.logic.side_effect_free
+def get_related_extra(context, data_dict):
+    '''
+    This function retrieves extra information about given tag_id and
+    possibly more filtering criterias. 
+    '''
+    if db.related_extra_table is None:
+        db.init_db(context['model'])
+    res = db.RelatedExtra.get(**data_dict)
+    return res
 
 class AppsController(base.BaseController):
     def new(self, id):
@@ -48,9 +122,24 @@ class AppsController(base.BaseController):
         new_list2 = [x for x in related_list if name.lower() in x['description'].lower()]
 
         new_list = [x for x in related_list if name.lower() in x['title'].lower()]
+        logging.warning("private test")
         for i in new_list2:
             if i not in new_list:
                 new_list.append(i)
+        public_list = []      
+        for i in new_list:
+            data_dict = {'related_id':i['id'],'key':'privacy'}
+            if check_priv_related_extra(context, data_dict):
+                public_list.append(i)
+            else:
+                try:
+                    logic.check_access('app_edit', context, data_dict)
+                    public_list.append(i)
+                except logic.NotAuthorized:
+                    logging.warning("access denied")
+        
+
+        
         def search_url(params):
             url = h.url_for(controller='ckanext.apps_and_ideas.apps:AppsController', action='search')
             params = [(k, v.encode('utf-8')
@@ -64,10 +153,10 @@ class AppsController(base.BaseController):
             return search_url(params)
 
         c.page = h.Page(
-            collection=new_list,
+            collection=public_list,
             page=page,
             url=pager_url,
-            item_count=len(new_list),
+            item_count=len(public_list),
             items_per_page=9
         )
 
@@ -118,11 +207,24 @@ class AppsController(base.BaseController):
             params.append(('page', page))
             return search_url(params)
 
+        public_list = []
+              
+        for i in related_list:
+            data_dict = {'related_id':i['id'],'key':'privacy'}
+            if check_priv_related_extra(context, data_dict):
+                public_list.append(i)
+            else:
+                try:
+                    logic.check_access('app_edit', context, data_dict)
+                    public_list.append(i)
+                except logic.NotAuthorized:
+                    logging.warning("access denied")
+
         c.page = h.Page(
-            collection=related_list,
+            collection=public_list,
             page=page,
             url=pager_url,
-            item_count=len(related_list),
+            item_count=len(public_list),
             items_per_page=9
         )
 

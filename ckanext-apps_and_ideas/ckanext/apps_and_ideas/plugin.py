@@ -24,6 +24,7 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
 	map.connect('edit_app', '/apps/update', action='edit_app', controller='ckanext.apps_and_ideas.detail:DetailController')
 	map.connect('edit_app', '/apps/update/in', action='edit_app_do', controller='ckanext.apps_and_ideas.detail:DetailController')
 	map.connect('delete_app', '/apps/delete', action='delete_app', controller='ckanext.apps_and_ideas.detail:DetailController')
-
+	map.connect('list_apps', '/dataset/{id}/related', action='list', controller='ckanext.apps_and_ideas.detail:DetailController')
+	map.connect('dashboard', '/related', action='dashboard', controller='ckanext.apps_and_ideas.apps:AppsController')
 	return map
 	 

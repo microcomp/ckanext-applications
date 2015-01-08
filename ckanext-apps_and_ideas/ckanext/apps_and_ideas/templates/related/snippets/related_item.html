@@ -33,7 +33,7 @@ Example:
     </span>
   </a>
   {% if pkg_id %}
-    {{ h.nav_link(_('Edit'), controller='related', action='edit', id=pkg_id, related_id=related.id, class_='btn btn-primary btn-small media-edit') }}
+    {{ h.nav_link(_('Edit'), controller='ckanext.apps_and_ideas.detail:DetailController', action='edit_app',  id=related.id, class_='btn btn-primary btn-small media-edit') }}
   {% endif %}
 </li>
 {% if position is divisibleby 3 %}

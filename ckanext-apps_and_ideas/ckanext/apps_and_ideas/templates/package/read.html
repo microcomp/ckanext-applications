@@ -5,7 +5,7 @@
 
   {{ super() }}
   {% if h.check_access('app_create') %}
-	<a href="/apps/new?dataset={{c.pkg.name}}" class="btn btn-primary" style="float:right;">{{_('Add new application')}}</a>
+	<a href="/apps/new?dataset={{c.pkg.name}}" class="btn btn-primary" id="add_new_button" style="float:right;"><i class="fa fa-plus-square"></i> {{_('Add new application')}}</a>
   {% endif %}
 
 <h2 class="hide-heading">{% block page_heading %}{{ _('Related Media for {dataset}').format(dataset=h.dataset_display_name(c.pkg)) }}{% endblock %}</h2>
