@@ -71,6 +71,10 @@ def mod_related_extra(context, data_dict):
     session.commit()
     return {"status":"success"}
 
+
+
+
+
 @ckan.logic.side_effect_free
 def del_related_extra(context, data_dict):
     create_related_extra_table(context)

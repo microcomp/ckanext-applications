@@ -129,7 +129,7 @@ class DetailController(base.BaseController):
         logging.warning(c.pkg.related)
 
         related_list = []
-        
+
         for i in c.pkg.related:
             data_dict = {'related_id':i.id,'key':'privacy'}
             if check_priv_related_extra(context, data_dict):
@@ -179,19 +179,7 @@ class DetailController(base.BaseController):
     
         related_list = logic.get_action('related_list')(context, data_dict)
         # Update ordering in the context
-        '''
-        related_list = []
-        for i in related_list2:
-            if check_priv_related_extra(context, data_dict):
-                public_list.append(i)
-            else:
-                try:
-                    logic.check_access('app_edit', context, data_dict)
-                    public_list.append(i)
-                except logic.NotAuthorized:
-                    logging.warning("access denied")
-
-        '''
+        
         new_list = [x for x in related_list if id == x['id']]
         
         def search_url(params):
@@ -477,7 +465,7 @@ class DetailController(base.BaseController):
         model.Session.commit()
         return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
 
-        
+
 '''
 table: related
 table: related_datasets

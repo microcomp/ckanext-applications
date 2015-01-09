@@ -13,17 +13,19 @@
 <h2>{{_('Related items')}}</h2>
   {% block related_list %}
     {% if c.pkg.related %}
-    
+
       {% snippet "related/snippets/related_list.html", related_items=c.pkg.related, pkg_id=c.pkg.name %}
     {% else %}
       <p class="empty">{{ _('No related items') }}
-
+      
       </p>
     {% endif %}
   {% endblock %}
   {% block form_actions %}
   {% endblock %}
-
+    {% block extras scoped %}
+       
+      {% endblock %}
 
 {% endblock %}
 {% block secondary_content %}

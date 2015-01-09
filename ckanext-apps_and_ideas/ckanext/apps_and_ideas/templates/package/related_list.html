@@ -10,7 +10,7 @@
     {% if c.pkg.related %}
     
       {% snippet "related/snippets/related_list.html", related_items=c.pkg.related, pkg_id=c.pkg.name %}
-
+     
     {% else %}
       <p class="empty">{{ _('No related items') }}</p>
     {% endif %}
