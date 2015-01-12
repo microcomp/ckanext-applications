@@ -1,0 +1,70 @@
+
+    body > header.navbar.navbar-static-top.masthead > div.container{
+        background-color: #453b34;
+        color: white;
+        width: 100%;
+        height: 41px;
+    }
+    body > header.navbar.navbar-static-top.masthead{
+        height: 110px;
+        background-color: #f3f3f3;
+        /*background-image: url('/logo.png');*/
+        background-image: none;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: inherit;
+        background-size: 1260px 285px;
+        
+    }
+    .full_size{
+        display: none;
+    }
+    .small{
+        display: none;
+    }
+    body > div.homepage.layout-1 > div.hero > div > div.module.module-search.module-narrow.module-shallow.box > form{
+        width: 456px;
+        height: 50px;
+        
+        padding-top: 2ex;
+        padding-bottom: 3em;
+        
+        margin-left: auto;
+        margin-right: auto;
+
+    }
+@media (min-width: 768px) {
+    .logo_min{
+        padding-bottom: 0;
+        margin: 0;
+
+        position: absolute;
+        z-index: 29;
+        top: 75px;
+        left: 15%;
+    }
+    .logo_min2{
+        padding-bottom: 0;
+        margin: 0;
+
+        position: absolute;
+        z-index: 29;
+        top: 75px;
+        right: 29%;
+    }
+}
+@media (max-width: 767px) {
+    .logo_min{
+        padding-bottom: 0;
+        margin: 0;
+
+        position: absolute;
+        z-index: 29;
+        top: 75px;
+        left: 15%;
+    }
+    .logo_min2{
+        display: none;
+    }
+}
+

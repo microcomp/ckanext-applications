@@ -17,7 +17,7 @@ Example:
     {% if h.check_2(related.id) %}
 <li class="related-item media-item" data-module="related-item">
   <img src="{{ related.image_url or placeholder_map[related.type] or h.url_for_static('/base/images/placeholder-image.png') }}" alt="{{ related.title }}" class="media-image">
-  <h3 class="media-heading">{{ related.title }}</h3>
+  <h3 class="media-heading">{{ related.title }} {%if related.priv == 'private' %} <i class='label'>{{related.priv}}</i>{%endif%} </h3>
   {% if related.description %}
     <div class="prose">{{ h.render_markdown(related.description) }}</div>
   {% endif %}
@@ -25,7 +25,7 @@ Example:
     <span>{{ tooltip }}</span>
     <span class="banner">
       {%- if related.type == 'application' -%}
-        app
+        app 
       {%- elif related.type == 'visualization' -%}
         viz
       {%- else -%}

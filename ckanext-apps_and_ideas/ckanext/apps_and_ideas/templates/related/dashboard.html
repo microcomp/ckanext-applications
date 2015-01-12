@@ -306,7 +306,14 @@ end of form
           {{ _('Only show featured items') }}
         </label>
       </div-->
-
+      {% if c.priv_private %}
+      <div class="control-group">
+        <label for="field-private" class="checkbox">
+          <input type="checkbox" id="field-private" name="private" {% if c.filters.get('private') == 'on' %} checked="checked"{% endif %}></input>
+          {{ _('Only show private items') }}
+        </label>
+      </div>
+      {% endif %}
       <div class="form-actions">
         <button class="btn btn-primary">{{ _('Apply') }}</button>
         </div>

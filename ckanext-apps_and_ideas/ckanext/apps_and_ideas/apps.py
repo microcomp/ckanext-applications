@@ -215,18 +215,28 @@ class AppsController(base.BaseController):
             return search_url(params)
 
         public_list = []
+        c.pr = []
+        c.priv_private = False
+        c.privonly = base.request.params.get('private', '') == 'on'
+
 
         for i in related_list:
             data_dict = {'related_id':i['id'],'key':'privacy'}
             if check_priv_related_extra(context, data_dict):
-                public_list.append(i)
+                if c.privonly != True:
+                    i['priv'] = 'public'
+                    public_list.append(i)
+                c.pr.append('')
             else:
                 try:
                     logic.check_access('app_edit', context, data_dict)
+                    c.priv_private = True
+                    i['priv'] = 'private'
                     public_list.append(i)
                 except logic.NotAuthorized:
                     logging.warning("access denied")
-
+                c.pr.append('private')
+        
         c.page = h.Page(
             collection=public_list,
             page=page,

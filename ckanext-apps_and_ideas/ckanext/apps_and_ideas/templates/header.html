@@ -1,20 +1,41 @@
 {% ckan_extends %}
 
 {% block content_primary_nav %}
-  
+ 
 {% endblock %}
 
 {% block header_site_navigation_tabs %}
-{{ h.build_nav_main(
+
+{{  h.build_nav_main(
+				('home', _('Home')),
                 ('search', _('Datasets')),
                 ('organizations_index', _('Organizations')),
                 ('group_index', _('Groups')),
                 ('about', _('About')),
 				('apps', _('Applications'))
+				
               ) }}
+              
+      <script type="text/javascript">
+function home_button(){
+		var menuitems = document.getElementsByTagName('nav')[0]
+		menuitems.innerHTML = menuitems.innerHTML.replace('Home', "<i class='icon-home'></i>")
+	}
+
+{%if c.controller == 'package'%}
+	{%if c.action == 'read'%}
+	{%else%}
+	 window.onload =  home_button()
+	{%endif%}
+{%else%}
+ window.onload =  home_button()
+{%endif%}
+    </script>            
  	{%if  c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
 <!--{{c.controller}}-->
+
+
 	{% elif c.controller == 'related' %}
 	{%if c.action == 'list'%}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
@@ -61,7 +82,10 @@
 			console.log("found")
 		}
 	}
+	
 	function start(){
+		
+		home_button()
 		for(var i=0; i < rows.length; i++){
 		var text = rows[i].innerHTML
 		if(text.substring(0,34)=='{"type": "Polygon", "coordinates":'){
@@ -80,11 +104,14 @@
 			rows[ii].innerHTML = "<h3>{{  h.convert_geojson_to_name(c.pkg_dict.get('extras', None)) }}</h3>  <a onclick='show()' alt='show text' class='btn btn-primary'>show</a>"
 	}
 	window.onload = start
+	
 </script>
 	{%endif%}
 
+
  {%else%}
 {%endif%}
+
 
 {% endblock %}
 
