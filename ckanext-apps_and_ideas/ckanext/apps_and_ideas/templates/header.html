@@ -15,41 +15,57 @@
 				('apps', _('Applications'))
 				
               ) }}
-              
-      <script type="text/javascript">
+           
+
+
+ <script type="text/javascript">
 function home_button(){
+	var menus = document.getElementsByTagName('nav')
+	if(menus.length == 1){
 		var menuitems = document.getElementsByTagName('nav')[0]
 		menuitems.innerHTML = menuitems.innerHTML.replace('Home', "<i class='icon-home'></i>")
+	}else{
+		var menuitems = document.getElementsByTagName('nav')[1]
+		menuitems.innerHTML = menuitems.innerHTML.replace('Home', "<i class='icon-home'></i>")
+	}
 	}
 
-{%if c.controller == 'package'%}
-	{%if c.action == 'read'%}
-	{%else%}
-	 window.onload =  home_button()
-	{%endif%}
-{%else%}
- window.onload =  home_button()
-{%endif%}
+
     </script>            
  	{%if  c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
+		 <script>
+	 window.onload =  home_button
+	</script>
 <!--{{c.controller}}-->
 
 
 	{% elif c.controller == 'related' %}
 	{%if c.action == 'list'%}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
+		 <script>
+	 window.onload =  home_button
+	</script>
 	{%elif c.action == 'dashboard'%}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
+		 <script>
+	 window.onload =  home_button
+	</script>
 	{%endif%}
  	{% elif c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
 	<!-- {{c.controller}} -->
+	 <script>
+	 window.onload =  home_button
+	</script>
 	{% elif c.controller == 'organization' %}
 		{%if c.action == 'read' %}
 			{%elif c.action == 'activity'%}
 			{%else%}
 				<link rel="stylesheet" type="text/css" href="/box.css" />
+				 <script>
+	 window.onload =  home_button
+	</script>
 			{%endif%}
 	<!-- {{c.controller}} -->
 	{% elif c.controller == 'group' %}
@@ -57,17 +73,29 @@ function home_button(){
 	{%if c.action == 'activity' %}
 	{%else%}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
+		 <script>
+	 window.onload =  home_button
+	</script>
 	{%endif%}
 	<!-- {{c.controller}} -->
 {%elif c.controller == 'user'%}
 	{%if c.action == 'dashboard_organizations' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
+		 <script>
+	 window.onload =  home_button
+	</script>
 	{%elif c.action == 'dashboard_groups' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
+		 <script>
+	 window.onload =  home_button
+	</script>
 	{%endif%}
 {%elif c.controller == 'package'%}
 	{%if c.action == 'read' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
+		 <script>
+	 window.onload =  home_button
+	</script>
 
 <script>
 	var rows = document.getElementsByTagName('td')
@@ -94,6 +122,7 @@ function home_button(){
 			rows[ii].innerHTML = "<h3>{{  h.convert_geojson_to_name(c.pkg_dict.get('extras', None)) }}</h3> <a onclick='show()' alt='show text' class='btn btn-primary'>show</a>"
 			
 		}
+		
 	}
 		
 	}
@@ -106,12 +135,27 @@ function home_button(){
 	window.onload = start
 	
 </script>
+	{%else%}
+	<script>
+	 window.onload =  home_button
+	</script>
 	{%endif%}
 
 
  {%else%}
+ <script>
+	 window.onload =  home_button
+	</script>
 {%endif%}
-
+{%if c.controller== 'group'%}
+ <script>
+	 window.onload =  home_button
+	</script>
+{%elif c.controller == 'user' %}
+<script>
+	 window.onload =  home_button
+	</script>
+{%endif%}
 
 {% endblock %}
 
