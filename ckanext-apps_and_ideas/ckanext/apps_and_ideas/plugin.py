@@ -46,7 +46,7 @@ def check(id):
     check = check_priv_related_extra(context, data_dict)
     if check == False:
     	try:
-            logic.check_access('app_edit', context, data_dict)
+            logic.check_access('app_edit', context, {'owner_id': id})
             return True
         except logic.NotAuthorized:
             logging.warning("access denied")

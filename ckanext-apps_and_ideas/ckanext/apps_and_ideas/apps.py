@@ -229,7 +229,7 @@ class AppsController(base.BaseController):
                 c.pr.append('')
             else:
                 try:
-                    logic.check_access('app_edit', context, data_dict)
+                    logic.check_access('app_edit', context, {'owner_id' : i['owner_id']})
                     c.priv_private = True
                     i['priv'] = 'private'
                     public_list.append(i)
