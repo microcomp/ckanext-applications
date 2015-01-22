@@ -249,7 +249,6 @@ class AppsController(base.BaseController):
 
         c.type_options = self._type_options()
         c.sort_options = (
-            {'value': '', 'text': _('Most viewed')},
             {'value': 'view_count_desc', 'text': _('Most Viewed')},
             {'value': 'view_count_asc', 'text': _('Least Viewed')},
             {'value': 'created_desc', 'text': _('Newest')},
