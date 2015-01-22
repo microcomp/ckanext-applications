@@ -8,6 +8,7 @@ import db
 import ckan.logic
 import ckan.model as model
 from ckan.common import _, c
+import logging
 
 
 def create_related_extra_table(context):
