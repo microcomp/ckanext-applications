@@ -44,15 +44,12 @@ def check_priv_related_extra(context, data_dict):
     for i in range(len(info)):
         if info[i].key == 'privacy':
             index == i
-    '''owner_id = model.Session.query(model.Related) \
-                .filter(model.Related.id == data_dict['related_id']).first()
-    owner_id = owner_id.owner_id
-    if c.userobj != None:
-        if owner_id == c.userobj.id:
-            return True
-    '''
+    info[index].related_id = data_dict.get('related_id')
+    if own(data_dict['related_id']):
+        return True
     logging.warning(info[index].value)
-    return info[index].value == 'public' or own(data_dict['related_id'])
+    return info[index].value == 'public'
+ 
 def own(id):
     owner_id = model.Session.query(model.Related) \
                 .filter(model.Related.id == id).first()
@@ -60,6 +57,23 @@ def own(id):
     if c.userobj != None and owner_id == c.userobj.id:
         return True 
     return False
+
+
+def is_private(id):
+
+    context = context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+    data_dict = {'related_id':id,'key':'privacy'}
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**data_dict)
+    index = 0
+    for i in range(len(info)):
+        if info[i].key == 'privacy':
+            index == i
+    logging.warning(info[index].value)
+    return info[index].value
+
 
 def check(id):
     context = context = {'model': model, 'session': model.Session,
@@ -142,9 +156,7 @@ class AppsController(base.BaseController):
 
         new_list = [x for x in related_list if name.lower() in x['title'].lower()]
         logging.warning("private test")
-        for i in new_list2:
-            if i not in new_list:
-                new_list.append(i)
+        c.priv_private = False
         public_list = []      
         for i in new_list:
             data_dict = {'related_id':i['id'],'key':'privacy'}
@@ -153,6 +165,7 @@ class AppsController(base.BaseController):
             else:
                 try:
                     logic.check_access('app_edit', context, {'owner_id': i['owner_id']})
+                    c.priv_private = True
                     public_list.append(i)
                 except logic.NotAuthorized:
                     logging.warning("access denied")
@@ -235,19 +248,15 @@ class AppsController(base.BaseController):
         for i in related_list:
             data_dict = {'related_id':i['id'],'key':'privacy'}
             if check_priv_related_extra(context, data_dict):
-                if c.privonly != True:
-                    i['priv'] = 'public'
-                    public_list.append(i)
-                c.pr.append('')
+                public_list.append(i)
             else:
+                data_dict = {'owner_id': i['owner_id']}
                 try:
-                    logic.check_access('app_edit', context, {'owner_id' : i['owner_id']})
+                    logic.check_access('app_edit', context, data_dict)
                     c.priv_private = True
-                    i['priv'] = 'private'
+                    public_list.append(i)
                 except logic.NotAuthorized:
-                    logging.warning(i['owner_id'])
                     logging.warning("access denied")
-                    c.pr.append('private')
             
             
         c.page = h.Page(

@@ -2,6 +2,3 @@
 #content > div.row.wrapper > div > article > div.module-content > ul > li{
 	height: 280px;
 }
-#content > div.row.wrapper > div > article > div > ul > li.related-item.media-item.is-expander.masonry-brick > div > p > a{
-	width: 90%;
-}
