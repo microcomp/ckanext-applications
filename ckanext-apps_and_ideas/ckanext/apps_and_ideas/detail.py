@@ -135,11 +135,13 @@ class DetailController(base.BaseController):
             if check_priv_related_extra(context, data_dict):
                 related_list.append(i)
             else:
+                
                 try:
                     logic.check_access('app_edit', context, data_dict)
                     related_list.append(i)
                 except logic.NotAuthorized:
                     logging.warning("access denied")
+                    
         c.pkg.related = related_list
         return base.render("package/related_list.html")
 
@@ -247,7 +249,7 @@ class DetailController(base.BaseController):
 
         if check_priv_related_extra(context, data_dict) == False:
             try:
-                logic.check_access('app_edit', context, data_dict)
+                logic.check_access('app_edit', context, {'owner_id': owner_id})
             except logic.NotAuthorized:
                 logging.warning("access denied")
                 base.abort(404, ('Application not found'))

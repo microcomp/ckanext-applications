@@ -44,11 +44,23 @@ def check_priv_related_extra(context, data_dict):
     for i in range(len(info)):
         if info[i].key == 'privacy':
             index == i
-    info[index].related_id = data_dict.get('related_id')
-    
+    '''owner_id = model.Session.query(model.Related) \
+                .filter(model.Related.id == data_dict['related_id']).first()
+    owner_id = owner_id.owner_id
+    if c.userobj != None:
+        if owner_id == c.userobj.id:
+            return True
+    '''
     logging.warning(info[index].value)
-    return info[index].value == 'public'
-    
+    return info[index].value == 'public' or own(data_dict['related_id'])
+def own(id):
+    owner_id = model.Session.query(model.Related) \
+                .filter(model.Related.id == id).first()
+    owner_id = owner_id.owner_id
+    if c.userobj != None and owner_id == c.userobj.id:
+        return True 
+    return False
+
 def check(id):
     context = context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -140,7 +152,7 @@ class AppsController(base.BaseController):
                 public_list.append(i)
             else:
                 try:
-                    logic.check_access('app_edit', context, data_dict)
+                    logic.check_access('app_edit', context, {'owner_id': i['owner_id']})
                     public_list.append(i)
                 except logic.NotAuthorized:
                     logging.warning("access denied")
@@ -229,14 +241,15 @@ class AppsController(base.BaseController):
                 c.pr.append('')
             else:
                 try:
-                    logic.check_access('app_edit', context, data_dict)
+                    logic.check_access('app_edit', context, {'owner_id' : i['owner_id']})
                     c.priv_private = True
                     i['priv'] = 'private'
-                    public_list.append(i)
                 except logic.NotAuthorized:
+                    logging.warning(i['owner_id'])
                     logging.warning("access denied")
-                c.pr.append('private')
-        
+                    c.pr.append('private')
+            
+            
         c.page = h.Page(
             collection=public_list,
             page=page,
@@ -249,7 +262,6 @@ class AppsController(base.BaseController):
 
         c.type_options = self._type_options()
         c.sort_options = (
-            {'value': '', 'text': _('Most viewed')},
             {'value': 'view_count_desc', 'text': _('Most Viewed')},
             {'value': 'view_count_asc', 'text': _('Least Viewed')},
             {'value': 'created_desc', 'text': _('Newest')},

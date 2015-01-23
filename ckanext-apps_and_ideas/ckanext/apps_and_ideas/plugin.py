@@ -4,93 +4,13 @@ import ckan.logic as logic
 import json
 import os
 
+import apps
 import db 
 import ckan.logic
 import ckan.model as model
 from ckan.common import _, c
+import logging
 
-
-def create_related_extra_table(context):
-    if db.related_extra_table is None:
-    	db.init_db(context['model'])
-@ckan.logic.side_effect_free
-def new_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra()
-    info.related_id = data_dict.get('related_id')
-    info.key = data_dict.get('key')
-    info.value = __builtin__.value
-    info.save()
-    session = context['session']
-    session.add(info)
-    session.commit()
-    return {"status":"success"}
-
-@ckan.logic.side_effect_free
-def check_priv_related_extra(context, data_dict):
-	create_related_extra_table(context)
-	info = db.RelatedExtra.get(**data_dict)
-	index = 0
-	for i in range(len(info)):
-		if info[i].key == 'privacy':
-			index == i
-	info[index].related_id = data_dict.get('related_id')
-
-	return info[index].value == 'public'
-    
-def check(id):
-    context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-    data_dict = {'related_id':id,'key':'privacy'}
-    check = check_priv_related_extra(context, data_dict)
-    if check == False:
-    	try:
-            logic.check_access('app_edit', context, data_dict)
-            return True
-        except logic.NotAuthorized:
-            logging.warning("access denied")
-    return check
-
-@ckan.logic.side_effect_free
-def mod_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.get(**data_dict)
-    index = 0
-    for i in range(len(info)):
-        if info[i].key == 'privacy':
-            index == i
-    info[index].related_id = data_dict.get('related_id')
-    
-    info[index].key = data_dict.get('key')
-    info[index].value = __builtin__.value
-    info[index].save()
-    session = context['session']
-
-    #session.add(info)
-    session.commit()
-    return {"status":"success"}
-
-
-
-
-
-@ckan.logic.side_effect_free
-def del_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.delete(**data_dict)
-    session = context['session']
-    session.commit()
-    return {"status":"success"}
-    
-
-@ckan.logic.side_effect_free
-def get_related_extra(context, data_dict):
-    
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-    res = db.RelatedExtra.get(**data_dict)
-    return res
 
 
 class AppsAndIdeasPlugin(plugins.SingletonPlugin):
@@ -120,5 +40,6 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
         return map
 
     def get_helpers(self):
-        return {'check_2': check}
+        return {'check_2': apps.check, 
+                'own': apps.own}
 
