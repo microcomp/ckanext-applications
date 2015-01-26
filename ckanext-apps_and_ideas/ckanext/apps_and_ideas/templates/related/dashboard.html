@@ -63,6 +63,12 @@ function validateForm() {
     }
     
 }
+
+function submitForms(){
+    /*document.forms[1].submit();*/
+    document.forms[2].submit();
+}
+
 </script>
           <div class="module-content">
              <h1> New app </h1>
@@ -138,11 +144,12 @@ end of form
       </h1>
   {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
   {% else %}
-    <form class="section site-search simple-input" action="/apps/search" method="get">
+    <form class="section site-search simple-input" action="/apps/search" method="get" >
             <div class="field">
               <label for="field-sitewide-search">Search Applications</label>
               <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}" />
               <button class="btn-search" type="submit"><i class="icon-search"></i></button>
+              <!--a href='' class="btn-search" type="submit" onclick='submitForms'><i class="icon-search"></i></a-->
             </div>
     </form>
   {% endif %}
@@ -272,7 +279,17 @@ end of form
 
   <section class="module module-narrow module-shallow">
     <h2 class="module-heading">{{ _('Filter Results') }}</h2>
-    <form action="" method="get" class="module-content form-inline form-narrow">
+    <form action="/apps/search" method="get" class="module-content form-inline form-narrow section site-search simple-input">
+
+
+            <!--div class="search">
+              <label for="field-sitewide-search">Search Applications</label>
+              <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}" />
+              <button class="btn-search" type="submit"><i class="icon-search"></i></button>
+
+            </div-->
+
+
       <input type='hidden' name='page' value='1'/>
      <div class="control-group" >
 {% if c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
