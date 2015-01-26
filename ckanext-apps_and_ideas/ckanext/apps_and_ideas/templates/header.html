@@ -21,12 +21,19 @@
  <script type="text/javascript">
 function home_button(){
 	var menus = document.getElementsByTagName('nav')
-	if(menus.length == 1){
+	/*if(menus.length == 1){
 		var menuitems = document.getElementsByTagName('nav')[0]
 		menuitems.innerHTML = menuitems.innerHTML.replace('Home', "<i class='icon-home'></i>")
 	}else{
 		var menuitems = document.getElementsByTagName('nav')[1]
 		menuitems.innerHTML = menuitems.innerHTML.replace('Home', "<i class='icon-home'></i>")
+	}*/
+	for(var i = 0; i < menus.length; i++){
+		if(menus[i].className == "section navigation"){
+			var menuitems = document.getElementsByTagName('nav')[i]
+			menuitems.innerHTML = menuitems.innerHTML.replace('Home', "<i class='icon-home'></i>")
+			menuitems.innerHTML = menuitems.innerHTML.replace('Domov', "<i class='icon-home'></i>")
+		}
 	}
 	}
 

@@ -424,7 +424,12 @@ class DetailController(base.BaseController):
 
         data_dict = {'related_id':id,'key':'privacy'}
 
-        __builtin__.value = data['private']
+        try:
+            _check_access('app_editall', context, data_dict)
+            __builtin__.value = data['private']
+        except toolkit.NotAuthorized, e:
+            __builtin__.value = 'private'
+        
         mod_related_extra(context, data_dict)
 
         model.Session.commit()
