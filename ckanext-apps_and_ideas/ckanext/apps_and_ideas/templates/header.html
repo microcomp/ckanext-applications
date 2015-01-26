@@ -45,9 +45,14 @@ function home_button(){
 	 window.onload =  home_button
 	</script>
 <!--{{c.controller}}-->
-
-
-	{% elif c.controller == 'related' %}
+	{%elif c.controller == 'organization'%}7
+	{%if c.action == 'index'%}
+	<link rel="stylesheet" type="text/css" href="/box.css" />
+	{%endif%}	
+ <script>
+	 window.onload =  home_button
+	</script>
+	{% elif c.controller == 'related'%}
 	{%if c.action == 'list'%}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
 		 <script>
