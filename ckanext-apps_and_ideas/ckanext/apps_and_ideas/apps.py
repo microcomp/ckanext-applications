@@ -17,8 +17,11 @@ import ckan.logic
 import __builtin__
 import db
 
+import json
+
 abort = base.abort
 _get_action = logic.get_action
+_check_access = logic.check_access
 #log = logging.getLogger('ckanext_apps_and_ideas')
 def create_related_extra_table(context):
     if db.related_extra_table is None:
@@ -502,3 +505,148 @@ class AppsController(base.BaseController):
     
 
         return base.render("related/dashboard.html")
+    def list_apps_json(self):
+        """ List all related items regardless of dataset """
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        data_dict = {
+            'type_filter': 'application',
+            'sort': base.request.params.get('sort', ''),
+            'featured': base.request.params.get('featured', '')
+        }
+
+        params_nopage = [(k, v) for k, v in base.request.params.items()
+                         if k != 'page']
+        try:
+            page = int(base.request.params.get('page', 1))
+        except ValueError:
+            base.abort(400, ('"page" parameter must be an integer'))
+
+        # Update ordering in the context
+        related_list = logic.get_action('related_list')(context, data_dict)
+
+        def search_url(params):
+            url = h.url_for(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
+            params = [(k, v.encode('utf-8')
+                      if isinstance(v, basestring) else str(v))
+                      for k, v in params]
+            return url + u'?' + urllib.urlencode(params)
+
+        def pager_url(q=None, page=None):
+            params = list(params_nopage)
+            params.append(('page', page))
+            return search_url(params)
+
+        public_list = []
+        c.pr = []
+        c.priv_private = False
+        c.privonly = base.request.params.get('private', '') == 'on'
+
+
+        for i in related_list:
+            data_dict = {'related_id':i['id'],'key':'privacy'}
+            if check_priv_related_extra(context, data_dict):
+                public_list.append(i)
+            else:
+                data_dict = {'owner_id': i['owner_id']}
+                try:
+                    logic.check_access('app_edit', context, data_dict)
+                    c.priv_private = True
+                    public_list.append(i)
+                except logic.NotAuthorized:
+                    logging.warning("access denied")
+            
+            
+        c.page = h.Page(
+            collection=public_list,
+            page=page,
+            url=pager_url,
+            item_count=len(public_list),
+            items_per_page=9
+        )
+
+        c.filters = dict(params_nopage)
+
+        c.type_options = self._type_options()
+        c.sort_options = (
+            {'value': 'view_count_desc', 'text': _('Most Viewed')},
+            {'value': 'view_count_asc', 'text': _('Least Viewed')},
+            {'value': 'created_desc', 'text': _('Newest')},
+            {'value': 'created_asc', 'text': _('Oldest')}
+        )
+        g = []
+        app_id = base.request.params.get('id', '')
+        search_keyword = base.request.params.get('search', '')
+        for i in range(len(public_list)):
+            user_id = public_list[i]['owner_id']
+            public_list[i].pop('owner_id')
+            full_name = model.Session.query(model.User).filter(model.User.id == user_id).first().fullname
+            public_list[i]['full_name'] = full_name
+
+        if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
+            c.list = json.dumps({"help": "all apps","sucess":True, "result": public_list})
+            return base.render("apps/list_api.html")
+        elif (app_id != '' or app_id != None) and (search_keyword =='' or search_keyword == None):
+            for i in public_list:
+                if app_id == i['id']:
+                   g.append(i) 
+                   c.list = json.dumps({"help": "1 app","sucess":True, "result": i})
+        elif (app_id == '' or app_id == None) and (search_keyword !='' or search_keyword != None):
+            for i in public_list:
+                if (search_keyword.lower() in i['title'].lower()) or (search_keyword.lower() in i['description'].lower()):
+                    g.append(i)
+            c.list = json.dumps({"help": "search results","sucess":True, "result": g})
+        else:
+            for i in public_list:
+                if app_id == i['id']:
+                   g.append(i) 
+            result = []
+            for j in g:
+                if (search_keyword.lower() in j['title'].lower()) or (search_keyword.lower() in j['description'].lower()):
+                    result.append(j)
+            c.list = json.dumps({"help": "search results","sucess":True, "result": result})
+        if len(g) == 0:
+            c.list = json.dumps({"help": "1 app","sucess":False, "result": _("no results found")}) 
+
+        return base.render("apps/list_api.html")
+    def delete_app(self):
+        id = base.request.params.get('id','')
+        logging.warning('deleting...')
+        logging.warning(id)
+
+        valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
+        if valid == None:
+            logging.warning('application not found')
+            #base.abort(404, _('Application not found'))
+            c.result = json.dumps({'help': 'delete app', 'success':False, 'result': _('app not found')})
+            return base.render("apps/mod_api.html")
+
+        context = {'user' : c.user} 
+        data_dict = {'owner_id' : valid.owner_id}
+        try:
+            _check_access('app_edit', context, data_dict)
+        except toolkit.NotAuthorized, e:
+            c.result = json.dumps({'help': 'delete app', 'success':False, 'result': _('not authorized')})
+            return base.render("apps/mod_api.html")
+            #toolkit.abort(401, e.extra_msg)
+            
+        rel = model.Session.query(model.Related).filter(model.Related.id == id).first()
+        rel_datasets = model.Session.query(model.RelatedDataset).filter(model.Related.id == id).all()
+        
+        model.Session.delete(rel)
+        model.Session.commit()
+        for i in rel_datasets:
+            model.Session.delete(i)
+        model.Session.commit()
+
+        data_dict = {'related_id':id}
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        del_related_extra(context, data_dict)
+        model.Session.commit()
+        c.result = json.dumps({'help': 'delete app', 'success':True, 'result': _('done')})
+        return base.render("apps/mod_api.html")
+    def mod_app_api(self):
+        pass

@@ -37,6 +37,9 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
         map.connect('delete_app', '/apps/delete', action='delete_app', controller='ckanext.apps_and_ideas.detail:DetailController')
         map.connect('list_apps', '/dataset/{id}/related', action='list', controller='ckanext.apps_and_ideas.detail:DetailController')
         map.connect('dashboard', '/related', action='dashboard', controller='ckanext.apps_and_ideas.apps:AppsController')
+        map.connect('apps_api_list', '/custom_apis/apps_api/list', action='list_apps_json', controller='ckanext.apps_and_ideas.apps:AppsController')
+        map.connect('apps_api_mod_del', '/custom_apis/apps_api/mod/del', action='delete_app', controller='ckanext.apps_and_ideas.apps:AppsController')
+        map.connect('apps_api_mod_upd', '/custom_apis/apps_api/mod/update', action='mod_app_api', controller='ckanext.apps_and_ideas.apps:AppsController')
         return map
 
     def get_helpers(self):
