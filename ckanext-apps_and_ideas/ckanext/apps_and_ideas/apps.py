@@ -2,7 +2,7 @@ import urllib
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
+import uuid
 import ckan.model as model
 import ckan.logic as logic
 import ckan.lib.base as base
@@ -579,6 +579,8 @@ class AppsController(base.BaseController):
         app_id = base.request.params.get('id', '')
         search_keyword = base.request.params.get('search', '')
         for i in range(len(public_list)):
+            public_list[i]['datasets'] = self.datasets(public_list[i]['id'])
+        for i in range(len(public_list)):
             user_id = public_list[i]['owner_id']
             public_list[i].pop('owner_id')
             full_name = model.Session.query(model.User).filter(model.User.id == user_id).first().fullname
@@ -596,20 +598,39 @@ class AppsController(base.BaseController):
             for i in public_list:
                 if (search_keyword.lower() in i['title'].lower()) or (search_keyword.lower() in i['description'].lower()):
                     g.append(i)
+            helper = []
+            #for i in range(len(g)):
+                #g[i]['datasets'] = self.datasets(g[i]['id'])
+
             c.list = json.dumps({"help": "search results","sucess":True, "result": g})
         else:
             for i in public_list:
                 if app_id == i['id']:
                    g.append(i) 
-            result = []
+            result = [] 
             for j in g:
                 if (search_keyword.lower() in j['title'].lower()) or (search_keyword.lower() in j['description'].lower()):
+                    #j['datasets'] = self.datasets(j['id'])
                     result.append(j)
             c.list = json.dumps({"help": "search results","sucess":True, "result": result})
         if len(g) == 0:
             c.list = json.dumps({"help": "1 app","sucess":False, "result": _("no results found")}) 
 
         return base.render("apps/list_api.html")
+
+    def datasets(self, id):
+        ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
+        ds_id = []
+        result= []
+        for i in ds_ids:
+            ds_id.append(i.dataset_id)
+        for i in ds_id:
+            pack = model.Session.query(model.Package).filter(model.Package.id == i).first()
+            if pack != None:
+                result.append(pack.name)
+        return result
+
+
     def delete_app(self):
         id = base.request.params.get('id','')
         logging.warning('deleting...')
@@ -633,12 +654,12 @@ class AppsController(base.BaseController):
             
         rel = model.Session.query(model.Related).filter(model.Related.id == id).first()
         rel_datasets = model.Session.query(model.RelatedDataset).filter(model.Related.id == id).all()
-        
+        logging.warning(rel_datasets)
         model.Session.delete(rel)
         model.Session.commit()
-        for i in rel_datasets:
-            model.Session.delete(i)
-        model.Session.commit()
+        #for i in rel_datasets:
+        #    model.Session.delete(i)
+        #model.Session.commit()
 
         data_dict = {'related_id':id}
         context = {'model': model, 'session': model.Session,
@@ -648,5 +669,116 @@ class AppsController(base.BaseController):
         model.Session.commit()
         c.result = json.dumps({'help': 'delete app', 'success':True, 'result': _('done')})
         return base.render("apps/mod_api.html")
+    def add_datasets(self, datasets,  id):
+        related_ids = []
+        for i in datasets:
+            id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
+            if id_query == None:
+                logging.warning('redirecting...')
+                return
+            related_ids.append(id_query.id)
+        logging.warning('related id-s:')
+        logging.warning(related_ids)
+        related_datasets = []
+        for i in range(len(related_ids)):
+            buffer = model.related.RelatedDataset()
+            related_datasets.append(buffer)
+        for i in range(len(related_ids)):
+            related_datasets[i].dataset_id = related_ids[i]
+            related_datasets[i].id = unicode(uuid.uuid4())
+            related_datasets[i].related_id = id
+            related_datasets[i].status = 'active'
+            model.Session.add(related_datasets[i])
+            
+        model.Session.commit()
+        return
     def mod_app_api(self):
-        pass
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author,
+                   'auth_user_obj': c.userobj,
+                   'for_view': True}
+        id = base.request.params.get('id','')
+        data_dict = {'id': id}
+        c.result = None
+
+        #id = base.request.params.get('id','')
+        valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
+
+        if valid == None:
+            c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('dataset not found')})
+            return base.render("apps/mod_api.html")
+
+        related_datasets = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
+        logging.warning('rows to delete...\n'+str(related_datasets))
+
+        for i in related_datasets:
+            model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.id == i.id).delete(synchronize_session=False)
+        model.Session.commit()
+        #all related items deleted...
+        data = {}
+
+        #related = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
+        #data = {}
+        title = base.request.params.get('title','')
+        description = base.request.params.get('description','') 
+        image_url = base.request.params.get('image_url','')
+        url = base.request.params.get('url','')
+        private = base.request.params.get('private','')
+        datasets = base.request.params.get('datasets','')
+
+
+
+        #logging.warning('post data values:')
+        #logging.warning(data)
+        #select the old value:
+        old_data = model.Session.query(model.Related).filter(model.Related.id == id).first()
+        logging.warning("old_data>>>>>>>>>>>>>>>>>>>>>>>")
+        logging.warning(old_data)
+        logging.warning(len(datasets))
+
+        if len(title)== 0:
+            title = old_data.title
+        
+        if len(description)== 0:
+            description = old_data.description
+        if len(image_url)== 0:
+            image_url= old_data.image_url
+        if len(url)== 0:
+            url = old_data.url
+
+        old_data.title = title
+        old_data.description = description
+        old_data.image_url = image_url
+        old_data.url = url
+        old_data.private = private
+        
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+
+        data_dict = {'related_id':id,'key':'privacy'}
+
+        try:
+            _check_access('app_editall', context, data_dict)
+            __builtin__.value = private
+        except toolkit.NotAuthorized, e:
+            __builtin__.value = 'private'
+            c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
+            return base.render("apps/mod_api.html")
+        if datasets != None or datasets != '':
+            mod_related_extra(context, data_dict)
+
+        model.Session.commit()
+        if datasets != "" or datasets != None:
+            datasets = datasets.split(',')
+            self.add_datasets(datasets, id)
+        c.result = json.dumps({'help': 'mod app', 'success':True, 'result': _('done')})
+        return base.render("apps/mod_api.html")#
+
+'''
+id --> not editable
+description
+title
+url
+image_url
+'''

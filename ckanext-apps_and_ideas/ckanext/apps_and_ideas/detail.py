@@ -460,10 +460,11 @@ class DetailController(base.BaseController):
         
         model.Session.delete(rel)
         model.Session.commit()
-        for i in rel_datasets:
-            model.Session.delete(i)
-        model.Session.commit()
-
+        #for i in rel_datasets:
+        #    model.Session.delete(i)
+        #model.Session.commit()
+        logging.warning(' related datasets >>>>')
+        logging.warning(rel_datasets)
         data_dict = {'related_id':id}
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
