@@ -776,9 +776,6 @@ class AppsController(base.BaseController):
         return base.render("apps/mod_api.html")#
 
 '''
-id --> not editable
-description
-title
-url
-image_url
+TODO:
+new app using API
 '''
