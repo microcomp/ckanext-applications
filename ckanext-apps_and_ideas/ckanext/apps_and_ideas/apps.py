@@ -3,6 +3,7 @@ import urllib
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import uuid
+import datetime
 import ckan.model as model
 import ckan.logic as logic
 import ckan.lib.base as base
@@ -773,9 +774,61 @@ class AppsController(base.BaseController):
             datasets = datasets.split(',')
             self.add_datasets(datasets, id)
         c.result = json.dumps({'help': 'mod app', 'success':True, 'result': _('done')})
-        return base.render("apps/mod_api.html")#
+        return base.render("apps/mod_api.html")
+    def valid_dataset(self, dataset_name):
+        dataset =  model.Session.query(model.Package).filter(model.Package.name == dataset_name).first()
+        return dataset != None
 
-'''
-TODO:
-new app using API
-'''
+    def new_app_api(self):
+        context = {'user': c.user}
+        try:
+            _check_access('app_create', context)
+        except toolkit.NotAuthorized, e:
+            c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
+            return base.render("apps/mod_api.html")
+
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+
+        data_to_commit = model.related.Related()
+
+        title = base.request.params.get('title','')
+        description= base.request.params.get('description','')
+        url = base.request.params.get('url','')
+        image_url = base.request.params.get('image_url','')
+        datasets = base.request.params.get('datasets','')
+
+        data_to_commit.id = unicode(uuid.uuid4())
+        if len(title) == 0:
+            c.result = json.dumps({'help': 'new app', 'success':False, 'result': _('title is required')})
+            return base.render("apps/mod_api.html")
+        datasets = datasets.split(',')
+        ds = []
+        for i in datasets:
+            if self.valid_dataset(i):
+                ds.append(i)
+        if len(ds) == 0:
+            c.result = json.dumps({'help': 'new app', 'success':False, 'result': _('add some datasets')})
+            return base.render("apps/mod_api.html")
+        owner_id = c.userobj.id
+
+        data_to_commit.title = title
+        data_to_commit.description = description
+        data_to_commit.url = url
+        data_to_commit.image_url = image_url
+        data_to_commit.created = datetime.datetime.now()
+        data_to_commit.owner_id = owner_id
+        data_to_commit.type = 'application'
+
+        data_dict = {'related_id':data_to_commit.id,'key':'privacy'}
+        model.Session.add(data_to_commit)
+        self.add_datasets(ds,  data_to_commit.id)
+
+        __builtin__.value = 'private'
+        new_related_extra(context, data_dict)
+        
+        model.Session.commit()
+        c.result = json.dumps({'help': 'new app', 'success':True, 'result': _('done')})
+        return base.render("apps/mod_api.html")
+
