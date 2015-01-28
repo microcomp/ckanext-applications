@@ -12,7 +12,7 @@ import ckan.lib.navl.dictization_functions as df
 import ckan.plugins as p
 from ckan.common import _, c
 import ckan.plugins.toolkit as toolkit
-
+import urllib2
 import logging
 import ckan.logic
 import __builtin__
@@ -80,6 +80,10 @@ def is_private(id):
 
 
 def check(id):
+    API_KEY = base.request.params.get('apikey', '')
+    if len(c.user) == 0 and len(API_KEY) != 0:
+        c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
+
     context = context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
@@ -508,6 +512,10 @@ class AppsController(base.BaseController):
         return base.render("related/dashboard.html")
     def list_apps_json(self):
         """ List all related items regardless of dataset """
+        API_KEY = base.request.params.get('apikey', '')
+        if len(c.user) == 0 and len(API_KEY) != 0:
+            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
+
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
@@ -588,13 +596,18 @@ class AppsController(base.BaseController):
             public_list[i]['full_name'] = full_name
 
         if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
-            c.list = json.dumps({"help": "all apps","sucess":True, "result": public_list})
-            return base.render("apps/list_api.html")
+            data = {}
+            data['help'] = 'all apps'
+            data['sucess'] =True
+            data['result'] = public_list
+            
+            c.list = json.dumps(data, encoding='utf8')
+            return c.list
         elif (app_id != '' or app_id != None) and (search_keyword =='' or search_keyword == None):
             for i in public_list:
                 if app_id == i['id']:
                    g.append(i) 
-                   c.list = json.dumps({"help": "1 app","sucess":True, "result": i})
+                   c.list = json.dumps({"help": "1 app","sucess":True, "result": i}, encoding='utf8')
         elif (app_id == '' or app_id == None) and (search_keyword !='' or search_keyword != None):
             for i in public_list:
                 if (search_keyword.lower() in i['title'].lower()) or (search_keyword.lower() in i['description'].lower()):
@@ -603,7 +616,7 @@ class AppsController(base.BaseController):
             #for i in range(len(g)):
                 #g[i]['datasets'] = self.datasets(g[i]['id'])
 
-            c.list = json.dumps({"help": "search results","sucess":True, "result": g})
+            c.list = json.dumps({"help": "search results","sucess":True, "result": g}, encoding='utf8')
         else:
             for i in public_list:
                 if app_id == i['id']:
@@ -613,11 +626,11 @@ class AppsController(base.BaseController):
                 if (search_keyword.lower() in j['title'].lower()) or (search_keyword.lower() in j['description'].lower()):
                     #j['datasets'] = self.datasets(j['id'])
                     result.append(j)
-            c.list = json.dumps({"help": "search results","sucess":True, "result": result})
+            c.list = json.dumps({"help": "search results","sucess":True, "result": result}, encoding='utf8')
         if len(g) == 0:
-            c.list = json.dumps({"help": "1 app","sucess":False, "result": _("no results found")}) 
+            c.list = json.dumps({"help": "1 app","sucess":False, "result": _("no results found")}, encoding='utf8') 
 
-        return base.render("apps/list_api.html")
+        return c.list
 
     def datasets(self, id):
         ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
@@ -642,15 +655,20 @@ class AppsController(base.BaseController):
             logging.warning('application not found')
             #base.abort(404, _('Application not found'))
             c.result = json.dumps({'help': 'delete app', 'success':False, 'result': _('app not found')})
-            return base.render("apps/mod_api.html")
-
+            return c.result
+        API_KEY = base.request.params.get('apikey','')
+        logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        logging.warning(API_KEY)
+        if len(c.user) == 0 and len(API_KEY) != 0:
+            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
+            logging.warning(c.user)
         context = {'user' : c.user} 
         data_dict = {'owner_id' : valid.owner_id}
         try:
             _check_access('app_edit', context, data_dict)
         except toolkit.NotAuthorized, e:
             c.result = json.dumps({'help': 'delete app', 'success':False, 'result': _('not authorized')})
-            return base.render("apps/mod_api.html")
+            return c.result
             #toolkit.abort(401, e.extra_msg)
             
         rel = model.Session.query(model.Related).filter(model.Related.id == id).first()
@@ -669,7 +687,7 @@ class AppsController(base.BaseController):
         del_related_extra(context, data_dict)
         model.Session.commit()
         c.result = json.dumps({'help': 'delete app', 'success':True, 'result': _('done')})
-        return base.render("apps/mod_api.html")
+        return c.result
     def add_datasets(self, datasets,  id):
         related_ids = []
         for i in datasets:
@@ -694,6 +712,10 @@ class AppsController(base.BaseController):
         model.Session.commit()
         return
     def mod_app_api(self):
+        API_KEY = base.request.params.get('apikey', '')
+        if len(c.user) == 0 and len(API_KEY) != 0:
+            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
+
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author,
                    'auth_user_obj': c.userobj,
@@ -707,7 +729,7 @@ class AppsController(base.BaseController):
 
         if valid == None:
             c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('dataset not found')})
-            return base.render("apps/mod_api.html")
+            return c.result
 
         related_datasets = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
         logging.warning('rows to delete...\n'+str(related_datasets))
@@ -765,7 +787,7 @@ class AppsController(base.BaseController):
         except toolkit.NotAuthorized, e:
             __builtin__.value = 'private'
             c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
-            return base.render("apps/mod_api.html")
+            return c.result
         if datasets != None or datasets != '':
             mod_related_extra(context, data_dict)
 
@@ -774,18 +796,31 @@ class AppsController(base.BaseController):
             datasets = datasets.split(',')
             self.add_datasets(datasets, id)
         c.result = json.dumps({'help': 'mod app', 'success':True, 'result': _('done')})
-        return base.render("apps/mod_api.html")
+        return c.result
     def valid_dataset(self, dataset_name):
         dataset =  model.Session.query(model.Package).filter(model.Package.name == dataset_name).first()
         return dataset != None
 
     def new_app_api(self):
+        API_KEY = base.request.params.get('apikey', '')
+        if len(c.user) == 0 and len(API_KEY) != 0:
+            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
         context = {'user': c.user}
+        
+        request = urllib2.Request('http://192.168.21.27:5000/')
+        request.add_header('Authorization', 'e8491611-60f7-46a1-8c2a-94d0cc294d6b')
+        response_dict = json.loads(urllib2.urlopen(request, '{}').read())
+        logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        logging.warning(response_dict)
+
         try:
             _check_access('app_create', context)
         except toolkit.NotAuthorized, e:
-            c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
-            return base.render("apps/mod_api.html")
+            c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')}, encoding='utf8')
+            return c.result
+
 
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -802,7 +837,7 @@ class AppsController(base.BaseController):
         data_to_commit.id = unicode(uuid.uuid4())
         if len(title) == 0:
             c.result = json.dumps({'help': 'new app', 'success':False, 'result': _('title is required')})
-            return base.render("apps/mod_api.html")
+            return c.result
         datasets = datasets.split(',')
         ds = []
         for i in datasets:
@@ -810,7 +845,7 @@ class AppsController(base.BaseController):
                 ds.append(i)
         if len(ds) == 0:
             c.result = json.dumps({'help': 'new app', 'success':False, 'result': _('add some datasets')})
-            return base.render("apps/mod_api.html")
+            return c.result
         owner_id = c.userobj.id
 
         data_to_commit.title = title
@@ -830,5 +865,5 @@ class AppsController(base.BaseController):
         
         model.Session.commit()
         c.result = json.dumps({'help': 'new app', 'success':True, 'result': _('done')})
-        return base.render("apps/mod_api.html")
+        return c.result
 
