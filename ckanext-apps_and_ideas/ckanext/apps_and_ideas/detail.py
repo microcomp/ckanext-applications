@@ -271,7 +271,7 @@ class DetailController(base.BaseController):
         logging.warning(c.app_names)
 
         c.dataset = base.request.params.get('dataset','')
-
+        
         return base.render("related/dashboard.html")
 
 
@@ -304,22 +304,51 @@ class DetailController(base.BaseController):
         data_to_commit.created = datetime.datetime.now()
         data_to_commit.owner_id = owner_id
         data_to_commit.type = 'application'
-        
+        errors, error_summary, dat = {}, {}, {}
+        dat["title"] = data_to_commit.title
+        dat["description"] = data_to_commit.description
+        dat["url"] = data_to_commit.url
+        dat["image_url"] = data_to_commit.image_url
+        dat["datasets"] = data['datasets']
+
         #related = logic.get_action(action_name)(context, data)
-        
-        model.Session.add(data_to_commit)
-            
-        
+        #data = data_to_commit
+        __builtin__.vars = {}
+        c.errorrs = {}
         datasets = data['datasets'].split(',')
-        self.add_datasets(datasets,  data_to_commit.id)
-        
-        data_dict = {'related_id':data_to_commit.id,'key':'privacy'}
+        if len(data_to_commit.title) > 3 and len(data_to_commit.url) > 3:
+            model.Session.add(data_to_commit)
+            
+            datasets_bool  = self.add_datasets(datasets,  data_to_commit.id)
+            data_dict = {'related_id':data_to_commit.id,'key':'privacy'}
+            __builtin__.value = 'private'
+            new_related_extra(context, data_dict)
+            if datasets_bool:
+                model.Session.commit()
+                __builtin__.vars = {}
+                return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
+            else:
+                errors['datasets'] = _("Invalid dataset(s)")
+                vars = {'errors': errors, 'data':dat}    
+                __builtin__.vars = vars
+                return toolkit.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='new_app')
+        else:
+            if len(data_to_commit.title) < 3:
+                errors['title'] = _("Title too short")
+            if len(data_to_commit.url) < 3:
+                errors['url'] = _("URL incorrect")
+                
+            for i in datasets:
+                id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
+                if id_query == None:
+                    logging.warning('redirecting...')
+                    errors['datasets'] = _("Invalid dataset(s)")
+            vars = {'errors': errors, 'data':dat}    
+            __builtin__.vars = vars
 
-        __builtin__.value = 'private'
-        new_related_extra(context, data_dict)
+            return toolkit.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='new_app')
 
-        model.Session.commit()
-        return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
+
 
     def add_datasets(self, datasets,  id):
         related_ids = []
@@ -327,7 +356,7 @@ class DetailController(base.BaseController):
             id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
             if id_query == None:
                 logging.warning('redirecting...')
-                return toolkit.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='new_app')
+                return False
             related_ids.append(id_query.id)
         logging.warning('related id-s:')
         logging.warning(related_ids)
@@ -343,7 +372,7 @@ class DetailController(base.BaseController):
             model.Session.add(related_datasets[i])
             
         model.Session.commit()
-        return
+        return True
         
     def edit_app(self):
         
@@ -378,7 +407,11 @@ class DetailController(base.BaseController):
         for i in name_query:
             names.append(i.dataset_id)
             
-        
+        '''
+            TODO:
+            after update...
+
+        '''
         dataset_names = []
         for i in names:
             query_data = model.Session.query(model.Package).filter(model.Package.id == i).first()
@@ -473,7 +506,12 @@ class DetailController(base.BaseController):
         model.Session.commit()
         return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
 
-
+def errors_and_other_stuff():
+    return __builtin__.vars
+def del_xtra():
+    __builtin__.vars = None
+    __builtin__.vars = {}
+    return __builtin__.vars
 '''
 table: related
 table: related_datasets

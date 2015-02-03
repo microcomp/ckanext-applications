@@ -1,0 +1,62 @@
+.comments_1st{
+    width: 95%;
+    border: 2px solid #d4d4d4;
+    border-radius: 7px;
+    padding: 1em;
+    padding-top: 0px;
+    background-color: #ededed;
+    margin-bottom: 2px;
+}
+#private{
+    color: red;
+}
+.comments_2nd{
+    width: 95%;
+
+    border-radius: 7px;
+    padding: 1em;
+    padding-top: 0.1em;
+    background-color: #ffffff;
+}
+.comments_2nd_priv{
+    width: 95%;
+
+    border-radius: 7px;
+    padding: 1em;
+    padding-top: 0.1em;
+    background-color: #D1D1D1;
+    color: #e1e1e1;
+}
+
+
+#comment_id > h3{
+    color: #bd0a26;
+    padding-right: 0px;
+}
+#comment_id > p.date{
+    font-size: 0.6em;
+    position: relative;
+    top: -4.5em;
+    float: right;
+}
+#comment_id > ul > li{
+    display: inline;
+    padding-left: 0px;
+}
+#comment_id > ul{
+    padding-left: 0px;
+}
+#comment_id > ul > li > a{
+    padding-left: 0.2em;
+    padding-bottom: 0.3em;
+    text-decoration: none;
+    color: #bd0a26;
+
+}
+#comment_id > ul > li > a:hover{
+    text-decoration: underline;
+    color: #bd0a26;
+}
+#comment_id > ul{
+    margin-left: 0em;
+}

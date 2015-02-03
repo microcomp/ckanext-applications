@@ -4,6 +4,8 @@ import ckan.logic as logic
 import json
 import os
 
+import detail
+
 import apps
 import db 
 import ckan.logic
@@ -46,5 +48,7 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
     def get_helpers(self):
         return {'check_2': apps.check, 
                 'own': apps.own,
-                'is_priv': apps.is_private}
+                'is_priv': apps.is_private,
+                'extra_v': detail.errors_and_other_stuff,
+                'del_x':detail.del_xtra}
 

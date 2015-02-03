@@ -1,6 +1,11 @@
 {% ckan_extends %}
 {% import 'macros/form.html' as form %}
 {% set page = c.page %}
+{%if h.extra_v() != {} %}
+{% set errors = h.extra_v()['errors'] %}
+{% set data = h.extra_v()['data'] %}
+{%endif%}
+
 
 
 {% block subtitle %}
@@ -64,15 +69,12 @@ function validateForm() {
     
 }
 
-function submitForms(){
-    /*document.forms[1].submit();*/
-    document.forms[2].submit();
-}
+
 
 </script>
           <div class="module-content">
              <h1> New app </h1>
-            <form name="new_app_form" onsubmit="return validateForm()" class="dataset-form form-horizontal" method="post" data-module="basic-form" action='/apps/new/in'>
+            <form name="new_app_form"  class="dataset-form form-horizontal" method="post" data-module="basic-form" action='/apps/new/in'>
               {% block error_summary %}
                 {% if error_summary | count %}
                   <div class="alert alert-error error-explanation">
@@ -93,23 +95,44 @@ function submitForms(){
                     datasets = datasets.split(', ')
                 </script>
               {% endblock %}
+              {%if errors %}
+              <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                {% for key, value in errors.iteritems()%}
+                <span class="sr-only">Error:</span>
+                  {{value|e}} <br />
+                {%endfor%}
+              </div>
+              {%endif%}
 
+
+              
+              
               {% block fields %}
+              {% if data %}
+                {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value=data['title'], error="", classes=['control-full']) }}
+                {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value=data['url'], error="", classes=['control-full']) }}
+                {{ form.input('image_url', label=_('Image URL'), id='field-image-url', placeholder=_('http://example.com/image.png'), value=data['image_url'], error="", classes=['control-full']) }}
+                {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value=data['description'], error="") }}
+                 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
+                  {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=data['datasets'], error='', classes=['control-full'], attrs=tag_attrs) }}
+              {%else%}
                 {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value="", error="", classes=['control-full']) }}
                 {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value="", error="", classes=['control-full']) }}
                 {{ form.input('image_url', label=_('Image URL'), id='field-image-url', placeholder=_('http://example.com/image.png'), value="", error="", classes=['control-full']) }}
                 {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value="", error="") }}
-
-                 
+                 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
+                  {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=c.dataset, error='', classes=['control-full'], attrs=tag_attrs) }}
+              {%endif%}
 
                 {#% block package_basic_fields_tags %#}
-                  {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
-                  {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=c.dataset, error='', classes=['control-full'], attrs=tag_attrs) }}
+                 
                 {#% endblock %#}
 
                 {#{ form.input('datasets', label=_('Datasets'), id='field-datasets', placeholder=_('default'), value="", error="", classes=['control-full']) }#}
               {% endblock %}
-
+              {% set errors = h.del_x()['errors'] %}
+              {% set data = h.del_x()['data'] %}
               <div class="form-actions">
                 {% block delete_button %}
                   
@@ -231,10 +254,16 @@ end of form
             <script src="/js/jquery.min.js"></script>
             <script src="/js/bootbox.js"></script>
             <script src="/js/bootstrap.min.js"></script>
+            <noscript><a class='btn btn-primary btn-small media-delete' href="'/apps/delete?id={{c.id}}'" data-bb="confirm"><span class="fa fa-trash" > </span> {{_('Delete')}}</a> </noscript>
 
           <a class='btn btn-primary btn-small media-delete' href="#" data-bb="confirm" onclick="bootbox.confirm('{{_("Are you sure?")}}', function(result){if(result){window.location.href='/apps/delete?id={{c.id}}';}})"><span class="fa fa-trash" > </span> {{_('Delete')}}</a>
       	  {%endif%}
       </form>
+      <hr>
+
+      {% snippet "related/snippets/comments2.html", data = [c.id, c.user, c.id] %}
+    
+
     {% else %}
       {{super()}}
     {%endif%}
