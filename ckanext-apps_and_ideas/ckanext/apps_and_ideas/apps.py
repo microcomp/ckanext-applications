@@ -65,7 +65,7 @@ def own(id):
 
 def is_private(id):
 
-    context = context = {'model': model, 'session': model.Session,
+    context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
     data_dict = {'related_id':id,'key':'privacy'}
@@ -84,7 +84,7 @@ def check(id):
     if len(c.user) == 0 and len(API_KEY) != 0:
         c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
 
-    context = context = {'model': model, 'session': model.Session,
+    context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
     data_dict = {'related_id':id,'key':'privacy'}
@@ -810,9 +810,7 @@ class AppsController(base.BaseController):
         request = urllib2.Request('http://192.168.21.27:5000/')
         request.add_header('Authorization', 'e8491611-60f7-46a1-8c2a-94d0cc294d6b')
         response_dict = json.loads(urllib2.urlopen(request, '{}').read())
-        logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-        logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-        logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        
         logging.warning(response_dict)
 
         try:
@@ -866,4 +864,19 @@ class AppsController(base.BaseController):
         model.Session.commit()
         c.result = json.dumps({'help': 'new app', 'success':True, 'result': _('done')})
         return c.result
+def can_view(id):
+    if own(id) or check(id):
+        return True
+    context = {'model': model, 'session': model.Session,
+                'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                'for_view': True}
+
+    data_dict = {'related_id':id}
+    try:
+        _check_access('app_editall', context, data_dict)
+        return True
+    except toolkit.NotAuthorized, e:
+        return False
+    return False
+
 

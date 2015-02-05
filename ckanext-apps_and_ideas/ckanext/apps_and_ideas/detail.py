@@ -402,6 +402,10 @@ class DetailController(base.BaseController):
         data["view_count"] = data_from_db.view_count
         data["featured"] = data_from_db.featured
         c.id = data["id"]
+        c.data = data_from_db
+
+        c.errors  = errors
+        c.error_summary = error_summary
         name_query = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == data["id"] ).all()
         names = []
         for i in name_query:
@@ -418,20 +422,17 @@ class DetailController(base.BaseController):
             dataset_names.append(query_data.name)
         logging.warning(dataset_names)
         data['datasets'] = ",".join(dataset_names)
+        c.datasets = data['datasets']
         vars = {'data': data, 'errors': errors, 'error_summary': error_summary}
         return base.render("related/update.html", extra_vars = vars)
 
     def edit_app_do(self):
-        
+        data, errors, error_summary = {}, {}, {}
         id = base.request.params.get('id','')
         valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
         if valid == None:
             base.abort(404, _('Application not found'))
-        related_datasets = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
-        logging.warning('rows to delete...\n'+str(related_datasets))
-        for i in related_datasets:
-            model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.id == i.id).delete(synchronize_session=False)
-        model.Session.commit()
+        
         #all related items deleted...
         data = {}
 
@@ -449,7 +450,30 @@ class DetailController(base.BaseController):
         old_data.image_url =data["image_url"] 
         old_data.url =data["url"] 
         #old_data.featured = data["featured"]
-        
+        c.data = old_data
+        c.errors  = errors
+        c.error_summary = error_summary
+        ds = []
+                
+        if len(data['title']) < 3:
+            errors['title'] = [_('Title too short')]
+        if len(data['url']) < 3:
+            errors['url'] = [_("URL incorrect")]
+        for i in data['datasets'].split(','):
+                id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
+                if id_query == None:
+                    errors['datasets'] = [_("Invalid dataset(s)")]
+                else:
+                    ds.append(i)
+        c.datasets = ",".join(ds)
+        if len(errors) > 0:
+            return base.render("related/update.html")
+
+        related_datasets = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
+        logging.warning('rows to delete...\n'+str(related_datasets))
+        for i in related_datasets:
+            model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.id == i.id).delete(synchronize_session=False)
+        model.Session.commit()
         #model.Session.add(old_data)
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,

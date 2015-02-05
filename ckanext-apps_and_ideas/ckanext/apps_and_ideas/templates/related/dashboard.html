@@ -38,6 +38,7 @@ FORM
     
       <section class="module">
 <script>
+/*
 function match(x, array){
   for(var i = 0; i < array.length; i++){
     if(x == array[i]){
@@ -46,6 +47,7 @@ function match(x, array){
   }
   return false
 }
+
 function validateForm() {
     var title = document.forms["new_app_form"]["title"].value;
     var url = document.forms["new_app_form"]["url"].value;
@@ -68,7 +70,7 @@ function validateForm() {
     }
     
 }
-
+*/
 
 
 </script>
@@ -97,8 +99,8 @@ function validateForm() {
               {% endblock %}
               {%if errors %}
               <div class="alert alert-danger" role="alert">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 {% for key, value in errors.iteritems()%}
+                <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
                 <span class="sr-only">Error:</span>
                   {{value|e}} <br />
                 {%endfor%}
@@ -124,13 +126,7 @@ function validateForm() {
                  {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
                   {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=c.dataset, error='', classes=['control-full'], attrs=tag_attrs) }}
               {%endif%}
-
-                {#% block package_basic_fields_tags %#}
-                 
-                {#% endblock %#}
-
-                {#{ form.input('datasets', label=_('Datasets'), id='field-datasets', placeholder=_('default'), value="", error="", classes=['control-full']) }#}
-              {% endblock %}
+            {% endblock %}
               {% set errors = h.del_x()['errors'] %}
               {% set data = h.del_x()['data'] %}
               <div class="form-actions">
