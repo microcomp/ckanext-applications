@@ -51,5 +51,6 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
                 'is_priv': apps.is_private,
                 'extra_v': detail.errors_and_other_stuff,
                 'del_x':detail.del_xtra,
-                'can_v': apps.can_view}
+                'can_v': apps.can_view,
+                'is_admin': apps.is_admin}
 

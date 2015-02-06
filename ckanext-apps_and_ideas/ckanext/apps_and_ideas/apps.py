@@ -148,6 +148,11 @@ class AppsController(base.BaseController):
         
         name = base.request.params.get('app_name','')
         
+        private_only = base.request.params.get('private','')
+        if private_only == 'on':
+            private_only = True
+        else:
+            private_only = False
 
         params_nopage = [(k, v) for k, v in base.request.params.items()
                          if k != 'page']
@@ -177,7 +182,12 @@ class AppsController(base.BaseController):
                     public_list.append(i)
                 except logic.NotAuthorized:
                     logging.warning("access denied")
-        
+        pl = []
+        if private_only:
+            for i in public_list:
+                data_dict = {'related_id':i['id'],'key':'privacy'}
+                if check_priv_related_extra(context, data_dict) == False:
+                    pl.append(i)
 
         
         def search_url(params):
@@ -191,14 +201,22 @@ class AppsController(base.BaseController):
             params = list(params_nopage)
             params.append(('page', page))
             return search_url(params)
-
-        c.page = h.Page(
-            collection=public_list,
-            page=page,
-            url=pager_url,
-            item_count=len(public_list),
-            items_per_page=9
-        )
+        if private_only:
+            c.page = h.Page(
+                collection=pl,
+                page=page,
+                url=pager_url,
+                item_count=len(pl),
+                items_per_page=9
+            )
+        else:
+            c.page = h.Page(
+                collection=public_list,
+                page=page,
+                url=pager_url,
+                item_count=len(public_list),
+                items_per_page=9
+            )
 
         c.filters = dict(params_nopage)
         c.name = name
@@ -877,6 +895,16 @@ def can_view(id):
         return True
     except toolkit.NotAuthorized, e:
         return False
+    return False
+def is_admin():
+    context = {'model': model, 'session': model.Session,
+                'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                'for_view': True}
+    try:
+        _check_access('app_edit', context)
+        return True
+    except toolkit.NotAuthorized, e:
+         return False         
     return False
 
 

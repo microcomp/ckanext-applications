@@ -163,8 +163,15 @@ end of form
       </h1>
   {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
   {% else %}
+
     <form class="section site-search simple-input" action="/apps/search" method="get" >
             <div class="field">
+              {% if request.url.split("?")[1] %}
+                {% for i in request.url.split("?")[1].split("&") %}
+                {% if i.split('=')[0] != 'app_name' %}
+                   <input id="{{i.split('=')[0]}}" type="text" name="{{i.split('=')[0]}}" value="{{i.split('=')[1]}}" style="display: none;"/> {%endif%}
+                {%endfor%}
+              {%endif%}
               <label for="field-sitewide-search">Search Applications</label>
               <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}" />
               <button class="btn-search" type="submit"><i class="icon-search"></i></button>
@@ -348,16 +355,23 @@ end of form
           {{ _('Only show featured items') }}
         </label>
       </div-->
-      {% if c.priv_private %}
-      <div class="control-group">
-        <label for="field-private" class="checkbox">
-          <input type="checkbox" id="field-private" name="private" {% if c.filters.get('private') == 'on' %} checked="checked"{% endif %}></input>
-          {{ _('Only show private items') }}
-        </label>
-      </div>
-      {% endif %}
+      {% if h.is_admin() %}
+      
+      <input type="checkbox" id="field-private" name="private" {% if c.filters.get('private') == 'on' %} checked="checked"{% endif %}> {{ _('Only show private items') }}</input>
+         
+ {% endif %}
+     
+     {% if request.url.split("?")[1] %}
+                {% for i in request.url.split("?")[1].split("&") %}
+                {% if i.split('=')[0] == 'app_name' %}
+                   <input id="{{i.split('=')[0]}}" type="text" name="{{i.split('=')[0]}}" value="{{i.split('=')[1]}}" style="display: none;"/> {%endif%}
+                {%endfor%}
+              {%endif%}
       <div class="form-actions">
+
         <button class="btn btn-primary">{{ _('Apply') }}</button>
+          
+
         </div>
     </form>
   </section>
