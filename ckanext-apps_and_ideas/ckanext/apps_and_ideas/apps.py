@@ -1,3 +1,4 @@
+# coding=utf-8
 import urllib
 
 from sqlalchemy import create_engine
