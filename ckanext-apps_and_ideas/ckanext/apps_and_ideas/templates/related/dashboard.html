@@ -264,7 +264,7 @@ end of form
       </form>
       <hr>
 
-      {% snippet "related/snippets/comments2.html", data = [c.id, c.user, c.id] %}
+      {% snippet "related/snippets/comments2.html", data = [c.id, c.user, c.id, c.userobj.id] %}
     
 
     {% else %}
