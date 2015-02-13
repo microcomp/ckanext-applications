@@ -163,9 +163,29 @@ end of form
       </h1>
   {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
   {% else %}
+<style type="text/css">
+.btn-search{
+   
+  
+  padding: 0.25em;
+  color: white;
+  background-color: #bd0a26;
+  padding: 0.3em;
+padding-left: 0.6em;
+padding-right: 0.6em;
+margin: 0.7em;
+border: 1px solid #bd0a26;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+color: white;
+background-color: #bd0a26;
+margin-bottom: 1.5em;
+}
 
+</style>
     <form class="section site-search simple-input" action="/apps/search" method="get" >
-            <div class="field">
+            <!--div class="field"!-->
               {% if request.url.split("?")[1] %}
                 {% for i in request.url.split("?")[1].split("&") %}
                 {% if i.split('=')[0] != 'app_name' %}
@@ -173,10 +193,12 @@ end of form
                 {%endfor%}
               {%endif%}
               <label for="field-sitewide-search">Search Applications</label>
-              <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}" />
-              <button class="btn-search" type="submit"><i class="icon-search"></i></button>
+              <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}"  style="display:inline; width: 80%;"/>
+              
               <!--a href='' class="btn-search" type="submit" onclick='submitForms'><i class="icon-search"></i></a-->
-            </div>
+              <button class="btn-search" type="submit" style="display:inline;">{{_('Search')}}</button>
+            <!--/div!-->
+            
     </form>
   {% endif %}
 
