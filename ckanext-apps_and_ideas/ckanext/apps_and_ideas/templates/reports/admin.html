@@ -1,0 +1,45 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Reports') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('Reports'), controller='home', action='about' %}</li>
+{% endblock %}
+{%set query =  h.list_reports(c.page) %}
+{%set count = query['count'] %}
+{%set reports = query['reports'] %}
+{%set min = c.page*10-9%}
+{% if count >= c.page*10%}
+{%set max = c.page*10%}
+{%else%}
+{%set max = count %}
+{%endif%}
+{% set  page_num = count // 10 +1%}
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+     	<h3 style="font-size: 1.5em;"> {{count}} {{_('Report(s) found')}}</h3>
+     	<h3 style="font-size: 1.2em;">{{_('Showing')}} {{min}} - {{max}} {{_('of')}} {{count}} {{_('report(s) found')}}</h3>
+     <hr>
+     {% for item in reports %}
+     <h3> <a href="/apps/detail?id={{item.related_id}}" alt='to_app'>{{h.app_name(item.related_id)}}</a></h3>
+     <p>
+     	<a href="/report/delete?report_id={{item.id}}"><i class="fa fa-trash-o"></i> {{_('Remove report')}}</a><br/>
+     	{{item.value}}
+     </p>
+     	<hr >
+     {%endfor%}
+     <div class="pagination pagination-centered">
+     	<ul>
+     <li> <a href='/admin/reports?page=1'>«</a></li>
+        {% for i in range(page_num) %}
+          <li {% if i+1|int == c.page|int %} class="active" {%endif%}> <a href='/admin/reports?page={{i+1}}' >{{i+1}} </a></li>
+        {%endfor%}
+        <li> <a href='/admin/reports?page={{c.page}}'>»</a></li>
+    </ul>
+     </div>
+    </div>
+  </article>
+{% endblock %}
+
+{% block secondary %}{% endblock %}

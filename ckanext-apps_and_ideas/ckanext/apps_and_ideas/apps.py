@@ -40,6 +40,18 @@ def new_related_extra(context, data_dict):
     session.add(info)
     session.commit()
     return {"status":"success"}
+@ckan.logic.side_effect_free
+def new_report(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra()
+    info.related_id = data_dict.get('related_id')
+    info.key = data_dict.get('key')
+    info.value = data_dict.get('value')
+    info.save()
+    session = context['session']
+    session.add(info)
+    session.commit()
+    return {"status":"success"}
 
 @ckan.logic.side_effect_free
 def check_priv_related_extra(context, data_dict):
@@ -62,7 +74,13 @@ def own(id):
     if c.userobj != None and owner_id == c.userobj.id:
         return True 
     return False
+def app_name(id):
+    context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
 
+    app_name = model.Session.query(model.Related).filter(model.Related.id == id).first().title
+    return app_name
 
 def is_private(id):
 
@@ -129,8 +147,86 @@ def get_related_extra(context, data_dict):
         db.init_db(context['model'])
     res = db.RelatedExtra.get(**data_dict)
     return res
+def list_reports(page):
+    context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+    data_dict = {}
+    if db.related_extra_table is None:
+        db.init_db(context['model'])
+    res = db.RelatedExtra.getALL(**data_dict)
+
+    res = [x for x in res if x.key == 'report']
+    length = len(res)
+    result = []
+    for i in range(page*10-10,page*10):
+        try:
+            result.append(res[i])
+        except IndexError:
+            pass
+    if page > length//10+1:   
+        base.abort(400, ('"page" parameter out of range')) 
+    #res = res[page-1*10:page*10+4]
+
+    return {'reports': result, 'count': length}
 
 class AppsController(base.BaseController):
+    def list_reports(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        try:
+            logic.check_access('app_editall', context)
+        except logic.NotAuthorized:
+            base.abort(401, base._('Not authorized to see this page'))
+        try:
+            c.page = int(base.request.params.get('page', 1))
+        except ValueError:
+            base.abort(400, ('"page" parameter must be an integer'))
+
+        
+        
+        return base.render('reports/admin.html')
+
+
+    def report_app(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        if context['auth_user_obj']: 
+            user_id = context['auth_user_obj'].id
+        else:
+            base.abort(401, base._('Not authorized to see this page'))
+        report = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
+        app_id = report['app_id']
+        key= 'report'
+        value = report['report_text']
+        id = unicode(uuid.uuid4())
+        
+        data_dict = {
+            'id': id,
+            'related_id': app_id,
+            'key': key,
+            'value': value
+        }
+        new_report(context, data_dict)
+        return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=app_id)
+
+    def delete_app_report(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        report = base.request.params.get('report_id','')
+        
+        data_dict = {'id': report}
+        try:
+            logic.check_access('app_editall', context)
+            del_related_extra(context, data_dict)
+        except logic.NotAuthorized:
+            base.abort(401, base._('Not authorized to see this page'))
+
+        return h.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='list_reports')
+        
     def new(self, id):
         return self._edit_or_new(id, None, False)
 
@@ -699,7 +795,7 @@ class AppsController(base.BaseController):
         #    model.Session.delete(i)
         #model.Session.commit()
 
-        data_dict = {'related_id':id}
+        data_dict = {'related_id':id, 'key':'privacy'}
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}

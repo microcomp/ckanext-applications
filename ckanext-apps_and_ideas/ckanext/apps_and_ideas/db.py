@@ -22,6 +22,11 @@ def init_db(model):
             query = model.Session.query(cls).autoflush(False)
             return query.filter_by(**kw).all()
         @classmethod
+        def getALL(cls, **kw):
+            '''Finds a single entity in the register.'''
+            query = model.Session.query(cls).autoflush(False)
+            return query.all()
+        @classmethod
         def delete(cls, **kw):
             query = model.Session.query(cls).autoflush(False).filter_by(**kw).all()
             for i in query:

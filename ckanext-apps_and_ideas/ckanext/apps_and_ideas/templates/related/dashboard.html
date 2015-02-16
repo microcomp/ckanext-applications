@@ -274,16 +274,45 @@ margin-bottom: 1.5em;
           </div>
 
           </fieldset>
-          {%if h.check_access('app_edit', data_dict={'owner_id' : c.owner}) or c.user==c.owner %}
-          <a class='btn btn-primary btn-small media-edit' href="/apps/update?id={{c.id}}" ><span class="fa fa-pencil" > </span> {{_('Edit')}}</a>
-            <script src="/js/jquery.min.js"></script>
+           <script src="/js/jquery.min.js"></script>
             <script src="/js/bootbox.js"></script>
             <script src="/js/bootstrap.min.js"></script>
+          {%if h.check_access('app_edit', data_dict={'owner_id' : c.owner}) or c.user==c.owner %}
+          <a class='btn btn-primary btn-small media-edit' href="/apps/update?id={{c.id}}" ><span class="fa fa-pencil" > </span> {{_('Edit')}}</a>
+           
             <noscript><a class='btn btn-primary btn-small media-delete' href="'/apps/delete?id={{c.id}}'" data-bb="confirm"><span class="fa fa-trash" > </span> {{_('Delete')}}</a> </noscript>
 
           <a class='btn btn-primary btn-small media-delete' href="#" data-bb="confirm" onclick="bootbox.confirm('{{_("Are you sure?")}}', function(result){if(result){window.location.href='/apps/delete?id={{c.id}}';}})"><span class="fa fa-trash" > </span> {{_('Delete')}}</a>
-      	  {%endif%}
+
+        {%endif%}
+        <script type="text/javascript">
+                           function opendialog(){
+                             bootbox.dialog({
+                                  title: "{{_('Error report')}}",
+                                  message: "<form method='post' action='/apps/report'><fieldset>{{_('Report app issue')}}</fieldset>" +
+                                      "<input type='text' name='app_id' value='{{c.id}}' style='display:none' >" +
+                                      "<textarea rows='4' name='report_text' placeholder='{{_('Error description')}}' style='width:100%;'></textarea>" +
+                                      "<button type='submit' class='btn btn-primary'> {{_('Send')}}</button>" +
+                                      "</form>",
+                                  }
+                              
+                          );}
+        </script>
+        {%if c.userobj %}
+          <a class='btn btn-primary btn-small media-delete' href="#" data-bb="custom_form" onclick="opendialog()"><span class="fa fa-exclamation" > </span> {{_('Report problem')}}</a>
+        {%endif%}
       </form>
+      
+     
+          {%if c.userobj %}
+      <noscript>
+      <form method="get" action="/apps/report">
+        <fieldset>{{_('Report app issue')}}</fieldset>
+        <input type='text' name="app_id" value="{{c.id}}" style="display:none" >
+        <textarea rows="4" name="report_text" placeholder="{{_('Error description')}}" style="width:100%;"></textarea>
+        <button type="submit" class="btn btn-primary"> {{_('Send')}}</button>
+      <form>{%endif%}
+      </noscript>
       <hr>
 
       {% snippet "related/snippets/comments2.html", data = [c.id, c.user, c.id, c.userobj.id] %}
