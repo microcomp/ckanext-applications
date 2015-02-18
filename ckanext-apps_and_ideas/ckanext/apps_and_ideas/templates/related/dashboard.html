@@ -219,7 +219,7 @@ margin-bottom: 1.5em;
           <fieldset>
 
           <!-- Form Name -->
-          <legend>{{c.title}}</legend>
+          <legend>{{c.title}} </legend>
 
           <!-- Text input-->
           <div class="control-group">
@@ -298,8 +298,10 @@ margin-bottom: 1.5em;
                               
                           );}
         </script>
-        {%if c.userobj %}
+        {%if c.userobj and h.reported_by_user(c.userobj.id, c.id)%}
+
           <a class='btn btn-primary btn-small media-delete' href="#" data-bb="custom_form" onclick="opendialog()"><span class="fa fa-exclamation" > </span> {{_('Report problem')}}</a>
+        
         {%endif%}
       </form>
       

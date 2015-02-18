@@ -46,6 +46,7 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
 
         map.connect('apps_report', '/apps/report', action='report_app', controller='ckanext.apps_and_ideas.apps:AppsController')
         map.connect('delete_report', '/report/delete', action='delete_app_report', controller='ckanext.apps_and_ideas.apps:AppsController')
+        map.connect('delete_reports', '/report/delete/all', action='delete_all_reports', controller='ckanext.apps_and_ideas.apps:AppsController')
         map.connect('report_admin', '/admin/reports', action='list_reports', controller='ckanext.apps_and_ideas.apps:AppsController')
         return map
 
@@ -58,5 +59,8 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
                 'can_v': apps.can_view,
                 'is_admin': apps.is_admin,
                 'list_reports': apps.list_reports,
-                'app_name': apps.app_name}
+                'app_name': apps.app_name,
+                'reports_num': apps.reports_num,
+                'reported_by_user': apps.reported_by_user,
+                'reported_by': apps.reported_by}
 

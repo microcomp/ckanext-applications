@@ -147,7 +147,7 @@ def get_related_extra(context, data_dict):
         db.init_db(context['model'])
     res = db.RelatedExtra.get(**data_dict)
     return res
-def list_reports(page):
+def list_reports(page, filter_id):
     context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
@@ -157,8 +157,16 @@ def list_reports(page):
     res = db.RelatedExtra.getALL(**data_dict)
 
     res = [x for x in res if x.key == 'report']
+
+    if filter_id != '':
+        res = [x for x in res if x.related_id == filter_id]
     length = len(res)
     result = []
+    try:
+        page = int(page)
+    except ValueError:
+        page = 1
+    
     for i in range(page*10-10,page*10):
         try:
             result.append(res[i])
@@ -166,11 +174,62 @@ def list_reports(page):
             pass
     if page > length//10+1:   
         base.abort(400, ('"page" parameter out of range')) 
+    
     #res = res[page-1*10:page*10+4]
 
-    return {'reports': result, 'count': length}
+    return {'reports': result, 'count': length, 'delall': (length > 0) and (filter_id != ''), 'related_id':filter_id}
+def reports_num(related_id):
+    context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+    data_dict = {'related_id': related_id, 'key':'report'}
+    if db.related_extra_table is None:
+        db.init_db(context['model'])
+    res = db.RelatedExtra.get(**data_dict)
+    return len(res)
 
+def reported_by_user(user_id, related_id):
+    context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+    data_dict = {'related_id': related_id, 'key':'reported_by'}
+    if db.related_extra_table is None:
+        db.init_db(context['model'])
+    res = db.RelatedExtra.get(**data_dict)
+    res = [x for x in res if x.value.split('*')[0] == c.userobj.id]
+    return len(res) == 0
+def reported_by(related_id, report_id):
+    context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+    data_dict = {'related_id': related_id, 'key':'reported_by'}
+    if db.related_extra_table is None:
+        db.init_db(context['model'])
+    res = db.RelatedExtra.get(**data_dict)
+    res = [x for x in res if x.value.split('*')[1] == report_id]
+    return res[0].value.split('*')[0]
 class AppsController(base.BaseController):
+    def delete_all_reports(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        try:
+            logic.check_access('app_editall', context)
+        except logic.NotAuthorized:
+            base.abort(401, base._('Not authorized to see this page'))
+
+        related_id = str(base.request.params.get('related_id',''))
+
+        data_dict = {'related_id': related_id, 'key': 'report'}
+        if db.related_extra_table is None:
+            db.init_db(context['model'])
+        data_dict = {'related_id': related_id, 'key': 'report'}
+        data_dict2 = {'related_id': related_id, 'key': 'reported_by'}
+        res = db.RelatedExtra.delete(**data_dict)  
+        res = db.RelatedExtra.delete(**data_dict2) 
+        session = context['session']
+        session.commit()
+        return base.render('reports/admin.html')
     def list_reports(self):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -184,6 +243,7 @@ class AppsController(base.BaseController):
         except ValueError:
             base.abort(400, ('"page" parameter must be an integer'))
 
+        c.filter = base.request.params.get('id','')
         
         
         return base.render('reports/admin.html')
@@ -201,15 +261,28 @@ class AppsController(base.BaseController):
         app_id = report['app_id']
         key= 'report'
         value = report['report_text']
-        id = unicode(uuid.uuid4())
-        
+        id_ = unicode(uuid.uuid4())
+        if reported_by_user(c.userobj.id, app_id) == False:
+            return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=app_id)
         data_dict = {
-            'id': id,
+            'id': id_,
             'related_id': app_id,
             'key': key,
             'value': value
         }
         new_report(context, data_dict)
+        id2 = unicode(uuid.uuid4())
+        data = {'related_id': app_id,
+            'key': key,
+            'value': value}
+        report_id = db.RelatedExtra.get(**data)
+        data_dict2 = {
+            'id': id2,
+            'related_id': app_id,
+            'key': 'reported_by',
+            'value': c.userobj.id+"*"+report_id[0].id
+        }
+        new_report(context, data_dict2)
         return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=app_id)
 
     def delete_app_report(self):
@@ -218,10 +291,18 @@ class AppsController(base.BaseController):
                    'for_view': True}
         report = base.request.params.get('report_id','')
         
+
         data_dict = {'id': report}
+        info = db.RelatedExtra.get(**data_dict)
+        data_dict2 = {'related_id': info[0].related_id, 'key':'reported_by'}
+        report_user = db.RelatedExtra.get(**data_dict2)
+        
+        report_user = [x for x in report_user if x.value.split('*')[1] == report ]
+        data_dict3 = {'id': report_user[0].id}
         try:
             logic.check_access('app_editall', context)
             del_related_extra(context, data_dict)
+            del_related_extra(context, data_dict3)
         except logic.NotAuthorized:
             base.abort(401, base._('Not authorized to see this page'))
 
@@ -922,9 +1003,9 @@ class AppsController(base.BaseController):
             c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
         context = {'user': c.user}
         
-        request = urllib2.Request('http://192.168.21.27:5000/')
-        request.add_header('Authorization', 'e8491611-60f7-46a1-8c2a-94d0cc294d6b')
-        response_dict = json.loads(urllib2.urlopen(request, '{}').read())
+        #request = urllib2.Request('http://192.168.21.27:5000/')
+        #request.add_header('Authorization', 'e8491611-60f7-46a1-8c2a-94d0cc294d6b')
+        #response_dict = json.loads(urllib2.urlopen(request, '{}').read())
         
         logging.warning(response_dict)
 

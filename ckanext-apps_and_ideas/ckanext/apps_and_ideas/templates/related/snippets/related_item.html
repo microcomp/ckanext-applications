@@ -7,7 +7,10 @@
 {% if h.is_priv(related.id) == 'public' or h.can_v(related.id) %}
 <li class="related-item media-item" data-module="related-item">
   <img src="{{ related.image_url or placeholder_map[related.type] or h.url_for_static('/base/images/placeholder-image.png') }}" alt="{{ related.title }}" class="media-image">
-  <h3 class="media-heading">{{ related.title }} {%if h.is_priv(related.id) != 'public' %} <i class='label'>{{_('Private')}}</i>{%endif%} </h3>
+  <h3 class="media-heading">{{ related.title }} {%if h.is_priv(related.id) != 'public' %} <i class='label red'>{{_('Private')}}</i>{%endif%} 
+{%if h.reports_num(related.id) > 3 %} <span class="label" style="background-color: red">{{_('This app was reported by users')}}</span>{%endif%}
+
+  </h3>
   {% if related.description %}
     <div class="prose">{{ h.render_markdown(related.description) }}</div>
   {% endif %}
