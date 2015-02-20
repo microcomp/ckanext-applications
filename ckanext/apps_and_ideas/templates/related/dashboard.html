@@ -291,14 +291,17 @@ margin-bottom: 1.5em;
                                   title: "{{_('Error report')}}",
                                   message: "<form method='post' action='/apps/report'><fieldset>{{_('Report app issue')}}</fieldset>" +
                                       "<input type='text' name='app_id' value='{{c.id}}' style='display:none' >" +
-                                      "<textarea rows='4' name='report_text' placeholder='{{_('Error description')}}' style='width:100%;'></textarea>" +
+                                      "<textarea rows='7' name='report_text' maxlength='500' placeholder='{{_('Error description')}}' style='width:100%;'>"+
+                                      "{%if h.reported_by_user(c.userobj.id, c.id)== False%}{% for i in h.report_text(c.userobj.id, c.id).split('\n')%}{{i}}"+
+                                      "&#10;{%endfor%}"+
+                                      "{%endif%}</textarea>" +
                                       "<button type='submit' class='btn btn-primary'> {{_('Send')}}</button>" +
-                                      "</form>",
+                                      "</form>"
                                   }
                               
                           );}
         </script>
-        {%if c.userobj and h.reported_by_user(c.userobj.id, c.id)%}
+        {%if c.userobj%}
 
           <a class='btn btn-primary btn-small media-delete' href="#" data-bb="custom_form" onclick="opendialog()"><span class="fa fa-exclamation" > </span> {{_('Report problem')}}</a>
         

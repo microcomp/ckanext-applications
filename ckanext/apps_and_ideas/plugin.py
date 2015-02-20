@@ -62,5 +62,6 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
                 'app_name': apps.app_name,
                 'reports_num': apps.reports_num,
                 'reported_by_user': apps.reported_by_user,
-                'reported_by': apps.reported_by}
+                'reported_by': apps.reported_by,
+                'report_text': apps.report_text}
 

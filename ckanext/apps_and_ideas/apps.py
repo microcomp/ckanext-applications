@@ -52,6 +52,18 @@ def new_report(context, data_dict):
     session.add(info)
     session.commit()
     return {"status":"success"}
+@ckan.logic.side_effect_free
+def update_report(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**{'id':data_dict.get('id')})
+    info[0].related_id = data_dict.get('related_id')
+    info[0].key = data_dict.get('key')
+    info[0].value = data_dict.get('value')
+    info[0].save()
+    session = context['session']
+    #session.add(info)
+    session.commit()
+    return {"status":"success"}
 
 @ckan.logic.side_effect_free
 def check_priv_related_extra(context, data_dict):
@@ -197,7 +209,21 @@ def reported_by_user(user_id, related_id):
         db.init_db(context['model'])
     res = db.RelatedExtra.get(**data_dict)
     res = [x for x in res if x.value.split('*')[0] == c.userobj.id]
+
     return len(res) == 0
+def report_text(user_id, related_id):
+    context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+    data_dict = {'related_id': related_id, 'key':'reported_by'}
+    if db.related_extra_table is None:
+        db.init_db(context['model'])
+    res = db.RelatedExtra.get(**data_dict)
+    res = [x for x in res if x.value.split('*')[0] == c.userobj.id]
+    data_dict2 = {'related_id': related_id, 'key':'report', 'id': res[0].value.split('*')[1]}
+    res = db.RelatedExtra.get(**data_dict2)
+    return res[0].value
+
 def reported_by(related_id, report_id):
     context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -206,8 +232,18 @@ def reported_by(related_id, report_id):
     if db.related_extra_table is None:
         db.init_db(context['model'])
     res = db.RelatedExtra.get(**data_dict)
-    res = [x for x in res if x.value.split('*')[1] == report_id]
+    res = [x for x in res if x.value.split('*')[0] == c.userobj.id]
     return res[0].value.split('*')[0]
+def reported_id(related_id, user_id):
+    context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+    data_dict = {'related_id': related_id, 'key':'reported_by'}
+    if db.related_extra_table is None:
+        db.init_db(context['model'])
+    res = db.RelatedExtra.get(**data_dict)
+    res = [x for x in res if x.value.split('*')[0] == user_id]
+    return res[0].value.split('*')[1]
 class AppsController(base.BaseController):
     def delete_all_reports(self):
         context = {'model': model, 'session': model.Session,
@@ -261,8 +297,16 @@ class AppsController(base.BaseController):
         app_id = report['app_id']
         key= 'report'
         value = report['report_text']
+        #logging.warning('///////////////value /////////////////////')
+        #logging.warning(value)
+        value = value.replace('\r\n', '\n')
+        if len(value) > 500:
+            value = value[:500]
+        logging.warning(value)
         id_ = unicode(uuid.uuid4())
         if reported_by_user(c.userobj.id, app_id) == False:
+            rep_id = reported_id(app_id, c.userobj.id)
+            update_report(context, {'id':rep_id, 'related_id': app_id,'key': key, 'value':value})
             return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=app_id)
         data_dict = {
             'id': id_,
