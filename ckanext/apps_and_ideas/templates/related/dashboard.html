@@ -220,7 +220,13 @@ margin-bottom: 1.5em;
 
           <!-- Form Name -->
           <legend>{{c.title}} </legend>
-
+          <div class="control-group">
+            <label class="control-label" for="textinput">{{_('Permanent URL')}}</label>
+            <div class="controls">
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;"><textarea style="width:100%; resize: none;" >{{ request.host_url }}/apps/detail?id={{c.id}}</textarea></p><!--" readonly -->
+            </div>
+          </div> 
+          
           <!-- Text input-->
           <div class="control-group">
             <label class="control-label" for="textinput">{{_('Description')}}</label>

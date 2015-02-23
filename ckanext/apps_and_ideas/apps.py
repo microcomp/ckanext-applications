@@ -232,7 +232,7 @@ def reported_by(related_id, report_id):
     if db.related_extra_table is None:
         db.init_db(context['model'])
     res = db.RelatedExtra.get(**data_dict)
-    res = [x for x in res if x.value.split('*')[0] == c.userobj.id]
+    res = [x for x in res if x.value.split('*')[1] == report_id]
     return res[0].value.split('*')[0]
 def reported_id(related_id, user_id):
     context = {'model': model, 'session': model.Session,
