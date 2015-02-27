@@ -25,11 +25,7 @@ msgstr ""
 #: ckanext/apps_and_ideas/apps.py:540 ckanext/apps_and_ideas/apps.py:567
 #: ckanext/apps_and_ideas/detail.py:116
 msgid "Not authorized to see this page"
-<<<<<<< HEAD
-msgstr ""
-=======
 msgstr "Nemáte oprávnenie na zobrazenie tejto stránky."
->>>>>>> origin/master
 
 #: ckanext/apps_and_ideas/apps.py:447 ckanext/apps_and_ideas/apps.py:744
 #: ckanext/apps_and_ideas/detail.py:212
@@ -143,44 +139,14 @@ msgstr "žiadne výsledky"
 msgid "app not found"
 msgstr "aplikácia nebola nájdená"
 
-<<<<<<< HEAD
-#: ckanext/apps_and_ideas/apps.py:871
-msgid "no results found"
-msgstr ""
-
-#: ckanext/apps_and_ideas/apps.py:897
-msgid "app not found"
-msgstr ""
-
-#: ckanext/apps_and_ideas/apps.py:910 ckanext/apps_and_ideas/apps.py:1029
-#: ckanext/apps_and_ideas/apps.py:1059
-msgid "not authorized"
-msgstr ""
-=======
 #: ckanext/apps_and_ideas/apps.py:910 ckanext/apps_and_ideas/apps.py:1029
 #: ckanext/apps_and_ideas/apps.py:1059
 msgid "not authorized"
 msgstr "nemáte oprávnenie"
->>>>>>> origin/master
 
 #: ckanext/apps_and_ideas/apps.py:929 ckanext/apps_and_ideas/apps.py:1038
 #: ckanext/apps_and_ideas/apps.py:1105
 msgid "done"
-<<<<<<< HEAD
-msgstr ""
-
-#: ckanext/apps_and_ideas/apps.py:971
-msgid "dataset not found"
-msgstr ""
-
-#: ckanext/apps_and_ideas/apps.py:1077
-msgid "title is required"
-msgstr ""
-
-#: ckanext/apps_and_ideas/apps.py:1085
-msgid "add some datasets"
-msgstr ""
-=======
 msgstr "Hotovo"
 
 #: ckanext/apps_and_ideas/apps.py:971
@@ -194,7 +160,6 @@ msgstr "názov je povinný"
 #: ckanext/apps_and_ideas/apps.py:1085
 msgid "add some datasets"
 msgstr "pridajte nejaké datasety"
->>>>>>> origin/master
 
 #: ckanext/apps_and_ideas/detail.py:219 ckanext/apps_and_ideas/detail.py:383
 #: ckanext/apps_and_ideas/detail.py:435 ckanext/apps_and_ideas/detail.py:507
@@ -213,19 +178,6 @@ msgstr "Názov príliš krátky"
 #: ckanext/apps_and_ideas/detail.py:340 ckanext/apps_and_ideas/detail.py:462
 msgid "URL incorrect"
 msgstr "Nesprávna URL"
-
-#: ckanext/apps_and_ideas/detail.py:332 ckanext/apps_and_ideas/detail.py:346
-#: ckanext/apps_and_ideas/detail.py:466
-msgid "Invalid dataset(s)"
-msgstr ""
-
-#: ckanext/apps_and_ideas/detail.py:338 ckanext/apps_and_ideas/detail.py:460
-msgid "Title too short"
-msgstr ""
-
-#: ckanext/apps_and_ideas/detail.py:340 ckanext/apps_and_ideas/detail.py:462
-msgid "URL incorrect"
-msgstr ""
 
 #: ckanext/apps_and_ideas/templates/header.html:10
 msgid "Home"
@@ -295,42 +247,6 @@ msgstr "Odošli komentár"
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:139
 msgid "New comment"
 msgstr "Nový komentár"
-
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:6
-msgid "Comments"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:18
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:34
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:87
-msgid "show"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:32
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:71
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:85
-msgid "hide"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:68
-msgid "reply"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:101
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:116
-msgid "Reply"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:105
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:120
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:143
-msgid "Post comment"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:136
-#: ckanext/apps_and_ideas/templates/apps/comments2.html:139
-msgid "New comment"
-msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:8
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:83
@@ -573,23 +489,12 @@ msgstr "Aplikácie"
 
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:199
 msgid "Search"
-msgstr "Hľadať"
+msgstr "Vyhľadávať"
 
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:224
 msgid "Permanent URL"
 msgstr "Permanentná URL"
 
-<<<<<<< HEAD
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:199
-msgid "Search"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:224
-msgid "Permanent URL"
-msgstr ""
-
-=======
->>>>>>> origin/master
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:234
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:242
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:250
@@ -617,33 +522,12 @@ msgstr "Upraviť"
 msgid "Delete"
 msgstr "Vymazať"
 
-<<<<<<< HEAD
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:289
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:291
-msgid "Delete"
-msgstr ""
-
-=======
->>>>>>> origin/master
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:291
 msgid "Are you sure?"
 msgstr "Ste si istý?"
 
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:297
 msgid "Error report"
-<<<<<<< HEAD
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:298
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:321
-msgid "Report app issue"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:300
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:323
-msgid "Error description"
-msgstr ""
-=======
 msgstr "Hlásenie chyby"
 
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:298
@@ -655,24 +539,15 @@ msgstr "Nahlásiť problém s aplikáciou"
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:323
 msgid "Error description"
 msgstr "Popis chyby"
->>>>>>> origin/master
 
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:304
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:324
 msgid "Send"
-<<<<<<< HEAD
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:312
-msgid "Report problem"
-msgstr ""
-=======
 msgstr "Poslať"
 
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:312
 msgid "Report problem"
 msgstr "Nahlásiť problém"
->>>>>>> origin/master
 
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:356
 msgid "Image"
@@ -687,12 +562,6 @@ msgstr "Ukázať iba súkromné záznamy"
 #: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:20
 msgid "Cancel"
 msgstr "Zrušiť"
-
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:435
-#: ckanext/apps_and_ideas/templates/related/update.html:48
-#: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:20
-msgid "Cancel"
-msgstr ""
 
 #: ckanext/apps_and_ideas/templates/related/new.html:2
 msgid "Create a related item"
@@ -710,20 +579,12 @@ msgstr ""
 #: ckanext/apps_and_ideas/templates/related/update.html:38
 #: ckanext/apps_and_ideas/templates/related/snippets/related_item.html:10
 msgid "Private"
-<<<<<<< HEAD
-msgstr ""
-=======
 msgstr "Súkromné"
->>>>>>> origin/master
 
 #: ckanext/apps_and_ideas/templates/related/update.html:35
 #: ckanext/apps_and_ideas/templates/related/update.html:38
 msgid "Public"
-<<<<<<< HEAD
-msgstr ""
-=======
 msgstr "Verejné"
->>>>>>> origin/master
 
 #: ckanext/apps_and_ideas/templates/related/snippets/related_item.html:5
 msgid "Go to {related_item_type}"
@@ -750,44 +611,6 @@ msgstr "Zobrazujúce"
 msgid "of"
 msgstr ""
 
-<<<<<<< HEAD
-#: ckanext/apps_and_ideas/templates/related/snippets/related_item.html:11
-msgid "This app was reported by users"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/reports/admin.html:3
-#: ckanext/apps_and_ideas/templates/reports/admin.html:6
-msgid "Reports"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/reports/admin.html:23
-msgid "Report(s) found"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/reports/admin.html:24
-msgid "Showing"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/reports/admin.html:24
-msgid "of"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/reports/admin.html:24
-msgid "report(s) found"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/reports/admin.html:26
-msgid "Delete all reports"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/reports/admin.html:30
-msgid "reported by "
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/reports/admin.html:32
-msgid "Remove report"
-msgstr ""
-=======
 #: ckanext/apps_and_ideas/templates/reports/admin.html:24
 msgid "report(s) found"
 msgstr "nájdených hlásení"
@@ -803,5 +626,4 @@ msgstr "nahlásené od"
 #: ckanext/apps_and_ideas/templates/reports/admin.html:32
 msgid "Remove report"
 msgstr "Odstrániť hlásenie"
->>>>>>> origin/master
 
