@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-apps_and_ideas 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-23 17:34+0100\n"
+"POT-Creation-Date: 2015-02-27 10:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -211,38 +211,53 @@ msgid "Applications"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:6
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:6
 msgid "Comments"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:18
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:34
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:87
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:18
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:34
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:87
 msgid "show"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:32
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:71
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:85
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:32
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:71
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:85
 msgid "hide"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:68
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:68
 msgid "reply"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:101
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:116
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:101
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:116
 msgid "Reply"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:105
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:120
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:143
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:105
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:120
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:143
 msgid "Post comment"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:136
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:139
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:136
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:139
 msgid "New comment"
 msgstr ""
 
