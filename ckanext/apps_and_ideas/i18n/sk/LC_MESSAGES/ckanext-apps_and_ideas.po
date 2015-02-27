@@ -195,7 +195,7 @@ msgstr "Datasety"
 
 #: ckanext/apps_and_ideas/templates/header.html:12
 msgid "Organizations"
-msgstr "Organizácia"
+msgstr "Organizácie"
 
 #: ckanext/apps_and_ideas/templates/header.html:13
 msgid "Groups"
