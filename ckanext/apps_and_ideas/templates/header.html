@@ -5,9 +5,10 @@
 {% endblock %}
 
 {% block header_site_navigation_tabs %}
+<li> <a href="/" alt="home"><i class='icon-home'></i> </a></li>
 
 {{  h.build_nav_main(
-				('home', _('Home')),
+				
                 ('search', _('Datasets')),
                 ('organizations_index', _('Organizations')),
                 ('group_index', _('Groups')),
@@ -15,70 +16,50 @@
 				('apps', _('Applications'))
 				
               ) }}
-              <li> <a href="{{h.xwiki()}}" alt="xwiki url">xwiki </a></li>
-           
+              
+  <li> <a href="{{h.xwiki()}}" alt="xwiki url">xwiki </a></li>         
+<script type="text/javascript">
+function change_style(){
+	var style = document.getElementById("contrast");
+	if(style.href.indexOf("/high_contrast.css") > -1){ style.href = "/screen.css" }else { style.href = "/high_contrast.css" }
+}
+</script>
+  <li>
+   <a onclick="change_style()" href="#">
+      <i class="fa fa-edit"></i>{{_("Change contrast")}}
+    </a>
+  </li>
 
+<!--
 
- <script type="text/javascript">
-function home_button(){
-	var menus = document.getElementsByTagName('nav')
-	/*if(menus.length == 1){
-		var menuitems = document.getElementsByTagName('nav')[0]
-		menuitems.innerHTML = menuitems.innerHTML.replace('Home', "<i class='icon-home'></i>")
-	}else{
-		var menuitems = document.getElementsByTagName('nav')[1]
-		menuitems.innerHTML = menuitems.innerHTML.replace('Home', "<i class='icon-home'></i>")
-	}*/
-	for(var i = 0; i < menus.length; i++){
-		if(menus[i].className == "section navigation"){
-			var menuitems = document.getElementsByTagName('nav')[i]
-			menuitems.innerHTML = menuitems.innerHTML.replace('Home', "<i class='icon-home'></i>")
-			menuitems.innerHTML = menuitems.innerHTML.replace('Domov', "<i class='icon-home'></i>")
-		}
-	}
-	}
-
-
-    </script>            
+-->            
  	{%if  c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
-		 <script>
-	 window.onload =  home_button
-	</script>
+		
 <!--{{c.controller}}-->
 	{%elif c.controller == 'organization'%}
 	{%if c.action == 'index'%}
 	<link rel="stylesheet" type="text/css" href="/box.css" />
 	{%endif%}	
- <script>
-	 window.onload =  home_button
-	</script>
+ 
 	{% elif c.controller == 'related'%}
 	{%if c.action == 'list'%}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
-		 <script>
-	 window.onload =  home_button
-	</script>
+		 
 	{%elif c.action == 'dashboard'%}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
-		 <script>
-	 window.onload =  home_button
-	</script>
+		
 	{%endif%}
  	{% elif c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
 	<!-- {{c.controller}} -->
-	 <script>
-	 window.onload =  home_button
-	</script>
+	
 	{% elif c.controller == 'organization' %}
 		{%if c.action == 'read' %}
 			{%elif c.action == 'activity'%}
 			{%else%}
 				<link rel="stylesheet" type="text/css" href="/box.css" />
-				 <script>
-	 window.onload =  home_button
-	</script>
+				
 			{%endif%}
 	<!-- {{c.controller}} -->
 	{% elif c.controller == 'group' %}
@@ -86,29 +67,21 @@ function home_button(){
 	{%if c.action == 'activity' %}
 	{%else%}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
-		 <script>
-	 window.onload =  home_button
-	</script>
+		
 	{%endif%}
 	<!-- {{c.controller}} -->
 {%elif c.controller == 'user'%}
 	{%if c.action == 'dashboard_organizations' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
-		 <script>
-	 window.onload =  home_button
-	</script>
+		
 	{%elif c.action == 'dashboard_groups' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
-		 <script>
-	 window.onload =  home_button
-	</script>
+		 
 	{%endif%}
 {%elif c.controller == 'package'%}
 	{%if c.action == 'read' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
-		 <script>
-	 window.onload =  home_button
-	</script>
+		
 
 <script>
 	var rows = document.getElementsByTagName('td')
@@ -148,27 +121,11 @@ function home_button(){
 	window.onload = start
 	
 </script>
-	{%else%}
-	<script>
-	 window.onload =  home_button
-	</script>
+
 	{%endif%}
 
+{%endif%}
 
- {%else%}
- <script>
-	 window.onload =  home_button
-	</script>
-{%endif%}
-{%if c.controller== 'group'%}
- <script>
-	 window.onload =  home_button
-	</script>
-{%elif c.controller == 'user' %}
-<script>
-	 window.onload =  home_button
-	</script>
-{%endif%}
 
 {% endblock %}
 
