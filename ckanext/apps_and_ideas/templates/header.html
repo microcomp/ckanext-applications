@@ -7,13 +7,17 @@
 {% block header_site_navigation_tabs %}
 <li> <a href="/" alt="home"><i class='icon-home'></i> </a></li>
 
-{{  h.build_nav_main(				
+{{  h.build_nav_main(
+				
                 ('search', _('Datasets')),
                 ('organizations_index', _('Organizations')),
+                ('group_index', _('Groups')),
                 ('about', _('About')),
 				('apps', _('Applications'))
+				
               ) }}
-<li> <a href="{{h.xwiki()}}" alt="xwiki url">xwiki </a></li>         
+              
+  <li> <a href="{{h.xwiki()}}" alt="xwiki url">xwiki </a></li>         
 <script type="text/javascript">
 function change_style(){
 	var style = document.getElementById("contrast");

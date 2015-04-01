@@ -385,10 +385,10 @@ margin-bottom: 1.5em;
           {{ _('Only show featured items') }}
         </label>
       </div-->
-      {% if h.is_admin() %}
-      
-      <input type="checkbox" id="field-private" name="private" {% if c.filters.get('private') == 'on' %} checked="checked"{% endif %}> {{ _('Only show private items') }}</input>
-         
+      {% if h.is_admin() %} 
+     
+      <input type="checkbox" id="field-private" name="private" {% if c.filters.get('private') == 'on' %} checked="checked"{% endif %}>{{ _('Only show private items') }} 
+       
  {% endif %}
      
      {% if request.url.split("?")[1] %}
