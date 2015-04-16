@@ -3,7 +3,27 @@
 {%set id = data[2] %}
  <link href='/comments.css' type="text/css" rel='stylesheet'>
 
+
+{%set error = request.url.split('?')[1].split('&')%}
+
+{% if error|length > 1 %}
+    {%set errormsg = error[1].split('=') %}
+    {%if errormsg|length > 1%}
+        {%if errormsg[1] == 'too_short' %}
+            <div class="alert alert-danger" role="alert">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span>
+              {{_('The comment is too short.')}}
+            </div>
+        {%endif%}
+    {%endif%}
+{%endif%}
+{% if comments|length > 0 %}
+
   <h2>{{_('Comments')}}:</h2>
+{%endif%}
+
+
 {% for i in h.list(app_id) %}
 {%if i.pub == 'private' %}
 
