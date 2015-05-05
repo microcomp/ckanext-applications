@@ -1,0 +1,641 @@
+# Translations template for ckanext-apps_and_ideas.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the ckanext-apps_and_ideas
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-apps_and_ideas 0.1\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2015-02-27 10:19+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: ckanext/apps_and_ideas/apps.py:255 ckanext/apps_and_ideas/apps.py:276
+#: ckanext/apps_and_ideas/apps.py:295 ckanext/apps_and_ideas/apps.py:351
+#: ckanext/apps_and_ideas/apps.py:540 ckanext/apps_and_ideas/apps.py:567
+#: ckanext/apps_and_ideas/detail.py:116
+msgid "Not authorized to see this page"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:447 ckanext/apps_and_ideas/apps.py:744
+#: ckanext/apps_and_ideas/detail.py:212
+msgid "Most viewed"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:448 ckanext/apps_and_ideas/apps.py:522
+#: ckanext/apps_and_ideas/apps.py:745 ckanext/apps_and_ideas/apps.py:822
+#: ckanext/apps_and_ideas/detail.py:213
+msgid "Most Viewed"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:449 ckanext/apps_and_ideas/apps.py:523
+#: ckanext/apps_and_ideas/apps.py:746 ckanext/apps_and_ideas/apps.py:823
+#: ckanext/apps_and_ideas/detail.py:214
+msgid "Least Viewed"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:450 ckanext/apps_and_ideas/apps.py:524
+#: ckanext/apps_and_ideas/apps.py:747 ckanext/apps_and_ideas/apps.py:824
+#: ckanext/apps_and_ideas/detail.py:215
+msgid "Newest"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:451 ckanext/apps_and_ideas/apps.py:525
+#: ckanext/apps_and_ideas/apps.py:748 ckanext/apps_and_ideas/apps.py:825
+#: ckanext/apps_and_ideas/detail.py:216
+msgid "Oldest"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:545
+msgid "The requested related item was not found"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:565 ckanext/apps_and_ideas/apps.py:574
+#: ckanext/apps_and_ideas/detail.py:114 ckanext/apps_and_ideas/detail.py:127
+msgid "Dataset not found"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:576 ckanext/apps_and_ideas/detail.py:129
+#, python-format
+msgid "Unauthorized to read package %s"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:600 ckanext/apps_and_ideas/apps.py:676
+msgid "Related item not found"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:610
+msgid "Not authorized"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:615
+msgid "Package not found"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:635
+msgid "Related item was successfully created"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:637
+msgid "Related item was successfully updated"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:642
+msgid "Integrity Error"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:668
+msgid "Related item has been deleted."
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:674
+#, python-format
+msgid "Unauthorized to delete related item %s"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:684 ckanext/apps_and_ideas/detail.py:154
+msgid "API"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:685 ckanext/apps_and_ideas/detail.py:155
+msgid "Application"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:686 ckanext/apps_and_ideas/detail.py:156
+msgid "Idea"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:687 ckanext/apps_and_ideas/detail.py:157
+msgid "News Article"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:688 ckanext/apps_and_ideas/detail.py:158
+msgid "Paper"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:689 ckanext/apps_and_ideas/detail.py:159
+msgid "Post"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:690 ckanext/apps_and_ideas/detail.py:160
+msgid "Visualization"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:871
+msgid "no results found"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:897
+msgid "app not found"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:910 ckanext/apps_and_ideas/apps.py:1029
+#: ckanext/apps_and_ideas/apps.py:1059
+msgid "not authorized"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:929 ckanext/apps_and_ideas/apps.py:1038
+#: ckanext/apps_and_ideas/apps.py:1105
+msgid "done"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:971
+msgid "dataset not found"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:1077
+msgid "title is required"
+msgstr ""
+
+#: ckanext/apps_and_ideas/apps.py:1085
+msgid "add some datasets"
+msgstr ""
+
+#: ckanext/apps_and_ideas/detail.py:219 ckanext/apps_and_ideas/detail.py:383
+#: ckanext/apps_and_ideas/detail.py:435 ckanext/apps_and_ideas/detail.py:507
+msgid "Application not found"
+msgstr ""
+
+#: ckanext/apps_and_ideas/detail.py:332 ckanext/apps_and_ideas/detail.py:346
+#: ckanext/apps_and_ideas/detail.py:466
+msgid "Invalid dataset(s)"
+msgstr ""
+
+#: ckanext/apps_and_ideas/detail.py:338 ckanext/apps_and_ideas/detail.py:460
+msgid "Title too short"
+msgstr ""
+
+#: ckanext/apps_and_ideas/detail.py:340 ckanext/apps_and_ideas/detail.py:462
+msgid "URL incorrect"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/header.html:10
+msgid "Home"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/header.html:11
+#: ckanext/apps_and_ideas/templates/apps/new.html:27
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:120
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:127
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:265
+#: ckanext/apps_and_ideas/templates/related/update.html:28
+#: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:12
+msgid "Datasets"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/header.html:12
+msgid "Organizations"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/header.html:13
+msgid "Groups"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/header.html:14
+msgid "About"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/header.html:15
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:21
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:23
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:156
+msgid "Applications"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:6
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:6
+msgid "Comments"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:18
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:34
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:87
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:18
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:34
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:87
+msgid "show"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:32
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:71
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:85
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:32
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:71
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:85
+msgid "hide"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:68
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:68
+msgid "reply"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:101
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:116
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:101
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:116
+msgid "Reply"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:105
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:120
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:143
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:105
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:120
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:143
+msgid "Post comment"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:136
+#: ckanext/apps_and_ideas/templates/apps/comments2.html:139
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:136
+#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:139
+msgid "New comment"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:8
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:83
+msgid "The form contains invalid entries:"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:19
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:115
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:122
+#: ckanext/apps_and_ideas/templates/related/update.html:22
+msgid "Title"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:19
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:115
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:122
+#: ckanext/apps_and_ideas/templates/related/update.html:22
+msgid "My Related Item"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:20
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:116
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:123
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:256
+#: ckanext/apps_and_ideas/templates/related/update.html:23
+msgid "URL"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:20
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:116
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:123
+#: ckanext/apps_and_ideas/templates/related/update.html:23
+msgid "http://example.com/"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:21
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:117
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:124
+#: ckanext/apps_and_ideas/templates/related/update.html:24
+msgid "Image URL"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:21
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:117
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:124
+#: ckanext/apps_and_ideas/templates/related/update.html:24
+msgid "http://example.com/image.png"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:22
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:118
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:125
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:232
+#: ckanext/apps_and_ideas/templates/related/update.html:26
+msgid "Description"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:22
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:118
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:125
+#: ckanext/apps_and_ideas/templates/related/update.html:26
+msgid "A little information about the item..."
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:23
+msgid "Type"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:27
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:120
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:127
+#: ckanext/apps_and_ideas/templates/related/update.html:28
+#: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:12
+msgid "eg. default"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:36
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:137
+#: ckanext/apps_and_ideas/templates/related/update.html:49
+#: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:21
+msgid "Save"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/organization/read_base.html:5
+msgid "New application"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:6
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:9
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:16
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:15
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:25
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:160
+msgid "Apps & Ideas"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:21
+#, python-format
+msgid ""
+"\n"
+"            <p>Showing items <strong>%(first)s - %(last)s</strong> of "
+"<strong>%(item_count)s</strong> related items found</p>\n"
+"          "
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:25
+#, python-format
+msgid ""
+"\n"
+"            <p><strong>%(item_count)s</strong> related items found</p>\n"
+"          "
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:29
+msgid "There have been no apps submitted yet."
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:48
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:365
+msgid "What are applications?"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:50
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:367
+msgid ""
+"\n"
+"        These are applications built with the datasets as well as ideas for\n"
+"        things that could be done with them.\n"
+"      "
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:58
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:375
+msgid "Filter Results"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:63
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:395
+msgid "Filter by type"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:65
+msgid "All"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:73
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:405
+msgid "Sort by"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:75
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:397
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:407
+msgid "Default"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:85
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:417
+msgid "Only show featured items"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/dashboard.html:90
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:434
+msgid "Apply"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/read.html:8
+msgid "Add new application"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/read.html:13
+msgid "Related items"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/read.html:19
+#: ckanext/apps_and_ideas/templates/package/related_list.html:15
+msgid "No related items"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/read_base.html:3
+msgid "Dataset"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/read_base.html:5
+msgid "Activity Stream"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/related_list.html:5
+msgid "Related"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/related_list.html:8
+msgid "Related Media for {dataset}"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/related_list.html:20
+#: ckanext/apps_and_ideas/templates/related/snippets/related_list.html:29
+msgid "Add Related Application"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:3
+msgid "Additional Info"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:7
+msgid "Field"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:8
+msgid "Value"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:15
+msgid "Source"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:22
+#: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:27
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:248
+msgid "Author"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:34
+#: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:39
+msgid "Maintainer"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:46
+msgid "Version"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:53
+msgid "State"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:13
+msgid "Apps"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:199
+msgid "Search"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:224
+msgid "Permanent URL"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:234
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:242
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:250
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:258
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:259
+msgid "no data"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:240
+msgid "Date of creation"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:274
+#: ckanext/apps_and_ideas/templates/related/update.html:30
+msgid "Status"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:287
+#: ckanext/apps_and_ideas/templates/related/snippets/related_item.html:30
+msgid "Edit"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:289
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:291
+msgid "Delete"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:291
+msgid "Are you sure?"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:297
+msgid "Error report"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:298
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:321
+msgid "Report app issue"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:300
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:323
+msgid "Error description"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:304
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:324
+msgid "Send"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:312
+msgid "Report problem"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:356
+msgid "Image"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:422
+msgid "Only show private items"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:435
+#: ckanext/apps_and_ideas/templates/related/update.html:48
+#: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:20
+msgid "Cancel"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/new.html:2
+msgid "Create a related item"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/new.html:4
+msgid "Create Related"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/new.html:7
+msgid "Create Related Item"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/update.html:34
+#: ckanext/apps_and_ideas/templates/related/update.html:38
+#: ckanext/apps_and_ideas/templates/related/snippets/related_item.html:10
+msgid "Private"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/update.html:35
+#: ckanext/apps_and_ideas/templates/related/update.html:38
+msgid "Public"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/snippets/related_item.html:5
+msgid "Go to {related_item_type}"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/snippets/related_item.html:11
+msgid "This app was reported by users"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/reports/admin.html:3
+#: ckanext/apps_and_ideas/templates/reports/admin.html:6
+msgid "Reports"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/reports/admin.html:23
+msgid "Report(s) found"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/reports/admin.html:24
+msgid "Showing"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/reports/admin.html:24
+msgid "of"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/reports/admin.html:24
+msgid "report(s) found"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/reports/admin.html:26
+msgid "Delete all reports"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/reports/admin.html:30
+msgid "reported by "
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/reports/admin.html:32
+msgid "Remove report"
+msgstr ""
+
