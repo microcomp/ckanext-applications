@@ -8,7 +8,7 @@
 <li> <a href="/" alt="home"><i class='icon-home'></i> </a></li>
 
 {{super()}}
-              
+  <li> <a href="/apps" alt="xwiki url">{{_('Applications')}}</a></li>              
   <li> <a href="{{h.xwiki()}}" alt="xwiki url">xwiki </a></li>         
 <script type="text/javascript">
 function change_style(){
@@ -73,16 +73,6 @@ function change_style(){
 {%elif c.controller == 'package'%}
 	{%if c.action == 'read' %}
 		<link rel="stylesheet" type="text/css" href="/box.css" />
-		
-
-
-
 	{%endif%}
-
 {%endif%}
-
-
 {% endblock %}
-
-
-
