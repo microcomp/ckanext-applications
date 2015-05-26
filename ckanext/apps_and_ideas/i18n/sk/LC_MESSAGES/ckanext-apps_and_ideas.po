@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-apps_and_ideas 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-27 10:19+0100\n"
+"POT-Creation-Date: 2015-02-23 17:34+0100\n"
 "PO-Revision-Date: 2015-01-14 15:46+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: sk <LL@li.org>\n"
@@ -213,53 +213,38 @@ msgid "Applications"
 msgstr "Aplikácie"
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:6
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:6
 msgid "Comments"
 msgstr "Komentáre"
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:18
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:34
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:87
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:18
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:34
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:87
 msgid "show"
 msgstr "ukázať"
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:32
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:71
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:85
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:32
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:71
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:85
 msgid "hide"
 msgstr "skrýť"
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:68
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:68
 msgid "reply"
 msgstr "odpovedať"
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:101
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:116
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:101
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:116
 msgid "Reply"
 msgstr "Odpoveď"
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:105
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:120
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:143
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:105
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:120
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:143
 msgid "Post comment"
 msgstr "Odošli komentár"
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:136
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:139
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:136
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:139
 msgid "New comment"
 msgstr "Nový komentár"
 
@@ -295,7 +280,7 @@ msgstr "URL"
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:123
 #: ckanext/apps_and_ideas/templates/related/update.html:23
 msgid "http://example.com/"
-msgstr ""
+msgstr "http://example.com/"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:21
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:117
@@ -309,7 +294,7 @@ msgstr "Obrázok (URL)"
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:124
 #: ckanext/apps_and_ideas/templates/related/update.html:24
 msgid "http://example.com/image.png"
-msgstr ""
+msgstr "http://example.com/image.png"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:22
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:118
@@ -365,7 +350,8 @@ msgid ""
 "            <p>Showing items <strong>%(first)s - %(last)s</strong> of "
 "<strong>%(item_count)s</strong> related items found</p>\n"
 "          "
-msgstr ""
+msgstr "<p>Zobrazené položky <strong>%(first)s - %(last)s</strong> of "
+"<strong>%(item_count)s</strong> súvisiace položky nájdené</p>\n"
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:25
 #, python-format
@@ -373,7 +359,7 @@ msgid ""
 "\n"
 "            <p><strong>%(item_count)s</strong> related items found</p>\n"
 "          "
-msgstr ""
+msgstr "<p><strong>%(item_count)s</strong> súvisiace položky nájdené</p>\n"
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:29
 msgid "There have been no apps submitted yet."
@@ -392,7 +378,7 @@ msgid ""
 "for\n"
 "        things that could be done with them.\n"
 "      "
-msgstr ""
+msgstr "Tiet aplikácie boli vytvorené s datasetmi ako aj nápady"
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:58
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:375
@@ -462,7 +448,7 @@ msgstr "Súvisiace média s {dataset}"
 #: ckanext/apps_and_ideas/templates/related/snippets/related_list.html:29
 msgid "Add Related Application"
 msgstr "Pridať súvisiacu aplikáciu"
-
+ 
 #: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:3
 msgid "Additional Info"
 msgstr "Dodatočné informácie"
@@ -584,11 +570,11 @@ msgstr "Vytvortiť súvisiaci záznam"
 
 #: ckanext/apps_and_ideas/templates/related/new.html:4
 msgid "Create Related"
-msgstr ""
+msgstr "Vytvoriť súvisiace"
 
 #: ckanext/apps_and_ideas/templates/related/new.html:7
 msgid "Create Related Item"
-msgstr ""
+msgstr "Vytvoriť súvisiacu položku"
 
 #: ckanext/apps_and_ideas/templates/related/update.html:34
 #: ckanext/apps_and_ideas/templates/related/update.html:38
@@ -624,7 +610,7 @@ msgstr "Zobrazujúce"
 
 #: ckanext/apps_and_ideas/templates/reports/admin.html:24
 msgid "of"
-msgstr ""
+msgstr "Z/Od"
 
 #: ckanext/apps_and_ideas/templates/reports/admin.html:24
 msgid "report(s) found"
