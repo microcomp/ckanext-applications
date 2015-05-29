@@ -269,7 +269,7 @@ margin-bottom: 1.5em;
                                       "{%if h.reported_by_user(c.userobj.id, c.id)== False%}{% for i in h.report_text(c.userobj.id, c.id).split('\n')%}{{i}}"+
                                       "&#10;{%endfor%}"+
                                       "{%endif%}</textarea>" +
-                                      "<button type='submit' class='btn btn-primary'> {{_('Send')}}</button>" +
+                                      "<button type='submit' class='mybutton'> {{_('Send')}}</button>" +
                                       "</form>"
                                   }
                               
@@ -289,7 +289,7 @@ margin-bottom: 1.5em;
         <fieldset>{{_('Report app issue')}}</fieldset>
         <input type='text' name="app_id" value="{{c.id}}" style="display:none" >
         <textarea rows="4" name="report_text" placeholder="{{_('Error description')}}" style="width:100%;"></textarea>
-        <button type="submit" class="btn btn-primary"> {{_('Send')}}</button>
+        <button type="submit" class="mybutton"> {{_('Send')}}</button>
       <form>{%endif%}
       </noscript>
       <hr>
