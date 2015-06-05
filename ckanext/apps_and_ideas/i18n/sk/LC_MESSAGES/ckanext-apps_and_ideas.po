@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-apps_and_ideas 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-23 17:34+0100\n"
+"POT-Creation-Date: 2015-05-26 14:55+0100\n"
 "PO-Revision-Date: 2015-01-14 15:46+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: sk <LL@li.org>\n"
@@ -179,38 +179,38 @@ msgstr "Názov príliš krátky"
 msgid "URL incorrect"
 msgstr "Nesprávna URL"
 
-#: ckanext/apps_and_ideas/templates/header.html:10
-msgid "Home"
-msgstr "Domov"
-
-#: ckanext/apps_and_ideas/templates/header.html:11
+#: ckanext/apps_and_ideas/templates/header.html:12
 #: ckanext/apps_and_ideas/templates/apps/new.html:27
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:120
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:127
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:265
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:88
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:95
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:233
 #: ckanext/apps_and_ideas/templates/related/update.html:28
 #: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:12
 msgid "Datasets"
 msgstr "Datasety"
 
-#: ckanext/apps_and_ideas/templates/header.html:12
+#: ckanext/apps_and_ideas/templates/header.html:13
 msgid "Organizations"
 msgstr "Organizácie"
 
-#: ckanext/apps_and_ideas/templates/header.html:13
+#: ckanext/apps_and_ideas/templates/header.html:14
 msgid "Groups"
 msgstr "Skupiny"
 
-#: ckanext/apps_and_ideas/templates/header.html:14
+#: ckanext/apps_and_ideas/templates/header.html:15
 msgid "About"
 msgstr "O projekte"
 
-#: ckanext/apps_and_ideas/templates/header.html:15
+#: ckanext/apps_and_ideas/templates/header.html:16
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:21
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:23
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:156
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:124
 msgid "Applications"
 msgstr "Aplikácie"
+
+#: ckanext/apps_and_ideas/templates/header.html:29
+msgid "Change contrast"
+msgstr "Zmeniť kontrast"
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:6
 msgid "Comments"
@@ -249,64 +249,64 @@ msgid "New comment"
 msgstr "Nový komentár"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:8
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:83
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:51
 msgid "The form contains invalid entries:"
 msgstr "Formulár obsahuje nevalídne vstupy:"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:19
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:115
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:122
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:83
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:90
 #: ckanext/apps_and_ideas/templates/related/update.html:22
 msgid "Title"
 msgstr "Názov"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:19
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:115
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:122
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:83
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:90
 #: ckanext/apps_and_ideas/templates/related/update.html:22
 msgid "My Related Item"
 msgstr "Moje súvisiace aplikácie"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:20
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:116
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:123
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:256
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:84
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:91
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:224
 #: ckanext/apps_and_ideas/templates/related/update.html:23
 msgid "URL"
 msgstr "URL"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:20
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:116
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:123
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:84
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:91
 #: ckanext/apps_and_ideas/templates/related/update.html:23
 msgid "http://example.com/"
 msgstr "http://example.com/"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:21
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:117
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:124
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:85
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:92
 #: ckanext/apps_and_ideas/templates/related/update.html:24
 msgid "Image URL"
 msgstr "Obrázok (URL)"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:21
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:117
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:124
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:85
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:92
 #: ckanext/apps_and_ideas/templates/related/update.html:24
 msgid "http://example.com/image.png"
 msgstr "http://example.com/image.png"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:22
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:118
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:125
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:232
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:86
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:93
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:200
 #: ckanext/apps_and_ideas/templates/related/update.html:26
 msgid "Description"
 msgstr "Popis"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:22
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:118
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:125
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:86
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:93
 #: ckanext/apps_and_ideas/templates/related/update.html:26
 msgid "A little information about the item..."
 msgstr "Výstižný popis aplikácie..."
@@ -316,15 +316,15 @@ msgid "Type"
 msgstr "Typ"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:27
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:120
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:127
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:88
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:95
 #: ckanext/apps_and_ideas/templates/related/update.html:28
 #: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:12
 msgid "eg. default"
 msgstr "napr. dataset"
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:36
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:137
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:105
 #: ckanext/apps_and_ideas/templates/related/update.html:49
 #: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:21
 msgid "Save"
@@ -339,7 +339,7 @@ msgstr "Nová aplikácia"
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:16
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:15
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:25
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:160
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:128
 msgid "Apps & Ideas"
 msgstr "Aplikácie & Nápady"
 
@@ -350,8 +350,11 @@ msgid ""
 "            <p>Showing items <strong>%(first)s - %(last)s</strong> of "
 "<strong>%(item_count)s</strong> related items found</p>\n"
 "          "
-msgstr "<p>Zobrazené položky <strong>%(first)s - %(last)s</strong> of "
+msgstr ""
+"\n"
+"           <p>Zobrazené položky <strong>%(first)s - %(last)s</strong> of "
 "<strong>%(item_count)s</strong> súvisiace položky nájdené</p>\n"
+"          "
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:25
 #, python-format
@@ -359,34 +362,42 @@ msgid ""
 "\n"
 "            <p><strong>%(item_count)s</strong> related items found</p>\n"
 "          "
-msgstr "<p><strong>%(item_count)s</strong> súvisiace položky nájdené</p>\n"
+msgstr ""
+"\n"
+"            <p><strong>%(item_count)s</strong> súvisiace položky "
+"nájdené</p>\n"
+"          "
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:29
 msgid "There have been no apps submitted yet."
 msgstr "Ešte neboli pridané žiadne aplikácie."
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:48
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:365
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:333
 msgid "What are applications?"
 msgstr "Co sú to aplikácie?"
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:50
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:367
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:335
 msgid ""
 "\n"
 "        These are applications built with the datasets as well as ideas "
 "for\n"
 "        things that could be done with them.\n"
 "      "
-msgstr "Tiet aplikácie boli vytvorené s datasetmi ako aj nápady"
+msgstr ""
+"\n"
+"       Toto sú aplikácie zostavené datasetmi ako aj nápadmipre\n"
+"       ich iné využitie.\n"
+"      "
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:58
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:375
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:343
 msgid "Filter Results"
 msgstr "Filtrovať výsledky"
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:63
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:395
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:363
 msgid "Filter by type"
 msgstr "Filtrovať podľa typu"
 
@@ -395,23 +406,23 @@ msgid "All"
 msgstr "Všetky"
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:73
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:405
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:373
 msgid "Sort by"
 msgstr "Zoradiť podľa"
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:75
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:397
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:407
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:365
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:375
 msgid "Default"
 msgstr "Štandard"
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:85
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:417
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:385
 msgid "Only show featured items"
 msgstr "Ukázať iba"
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:90
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:434
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:402
 msgid "Apply"
 msgstr "Použiť"
 
@@ -448,7 +459,7 @@ msgstr "Súvisiace média s {dataset}"
 #: ckanext/apps_and_ideas/templates/related/snippets/related_list.html:29
 msgid "Add Related Application"
 msgstr "Pridať súvisiacu aplikáciu"
- 
+
 #: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:3
 msgid "Additional Info"
 msgstr "Dodatočné informácie"
@@ -467,7 +478,7 @@ msgstr "Zdroj"
 
 #: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:22
 #: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:27
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:248
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:216
 msgid "Author"
 msgstr "Autor"
 
@@ -488,77 +499,77 @@ msgstr "Stav"
 msgid "Apps"
 msgstr "Aplikácie"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:199
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:167
 msgid "Search"
 msgstr "Vyhľadávať"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:224
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:192
 msgid "Permanent URL"
 msgstr "Permanentná URL"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:234
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:242
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:250
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:258
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:259
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:202
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:210
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:218
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:226
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:227
 msgid "no data"
 msgstr "žiadne dáta"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:240
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:208
 msgid "Date of creation"
 msgstr "Dátum vytvorenia"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:274
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:242
 #: ckanext/apps_and_ideas/templates/related/update.html:30
 msgid "Status"
 msgstr "Status"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:287
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:255
 #: ckanext/apps_and_ideas/templates/related/snippets/related_item.html:30
 msgid "Edit"
 msgstr "Upraviť"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:289
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:291
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:257
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:259
 msgid "Delete"
 msgstr "Vymazať"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:291
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:259
 msgid "Are you sure?"
 msgstr "Ste si istý?"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:297
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:265
 msgid "Error report"
 msgstr "Hlásenie chyby"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:298
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:321
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:266
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:289
 msgid "Report app issue"
 msgstr "Nahlásiť problém s aplikáciou"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:300
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:323
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:268
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:291
 msgid "Error description"
 msgstr "Popis chyby"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:304
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:324
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:272
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:292
 msgid "Send"
 msgstr "Poslať"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:312
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:280
 msgid "Report problem"
 msgstr "Nahlásiť problém"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:356
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:324
 msgid "Image"
 msgstr "Obrázok"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:422
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:390
 msgid "Only show private items"
 msgstr "Ukázať iba súkromné záznamy"
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:435
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:403
 #: ckanext/apps_and_ideas/templates/related/update.html:48
 #: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:20
 msgid "Cancel"
@@ -627,4 +638,7 @@ msgstr "nahlásené od"
 #: ckanext/apps_and_ideas/templates/reports/admin.html:32
 msgid "Remove report"
 msgstr "Odstrániť hlásenie"
+
+#~ msgid "Home"
+#~ msgstr "Domov"
 
