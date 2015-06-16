@@ -30,12 +30,17 @@
     <label class="control-label" for="status" >{{_('Status')}}</label>
     {%if h.is_admin() %}
    <select id="status" name="private" style="margin-left: 0.6em;">
-      
-        <option value="private">{{_('Private')}}</option>
-        <option value="public">{{_('Public')}}</option>
+      {% if h.is_priv(c.data['id']) == 'public'%} 
+        <option value="private"  >{{_('Private')}}</option>
+        <option value="public" selected>{{_('Public')}}</option>
+      {%else%}
+        <option value="private" selected>{{_('Private')}}</option>
+        <option value="public" >{{_('Public')}}</option>
+      {%endif%}
     </select>
+
     {%else%}
-      <p style="padding-top: 0.35em; font-size:1em;">{% if h.is_priv(data.id) %}{{_('Private')}}{%else%}{{_('Public')}}{%endif%}</p>
+      <p style="padding-top: 0.35em; font-size:1em;">{% if h.is_priv(c.data['id']) %}{{_('Private')}}{%else%}{{_('Public')}}{%endif%}</p>
     {%endif%}
   {% endblock %}
 
