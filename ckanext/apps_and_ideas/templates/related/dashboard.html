@@ -43,7 +43,7 @@ FORM
 
 </script>
           <div class="module-content">
-             <h1> New app </h1>
+             <h1> {{ _('New app') }} </h1>
             <form name="new_app_form"  class="dataset-form form-horizontal" method="post" data-module="basic-form" action='/apps/new/in'>
               {% block error_summary %}
                 {% if error_summary | count %}

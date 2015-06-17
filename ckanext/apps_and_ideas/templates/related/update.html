@@ -4,7 +4,7 @@
 {%block primary_content%}
 
 <div class="module-content">
-             <h1> Edit application </h1>
+             <h1>{{ _('Edit application') }}</h1>
             <form name="new_app_form" onsubmit="return validateForm()" class="dataset-form form-horizontal" method="post" data-module="basic-form" action='/apps/update/in?id={{c.data['id']}}'>
             {%if c.errors|length > 0 %}
               <div class="alert alert-danger" role="alert">

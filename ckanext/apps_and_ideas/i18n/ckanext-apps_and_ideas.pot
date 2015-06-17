@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-apps_and_ideas 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-27 10:19+0100\n"
+"POT-Creation-Date: 2015-06-17 08:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -177,149 +177,112 @@ msgstr ""
 msgid "URL incorrect"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/header.html:10
-msgid "Home"
-msgstr ""
-
 #: ckanext/apps_and_ideas/templates/header.html:11
-#: ckanext/apps_and_ideas/templates/apps/new.html:27
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:120
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:127
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:265
-#: ckanext/apps_and_ideas/templates/related/update.html:28
-#: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:12
-msgid "Datasets"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/header.html:12
-msgid "Organizations"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/header.html:13
-msgid "Groups"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/header.html:14
-msgid "About"
-msgstr ""
-
-#: ckanext/apps_and_ideas/templates/header.html:15
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:21
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:23
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:156
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:124
 msgid "Applications"
 msgstr ""
 
+#: ckanext/apps_and_ideas/templates/header.html:21
+msgid "Change contrast"
+msgstr ""
+
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:6
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:6
 msgid "Comments"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:18
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:34
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:87
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:18
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:34
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:87
 msgid "show"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:32
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:71
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:85
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:32
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:71
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:85
 msgid "hide"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:68
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:68
 msgid "reply"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:101
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:116
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:101
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:116
 msgid "Reply"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:105
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:120
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:143
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:105
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:120
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:143
 msgid "Post comment"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:136
 #: ckanext/apps_and_ideas/templates/apps/comments2.html:139
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:136
-#: ckanext/apps_and_ideas/templates/related/snippets/comments2.html:139
 msgid "New comment"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:8
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:83
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:51
 msgid "The form contains invalid entries:"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:19
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:115
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:122
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:83
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:90
 #: ckanext/apps_and_ideas/templates/related/update.html:22
 msgid "Title"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:19
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:115
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:122
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:83
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:90
 #: ckanext/apps_and_ideas/templates/related/update.html:22
 msgid "My Related Item"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:20
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:116
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:123
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:256
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:84
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:91
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:224
 #: ckanext/apps_and_ideas/templates/related/update.html:23
 msgid "URL"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:20
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:116
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:123
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:84
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:91
 #: ckanext/apps_and_ideas/templates/related/update.html:23
 msgid "http://example.com/"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:21
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:117
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:124
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:85
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:92
 #: ckanext/apps_and_ideas/templates/related/update.html:24
 msgid "Image URL"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:21
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:117
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:124
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:85
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:92
 #: ckanext/apps_and_ideas/templates/related/update.html:24
 msgid "http://example.com/image.png"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:22
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:118
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:125
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:232
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:86
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:93
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:200
 #: ckanext/apps_and_ideas/templates/related/update.html:26
 msgid "Description"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:22
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:118
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:125
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:86
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:93
 #: ckanext/apps_and_ideas/templates/related/update.html:26
 msgid "A little information about the item..."
 msgstr ""
@@ -329,15 +292,24 @@ msgid "Type"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:27
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:120
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:127
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:88
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:95
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:233
+#: ckanext/apps_and_ideas/templates/related/update.html:28
+#: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:12
+msgid "Datasets"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:27
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:88
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:95
 #: ckanext/apps_and_ideas/templates/related/update.html:28
 #: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:12
 msgid "eg. default"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/apps/new.html:36
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:137
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:105
 #: ckanext/apps_and_ideas/templates/related/update.html:49
 #: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:21
 msgid "Save"
@@ -352,7 +324,7 @@ msgstr ""
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:16
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:15
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:25
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:160
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:128
 msgid "Apps & Ideas"
 msgstr ""
 
@@ -378,12 +350,12 @@ msgid "There have been no apps submitted yet."
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:48
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:365
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:333
 msgid "What are applications?"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:50
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:367
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:335
 msgid ""
 "\n"
 "        These are applications built with the datasets as well as ideas for\n"
@@ -392,12 +364,12 @@ msgid ""
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:58
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:375
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:343
 msgid "Filter Results"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:63
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:395
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:363
 msgid "Filter by type"
 msgstr ""
 
@@ -406,23 +378,23 @@ msgid "All"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:73
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:405
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:373
 msgid "Sort by"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:75
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:397
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:407
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:365
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:375
 msgid "Default"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:85
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:417
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:385
 msgid "Only show featured items"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:90
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:434
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:402
 msgid "Apply"
 msgstr ""
 
@@ -478,7 +450,7 @@ msgstr ""
 
 #: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:22
 #: ckanext/apps_and_ideas/templates/package/snippets/additional_info.html:27
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:248
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:216
 msgid "Author"
 msgstr ""
 
@@ -499,77 +471,81 @@ msgstr ""
 msgid "Apps"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:199
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:46
+msgid "New app"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:167
 msgid "Search"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:224
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:192
 msgid "Permanent URL"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:234
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:242
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:250
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:258
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:259
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:202
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:210
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:218
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:226
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:227
 msgid "no data"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:240
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:208
 msgid "Date of creation"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:274
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:242
 #: ckanext/apps_and_ideas/templates/related/update.html:30
 msgid "Status"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:287
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:255
 #: ckanext/apps_and_ideas/templates/related/snippets/related_item.html:30
 msgid "Edit"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:289
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:291
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:257
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:259
 msgid "Delete"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:291
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:259
 msgid "Are you sure?"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:297
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:265
 msgid "Error report"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:298
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:321
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:266
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:289
 msgid "Report app issue"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:300
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:323
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:268
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:291
 msgid "Error description"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:304
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:324
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:272
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:292
 msgid "Send"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:312
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:280
 msgid "Report problem"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:356
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:324
 msgid "Image"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:422
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:390
 msgid "Only show private items"
 msgstr ""
 
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:435
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:403
 #: ckanext/apps_and_ideas/templates/related/update.html:48
 #: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:20
 msgid "Cancel"
@@ -585,6 +561,10 @@ msgstr ""
 
 #: ckanext/apps_and_ideas/templates/related/new.html:7
 msgid "Create Related Item"
+msgstr ""
+
+#: ckanext/apps_and_ideas/templates/related/update.html:7
+msgid "Edit application"
 msgstr ""
 
 #: ckanext/apps_and_ideas/templates/related/update.html:34

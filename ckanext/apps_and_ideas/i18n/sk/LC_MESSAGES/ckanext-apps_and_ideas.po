@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-apps_and_ideas 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-26 14:55+0100\n"
+"POT-Creation-Date: 2015-06-17 08:46+0100\n"
 "PO-Revision-Date: 2015-01-14 15:46+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: sk <LL@li.org>\n"
@@ -179,36 +179,14 @@ msgstr "Názov príliš krátky"
 msgid "URL incorrect"
 msgstr "Nesprávna URL"
 
-#: ckanext/apps_and_ideas/templates/header.html:12
-#: ckanext/apps_and_ideas/templates/apps/new.html:27
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:88
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:95
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:233
-#: ckanext/apps_and_ideas/templates/related/update.html:28
-#: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:12
-msgid "Datasets"
-msgstr "Datasety"
-
-#: ckanext/apps_and_ideas/templates/header.html:13
-msgid "Organizations"
-msgstr "Organizácie"
-
-#: ckanext/apps_and_ideas/templates/header.html:14
-msgid "Groups"
-msgstr "Skupiny"
-
-#: ckanext/apps_and_ideas/templates/header.html:15
-msgid "About"
-msgstr "O projekte"
-
-#: ckanext/apps_and_ideas/templates/header.html:16
+#: ckanext/apps_and_ideas/templates/header.html:11
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:21
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:23
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:124
 msgid "Applications"
 msgstr "Aplikácie"
 
-#: ckanext/apps_and_ideas/templates/header.html:29
+#: ckanext/apps_and_ideas/templates/header.html:21
 msgid "Change contrast"
 msgstr "Zmeniť kontrast"
 
@@ -318,6 +296,15 @@ msgstr "Typ"
 #: ckanext/apps_and_ideas/templates/apps/new.html:27
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:88
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:95
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:233
+#: ckanext/apps_and_ideas/templates/related/update.html:28
+#: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:12
+msgid "Datasets"
+msgstr "Datasety"
+
+#: ckanext/apps_and_ideas/templates/apps/new.html:27
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:88
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:95
 #: ckanext/apps_and_ideas/templates/related/update.html:28
 #: ckanext/apps_and_ideas/templates/related/snippets/related_form.html:12
 msgid "eg. default"
@@ -387,7 +374,7 @@ msgid ""
 "      "
 msgstr ""
 "\n"
-"       Toto sú aplikácie zostavené datasetmi ako aj nápadmipre\n"
+"       Toto sú aplikácie zostavené datasetmi ako aj nápadmi pre\n"
 "       ich iné využitie.\n"
 "      "
 
@@ -499,6 +486,10 @@ msgstr "Stav"
 msgid "Apps"
 msgstr "Aplikácie"
 
+#: ckanext/apps_and_ideas/templates/related/dashboard.html:46
+msgid "New app"
+msgstr "Nová aplikácia"
+
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:167
 msgid "Search"
 msgstr "Vyhľadávať"
@@ -587,6 +578,10 @@ msgstr "Vytvoriť súvisiace"
 msgid "Create Related Item"
 msgstr "Vytvoriť súvisiacu položku"
 
+#: ckanext/apps_and_ideas/templates/related/update.html:7
+msgid "Edit application"
+msgstr "Editovať aplikáciu"
+
 #: ckanext/apps_and_ideas/templates/related/update.html:34
 #: ckanext/apps_and_ideas/templates/related/update.html:38
 #: ckanext/apps_and_ideas/templates/related/snippets/related_item.html:10
@@ -638,7 +633,4 @@ msgstr "nahlásené od"
 #: ckanext/apps_and_ideas/templates/reports/admin.html:32
 msgid "Remove report"
 msgstr "Odstrániť hlásenie"
-
-#~ msgid "Home"
-#~ msgstr "Domov"
 
