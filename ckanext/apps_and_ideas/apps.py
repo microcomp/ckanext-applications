@@ -18,8 +18,11 @@ import logging
 import ckan.logic
 import __builtin__
 import db
+from pylons import config, request, response
 
 import json
+APIKEY_HEADER_NAME_KEY = 'apikey_header_name'
+APIKEY_HEADER_NAME_DEFAULT = 'X-CKAN-API-Key'
 
 abort = base.abort
 _get_action = logic.get_action
@@ -111,8 +114,8 @@ def is_private(id):
 
 
 def check(id):
-    API_KEY = base.request.params.get('apikey', '')
-    if len(c.user) == 0 and len(API_KEY) != 0:
+    API_KEY = self._get_apikey() #base.request.params.get('apikey', '')
+    if len(c.user) == 0 and API_KEY != None:
         c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
 
     context = {'model': model, 'session': model.Session,
@@ -245,6 +248,26 @@ def reported_id(related_id, user_id):
     res = [x for x in res if x.value.split('*')[0] == user_id]
     return res[0].value.split('*')[1]
 class AppsController(base.BaseController):
+    def _get_apikey(self):
+        apikey_header_name = config.get(APIKEY_HEADER_NAME_KEY,
+                                        APIKEY_HEADER_NAME_DEFAULT)
+        apikey = request.headers.get(apikey_header_name, '')
+        if not apikey:
+            apikey = request.environ.get(apikey_header_name, '')
+        if not apikey:
+            # For misunderstanding old documentation (now fixed).
+            apikey = request.environ.get('HTTP_AUTHORIZATION', '')
+        if not apikey:
+            apikey = request.environ.get('Authorization', '')
+            # Forget HTTP Auth credentials (they have spaces).
+            if ' ' in apikey:
+                apikey = ''
+        if not apikey:
+            return None
+        self.log.debug("Received API Key: %s" % apikey)
+        apikey = unicode(apikey)
+        return apikey
+
     def delete_all_reports(self):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -752,8 +775,8 @@ class AppsController(base.BaseController):
         return base.render("related/dashboard.html")
     def list_apps_json(self):
         """ List all related items regardless of dataset """
-        API_KEY = base.request.params.get('apikey', '')
-        if len(c.user) == 0 and len(API_KEY) != 0:
+        API_KEY = self._get_apikey() # base.request.params.get('apikey', '')
+        if len(c.user) == 0 and API_KEY != None:
             c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
 
         context = {'model': model, 'session': model.Session,
@@ -899,7 +922,7 @@ class AppsController(base.BaseController):
         API_KEY = base.request.params.get('apikey','')
         logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         logging.warning(API_KEY)
-        if len(c.user) == 0 and len(API_KEY) != 0:
+        if len(c.user) == 0 and API_KEY != None:
             c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
             logging.warning(c.user)
         context = {'user' : c.user} 
@@ -952,8 +975,8 @@ class AppsController(base.BaseController):
         model.Session.commit()
         return
     def mod_app_api(self):
-        API_KEY = base.request.params.get('apikey', '')
-        if len(c.user) == 0 and len(API_KEY) != 0:
+        API_KEY = self._get_apikey() #base.request.params.get('apikey', '')
+        if len(c.user) == 0 and API_KEY != None:
             c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
 
         context = {'model': model, 'session': model.Session,
@@ -1042,8 +1065,9 @@ class AppsController(base.BaseController):
         return dataset != None
 
     def new_app_api(self):
-        API_KEY = base.request.params.get('apikey', '')
-        if len(c.user) == 0 and len(API_KEY) != 0:
+        API_KEY = self._get_apikey() #base.request.params.get('apikey', '')
+         
+        if len(c.user) == 0 and API_KEY != None:
             c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
         context = {'user': c.user}
         
