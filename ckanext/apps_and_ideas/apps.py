@@ -1075,7 +1075,7 @@ class AppsController(base.BaseController):
         #request.add_header('Authorization', 'e8491611-60f7-46a1-8c2a-94d0cc294d6b')
         #response_dict = json.loads(urllib2.urlopen(request, '{}').read())
         
-        logging.warning(response_dict)
+        #logging.warning(response_dict)
 
         try:
             _check_access('app_create', context)
