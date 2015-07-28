@@ -114,9 +114,12 @@ def is_private(id):
 
 
 def check(id):
-    API_KEY = self._get_apikey() #base.request.params.get('apikey', '')
+    API_KEY = _get_apikey() #base.request.params.get('apikey', '')
     if len(c.user) == 0 and API_KEY != None:
-        c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
+        c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
+        if c.user != None:
+            c.user = c.user.name
+        
 
     context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -247,26 +250,27 @@ def reported_id(related_id, user_id):
     res = db.RelatedExtra.get(**data_dict)
     res = [x for x in res if x.value.split('*')[0] == user_id]
     return res[0].value.split('*')[1]
+def _get_apikey():
+    apikey_header_name = config.get(APIKEY_HEADER_NAME_KEY,
+                                    APIKEY_HEADER_NAME_DEFAULT)
+    apikey = request.headers.get(apikey_header_name, '')
+    if not apikey:
+        apikey = request.environ.get(apikey_header_name, '')
+    if not apikey:
+        # For misunderstanding old documentation (now fixed).
+        apikey = request.environ.get('HTTP_AUTHORIZATION', '')
+    if not apikey:
+        apikey = request.environ.get('Authorization', '')
+        # Forget HTTP Auth credentials (they have spaces).
+        if ' ' in apikey:
+            apikey = ''
+    if not apikey:
+        return None
+    
+    apikey = unicode(apikey)
+    return apikey
 class AppsController(base.BaseController):
-    def _get_apikey(self):
-        apikey_header_name = config.get(APIKEY_HEADER_NAME_KEY,
-                                        APIKEY_HEADER_NAME_DEFAULT)
-        apikey = request.headers.get(apikey_header_name, '')
-        if not apikey:
-            apikey = request.environ.get(apikey_header_name, '')
-        if not apikey:
-            # For misunderstanding old documentation (now fixed).
-            apikey = request.environ.get('HTTP_AUTHORIZATION', '')
-        if not apikey:
-            apikey = request.environ.get('Authorization', '')
-            # Forget HTTP Auth credentials (they have spaces).
-            if ' ' in apikey:
-                apikey = ''
-        if not apikey:
-            return None
-        self.log.debug("Received API Key: %s" % apikey)
-        apikey = unicode(apikey)
-        return apikey
+    
 
     def delete_all_reports(self):
         context = {'model': model, 'session': model.Session,
@@ -581,7 +585,7 @@ class AppsController(base.BaseController):
                    'auth_user_obj': c.userobj,
                    'for_view': True}
         data_dict = {'id': id}
-    
+        response.headers['Content-Type'] = 'json'
         try:
             logic.check_access('package_show', context, data_dict)
         except logic.NotFound:
@@ -775,9 +779,11 @@ class AppsController(base.BaseController):
         return base.render("related/dashboard.html")
     def list_apps_json(self):
         """ List all related items regardless of dataset """
-        API_KEY = self._get_apikey() # base.request.params.get('apikey', '')
+        API_KEY = _get_apikey() # base.request.params.get('apikey', '')
         if len(c.user) == 0 and API_KEY != None:
-            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
+            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
+            if c.user != None:
+                c.user = c.user.name
 
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -787,7 +793,7 @@ class AppsController(base.BaseController):
             'sort': base.request.params.get('sort', ''),
             'featured': base.request.params.get('featured', '')
         }
-
+        response.headers['Content-Type'] = 'json'
         params_nopage = [(k, v) for k, v in base.request.params.items()
                          if k != 'page']
         try:
@@ -912,7 +918,7 @@ class AppsController(base.BaseController):
         id = base.request.params.get('id','')
         logging.warning('deleting...')
         logging.warning(id)
-
+        response.headers['Content-Type'] = 'json'
         valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
         if valid == None:
             logging.warning('application not found')
@@ -923,7 +929,13 @@ class AppsController(base.BaseController):
         logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         logging.warning(API_KEY)
         if len(c.user) == 0 and API_KEY != None:
-            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
+            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
+
+            if c.user != None:
+                c.user = c.user.name
+            else:
+                c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
+                return c.result
             logging.warning(c.user)
         context = {'user' : c.user} 
         data_dict = {'owner_id' : valid.owner_id}
@@ -975,10 +987,15 @@ class AppsController(base.BaseController):
         model.Session.commit()
         return
     def mod_app_api(self):
-        API_KEY = self._get_apikey() #base.request.params.get('apikey', '')
+        API_KEY = _get_apikey() #base.request.params.get('apikey', '')
         if len(c.user) == 0 and API_KEY != None:
-            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
-
+            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
+        response.headers['Content-Type'] = 'json'
+        if c.user != None:
+            c.user = c.user.name
+        else:
+            c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
+            return c.result
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author,
                    'auth_user_obj': c.userobj,
@@ -1062,20 +1079,32 @@ class AppsController(base.BaseController):
         return c.result
     def valid_dataset(self, dataset_name):
         dataset =  model.Session.query(model.Package).filter(model.Package.name == dataset_name).first()
-        return dataset != None
+        if dataset != None:
+            return True
+        ds2 = model.Session.query(model.Package).filter(model.Package.title == dataset_name).first()
+        if ds2 != None:
+            return ds2.name
+
+        return False
 
     def new_app_api(self):
-        API_KEY = self._get_apikey() #base.request.params.get('apikey', '')
-         
+        API_KEY = _get_apikey() #base.request.params.get('apikey', '')
+
         if len(c.user) == 0 and API_KEY != None:
-            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first().name
+            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
+            if c.user != None:
+                c.user = c.user.name
+            else:
+                c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
+                return c.result
         context = {'user': c.user}
-        
+        response.headers['Content-Type'] = 'json'
+
         #request = urllib2.Request('http://192.168.21.27:5000/')
         #request.add_header('Authorization', 'e8491611-60f7-46a1-8c2a-94d0cc294d6b')
         #response_dict = json.loads(urllib2.urlopen(request, '{}').read())
         
-        #logging.warning(response_dict)
+        
 
         try:
             _check_access('app_create', context)
@@ -1103,7 +1132,10 @@ class AppsController(base.BaseController):
         datasets = datasets.split(',')
         ds = []
         for i in datasets:
-            if self.valid_dataset(i):
+            tester = self.valid_dataset(i)
+            if tester == True:
+                ds.append(i)
+            elif type(tester) != bool:
                 ds.append(i)
         if len(ds) == 0:
             c.result = json.dumps({'help': 'new app', 'success':False, 'result': _('add some datasets')})
