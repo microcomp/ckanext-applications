@@ -1179,7 +1179,7 @@ def is_admin():
                 'user': c.user or c.author, 'auth_user_obj': c.userobj,
                 'for_view': True}
     try:
-        _check_access('app_edit_all', context)
+        _check_access('app_editall', context)
         return True
     except toolkit.NotAuthorized, e:
          return False         
