@@ -1179,9 +1179,7 @@ def is_admin():
                 'user': c.user or c.author, 'auth_user_obj': c.userobj,
                 'for_view': True}
     try:
-        _check_access('app_edit', context, {'owner_id':""})
-        # if data_dict['owner_id']==user_id or user_has_role(user_id, Roles.MOD_R_APP)
-        # data_dict['owner_id']==user_id >> false
+        _check_access('app_edit_all', context, {'owner_id':""})
         return True
     except toolkit.NotAuthorized, e:
          return False         
