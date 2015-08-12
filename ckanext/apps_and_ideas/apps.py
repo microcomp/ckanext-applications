@@ -925,7 +925,7 @@ class AppsController(base.BaseController):
             #base.abort(404, _('Application not found'))
             c.result = json.dumps({'help': 'delete app', 'success':False, 'result': _('app not found')})
             return c.result
-        API_KEY = base.request.params.get('apikey','')
+        API_KEY = _get_apikey()#base.request.params.get('apikey','')
         logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         logging.warning(API_KEY)
         if len(c.user) == 0 and API_KEY != None:
