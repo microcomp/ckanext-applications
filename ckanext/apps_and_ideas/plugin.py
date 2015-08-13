@@ -13,17 +13,6 @@ import ckan.model as model
 from ckan.common import _, c
 import logging
 
-@toolkit.side_effect_free
-def get_news(context,data_dict=None):
-    '''help string...
-        asdasdasd
-        asd
-        as
-        data_dictasd
-    '''
-  # The actual custom API method
-    return {"hello":"world"}
-
 class AppsAndIdeasPlugin(plugins.SingletonPlugin):
     controller = 'ckanext.apps_and_ideas.related:RelatedController'
     '''An example theme plugin.
@@ -61,8 +50,7 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
         return map
     def get_actions(self):
     # Registers the custom API method defined above
-        return {'get_news': get_news,
-                'delete_app':apps.delete_app,
+        return {'delete_app':apps.delete_app,
                 'list_apps': apps.list_apps,
                 'mod_app': apps.mod_app_api,
                 'new_app': apps.new_app_api}
