@@ -13,7 +13,16 @@ import ckan.model as model
 from ckan.common import _, c
 import logging
 
-
+@toolkit.side_effect_free
+def get_news(context,data_dict=None):
+    '''help string...
+        asdasdasd
+        asd
+        as
+        data_dictasd
+    '''
+  # The actual custom API method
+    return {"hello":"world"}
 
 class AppsAndIdeasPlugin(plugins.SingletonPlugin):
     controller = 'ckanext.apps_and_ideas.related:RelatedController'
@@ -21,6 +30,7 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
 
     '''
     plugins.implements(plugins.IConfigurer)
+    plugins.implements(plugins.interfaces.IActions)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=False)
 
@@ -39,17 +49,23 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
         map.connect('delete_app', '/apps/delete', action='delete_app', controller='ckanext.apps_and_ideas.detail:DetailController')
         map.connect('list_apps', '/dataset/{id}/related', action='list', controller='ckanext.apps_and_ideas.detail:DetailController')
         map.connect('dashboard', '/related', action='dashboard', controller='ckanext.apps_and_ideas.apps:AppsController')
-        map.connect('apps_api_list', '/custom_api/apps_api/list', action='list_apps_json', controller='ckanext.apps_and_ideas.apps:AppsController')
-        map.connect('apps_api_mod_del', '/custom_api/apps_api/mod/del', action='delete_app', controller='ckanext.apps_and_ideas.apps:AppsController')
-        map.connect('apps_api_mod_upd', '/custom_api/apps_api/mod/update', action='mod_app_api', controller='ckanext.apps_and_ideas.apps:AppsController')
-        map.connect('apps_api_new', '/custom_api/apps_api/new', action='new_app_api', controller='ckanext.apps_and_ideas.apps:AppsController')
+        #map.connect('apps_api_list', '/custom_api/apps_api/list', action='list_apps_json', controller='ckanext.apps_and_ideas.apps:AppsController')
+        #map.connect('apps_api_mod_del', '/custom_api/apps_api/mod/del', action='delete_app', controller='ckanext.apps_and_ideas.apps:AppsController')
+        #map.connect('apps_api_mod_upd', '/custom_api/apps_api/mod/update', action='mod_app_api', controller='ckanext.apps_and_ideas.apps:AppsController')
+        #map.connect('apps_api_new', '/custom_api/apps_api/new', action='new_app_api', controller='ckanext.apps_and_ideas.apps:AppsController')
 
         map.connect('apps_report', '/apps/report', action='report_app', controller='ckanext.apps_and_ideas.apps:AppsController')
         map.connect('delete_report', '/report/delete', action='delete_app_report', controller='ckanext.apps_and_ideas.apps:AppsController')
         map.connect('delete_reports', '/report/delete/all', action='delete_all_reports', controller='ckanext.apps_and_ideas.apps:AppsController')
         map.connect('report_admin', '/admin/reports', action='list_reports', controller='ckanext.apps_and_ideas.apps:AppsController')
         return map
-
+    def get_actions(self):
+    # Registers the custom API method defined above
+        return {'get_news': get_news,
+                'delete_app':apps.delete_app,
+                'list_apps': apps.list_apps,
+                'mod_app': apps.mod_app_api,
+                'new_app': apps.new_app_api}
     def get_helpers(self):
         return {'check_2': apps.check, 
                 'own': apps.own,
