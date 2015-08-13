@@ -27,6 +27,316 @@ APIKEY_HEADER_NAME_DEFAULT = 'X-CKAN-API-Key'
 abort = base.abort
 _get_action = logic.get_action
 _check_access = logic.check_access
+def valid_dataset(dataset_name):
+        dataset =  model.Session.query(model.Package).filter(model.Package.name == dataset_name).first()
+        if dataset != None:
+            return True
+        ds2 = model.Session.query(model.Package).filter(model.Package.title == dataset_name).first()
+        if ds2 != None:
+            return ds2.name
+
+        return False
+
+def add_datasets(datasets,  id):
+    related_ids = []
+    for i in datasets:
+        id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
+        if id_query == None:
+            logging.warning('redirecting...')
+            return
+        related_ids.append(id_query.id)
+    logging.warning('related id-s:')
+    logging.warning(related_ids)
+    related_datasets = []
+    for i in range(len(related_ids)):
+        buffer = model.related.RelatedDataset()
+        related_datasets.append(buffer)
+    for i in range(len(related_ids)):
+        related_datasets[i].dataset_id = related_ids[i]
+        related_datasets[i].id = unicode(uuid.uuid4())
+        related_datasets[i].related_id = id
+        related_datasets[i].status = 'active'
+        model.Session.add(related_datasets[i])
+        
+    model.Session.commit()
+    return
+
+@toolkit.side_effect_free
+def mod_app_api(context, data_dict=None):
+    ''' Mod_app_api- application modification '''
+    related_datasets = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == data_dict['id']).all()
+    for i in related_datasets:
+        model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.id == i.id).delete(synchronize_session=False)
+    model.Session.commit()
+    #all related items deleted...
+    data = {}
+    try:
+        title = data_dict['title']
+    except KeyError:
+        title= ""
+    try:
+        description = data_dict['description']
+    except KeyError:
+        description = ""
+    try:
+        image_url =  data_dict['image_url']
+    except KeyError:
+        image_url = ""
+    try:
+        url = data_dict['url'] 
+    except KeyError:
+        url = ""
+    try:
+        private =  data_dict['private'] 
+    except KeyError:
+        private = ""
+    try:
+        datasets =  data_dict['datasets'] 
+    except KeyError:
+        datasets = ""
+
+    old_data = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
+    if old_data == None:
+        return
+    logging.warning(old_data)
+    logging.warning(len(datasets))
+    if len(title)== 0:
+        title = old_data.title
+    if len(description)== 0:
+        description = old_data.description
+    if len(image_url)== 0:
+        image_url= old_data.image_url
+    if len(url)== 0:
+        url = old_data.url
+
+    old_data.title = title
+    old_data.description = description
+    old_data.image_url = image_url
+    old_data.url = url
+    old_data.private = private
+    _check_access('app_editall', context, data_dict)
+    data_dict2 = {'related_id':data_dict['id'],'key':'privacy'}
+    __builtin__.value = private
+
+    if datasets != None or datasets != '':
+        mod_related_extra(context, data_dict2)
+    model.Session.commit()
+    if datasets != "" or datasets != None:
+        datasets = datasets.split(',')
+        add_datasets(datasets, id)
+    return _('done')
+    
+@toolkit.side_effect_free    
+def new_app_api(context, data_dict=None):
+        '''Create a new application.
+
+            You must be authorized to create new application. '''
+        _check_access('app_create', context)
+       
+        data_to_commit = model.related.Related()
+
+        try:
+            title = data_dict['title'] 
+        except KeyError:
+            title = ""
+        try:
+            description= data_dict['description']
+        except KeyError:
+            description  = ""
+        try:
+            url = data_dict['url']
+        except KeyError:
+            url = ""
+        try:
+            image_url = data_dict['image_url'] 
+        except KeyError:
+            image_url  = ""
+        try:
+            datasets = data_dict['datasets'] 
+        except KeyError:
+            datasets  = ""
+
+        data_to_commit.id = unicode(uuid.uuid4())
+        if len(title) == 0:
+            return _('Failed to create application, title required')
+        datasets = datasets.split(',')
+        ds = []
+        for i in datasets:
+            tester = valid_dataset(i)
+            if tester == True:
+                ds.append(i)
+            elif type(tester) != bool:
+                ds.append(i)
+        if len(ds) == 0:
+            return _('Failed to create application, at least 1 dataset is required')
+        owner_id = c.userobj.id
+
+        data_to_commit.title = title
+        data_to_commit.description = description
+        data_to_commit.url = url
+        data_to_commit.image_url = image_url
+        data_to_commit.created = datetime.datetime.now()
+        data_to_commit.owner_id = owner_id
+        data_to_commit.type = 'application'
+
+        data_dict2 = {'related_id':data_to_commit.id,'key':'privacy'}
+        model.Session.add(data_to_commit)
+        add_datasets(ds,  data_to_commit.id)
+
+        __builtin__.value = 'private'
+        new_related_extra(context, data_dict2)
+        
+        model.Session.commit()
+        c.result =_('done')
+        return c.result
+
+def datasets(id):
+        ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
+        ds_id = []
+        result= []
+        for i in ds_ids:
+            ds_id.append(i.dataset_id)
+        for i in ds_id:
+            pack = model.Session.query(model.Package).filter(model.Package.id == i).first()
+            if pack != None:
+                result.append(pack.name)
+        return result
+
+@toolkit.side_effect_free
+def delete_app(context, data_dict=None):
+    '''
+        Mod_app_api - delete app
+        params:
+        -id: dataset id -required
+        -id: String
+        -header: Authorization
+    '''
+
+    _check_access('app_edit', context, data_dict)
+    rel = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
+    rel_datasets = model.Session.query(model.RelatedDataset).filter(model.Related.id == data_dict['id']).all()
+    logging.warning(rel_datasets)
+    model.Session.delete(rel)
+    model.Session.commit()
+    del_related_extra(context, data_dict)
+    model.Session.commit()
+    c.result = _('done')
+    return c.result
+
+@toolkit.side_effect_free
+def list_apps(context, data_dict=None):
+        """ List all related items regardless of dataset """
+        
+        
+        params_nopage = [(k, v) for k, v in base.request.params.items()
+                         if k != 'page']
+        try:
+            page = int(base.request.params.get('page', 1))
+        except ValueError:
+            base.abort(400, ('"page" parameter must be an integer'))
+
+        # Update ordering in the context
+        related_list = logic.get_action('related_list')(context, data_dict)
+
+        def search_url(params):
+            url = h.url_for(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
+            params = [(k, v.encode('utf-8')
+                      if isinstance(v, basestring) else str(v))
+                      for k, v in params]
+            return url + u'?' + urllib.urlencode(params)
+
+        def pager_url(q=None, page=None):
+            params = list(params_nopage)
+            params.append(('page', page))
+            return search_url(params)
+
+        public_list = []
+        c.pr = []
+        c.priv_private = False
+        c.privonly = base.request.params.get('private', '') == 'on'
+
+
+        for i in related_list:
+            data_dict = {'related_id':i['id'],'key':'privacy'}
+            if check_priv_related_extra(context, data_dict):
+                public_list.append(i)
+            else:
+                data_dict = {'owner_id': i['owner_id']}
+                try:
+                    logic.check_access('app_edit', context, data_dict)
+                    c.priv_private = True
+                    public_list.append(i)
+                except logic.NotAuthorized:
+                    logging.warning("access denied")
+            
+            
+        c.page = h.Page(
+            collection=public_list,
+            page=page,
+            url=pager_url,
+            item_count=len(public_list),
+            items_per_page=9
+        )
+
+        c.filters = dict(params_nopage)
+
+        c.type_options =({"text": _("API"), "value": "api"},
+                {"text": _("Application"), "value": "application"},
+                {"text": _("Idea"), "value": "idea"},
+                {"text": _("News Article"), "value": "news_article"},
+                {"text": _("Paper"), "value": "paper"},
+                {"text": _("Post"), "value": "post"},
+                {"text": _("Visualization"), "value": "visualization"})
+        c.sort_options = (
+            {'value': 'view_count_desc', 'text': _('Most Viewed')},
+            {'value': 'view_count_asc', 'text': _('Least Viewed')},
+            {'value': 'created_desc', 'text': _('Newest')},
+            {'value': 'created_asc', 'text': _('Oldest')}
+        )
+        g = []
+        app_id = base.request.params.get('id', '')
+        search_keyword = base.request.params.get('search', '')
+        for i in range(len(public_list)):
+            public_list[i]['datasets'] = datasets(public_list[i]['id'])
+        for i in range(len(public_list)):
+            user_id = public_list[i]['owner_id']
+            public_list[i].pop('owner_id')
+            full_name = model.Session.query(model.User).filter(model.User.id == user_id).first().fullname
+            public_list[i]['full_name'] = full_name
+
+        if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
+            data = {}
+            data['help'] = 'all apps'
+            data['sucess'] =True
+            data['result'] = public_list
+            
+            c.list = data
+            return c.list
+        elif (app_id != '' or app_id != None) and (search_keyword =='' or search_keyword == None):
+            for i in public_list:
+                if app_id == i['id']:
+                   g.append(i) 
+                   c.list = i
+        elif (app_id == '' or app_id == None) and (search_keyword !='' or search_keyword != None):
+            for i in public_list:
+                if (search_keyword.lower() in i['title'].lower()) or (search_keyword.lower() in i['description'].lower()):
+                    g.append(i)
+            helper = []
+            c.list =  g
+        else:
+            for i in public_list:
+                if app_id == i['id']:
+                   g.append(i) 
+            result = [] 
+            for j in g:
+                if (search_keyword.lower() in j['title'].lower()) or (search_keyword.lower() in j['description'].lower()):
+                    result.append(j)
+            c.list = result
+        if len(g) == 0:
+            c.list =  _("no results found")
+
+        return c.list
+
 #log = logging.getLogger('ckanext_apps_and_ideas')
 def create_related_extra_table(context):
     if db.related_extra_table is None:
@@ -777,389 +1087,7 @@ class AppsController(base.BaseController):
     
 
         return base.render("related/dashboard.html")
-    def list_apps_json(self):
-        """ List all related items regardless of dataset """
-        API_KEY = _get_apikey() # base.request.params.get('apikey', '')
-        if len(c.user) == 0 and API_KEY != None:
-            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
-            if c.user != None:
-                c.user = c.user.name
-
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-        data_dict = {
-            'type_filter': 'application',
-            'sort': base.request.params.get('sort', ''),
-            'featured': base.request.params.get('featured', '')
-        }
-        response.headers['Content-Type'] = 'json'
-        params_nopage = [(k, v) for k, v in base.request.params.items()
-                         if k != 'page']
-        try:
-            page = int(base.request.params.get('page', 1))
-        except ValueError:
-            base.abort(400, ('"page" parameter must be an integer'))
-
-        # Update ordering in the context
-        related_list = logic.get_action('related_list')(context, data_dict)
-
-        def search_url(params):
-            url = h.url_for(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
-            params = [(k, v.encode('utf-8')
-                      if isinstance(v, basestring) else str(v))
-                      for k, v in params]
-            return url + u'?' + urllib.urlencode(params)
-
-        def pager_url(q=None, page=None):
-            params = list(params_nopage)
-            params.append(('page', page))
-            return search_url(params)
-
-        public_list = []
-        c.pr = []
-        c.priv_private = False
-        c.privonly = base.request.params.get('private', '') == 'on'
-
-
-        for i in related_list:
-            data_dict = {'related_id':i['id'],'key':'privacy'}
-            if check_priv_related_extra(context, data_dict):
-                public_list.append(i)
-            else:
-                data_dict = {'owner_id': i['owner_id']}
-                try:
-                    logic.check_access('app_edit', context, data_dict)
-                    c.priv_private = True
-                    public_list.append(i)
-                except logic.NotAuthorized:
-                    logging.warning("access denied")
-            
-            
-        c.page = h.Page(
-            collection=public_list,
-            page=page,
-            url=pager_url,
-            item_count=len(public_list),
-            items_per_page=9
-        )
-
-        c.filters = dict(params_nopage)
-
-        c.type_options = self._type_options()
-        c.sort_options = (
-            {'value': 'view_count_desc', 'text': _('Most Viewed')},
-            {'value': 'view_count_asc', 'text': _('Least Viewed')},
-            {'value': 'created_desc', 'text': _('Newest')},
-            {'value': 'created_asc', 'text': _('Oldest')}
-        )
-        g = []
-        app_id = base.request.params.get('id', '')
-        search_keyword = base.request.params.get('search', '')
-        for i in range(len(public_list)):
-            public_list[i]['datasets'] = self.datasets(public_list[i]['id'])
-        for i in range(len(public_list)):
-            user_id = public_list[i]['owner_id']
-            public_list[i].pop('owner_id')
-            full_name = model.Session.query(model.User).filter(model.User.id == user_id).first().fullname
-            public_list[i]['full_name'] = full_name
-
-        if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
-            data = {}
-            data['help'] = 'all apps'
-            data['sucess'] =True
-            data['result'] = public_list
-            
-            c.list = json.dumps(data, encoding='utf8')
-            return c.list
-        elif (app_id != '' or app_id != None) and (search_keyword =='' or search_keyword == None):
-            for i in public_list:
-                if app_id == i['id']:
-                   g.append(i) 
-                   c.list = json.dumps({"help": "1 app","sucess":True, "result": i}, encoding='utf8')
-        elif (app_id == '' or app_id == None) and (search_keyword !='' or search_keyword != None):
-            for i in public_list:
-                if (search_keyword.lower() in i['title'].lower()) or (search_keyword.lower() in i['description'].lower()):
-                    g.append(i)
-            helper = []
-            #for i in range(len(g)):
-                #g[i]['datasets'] = self.datasets(g[i]['id'])
-
-            c.list = json.dumps({"help": "search results","sucess":True, "result": g}, encoding='utf8')
-        else:
-            for i in public_list:
-                if app_id == i['id']:
-                   g.append(i) 
-            result = [] 
-            for j in g:
-                if (search_keyword.lower() in j['title'].lower()) or (search_keyword.lower() in j['description'].lower()):
-                    #j['datasets'] = self.datasets(j['id'])
-                    result.append(j)
-            c.list = json.dumps({"help": "search results","sucess":True, "result": result}, encoding='utf8')
-        if len(g) == 0:
-            c.list = json.dumps({"help": "1 app","sucess":False, "result": _("no results found")}, encoding='utf8') 
-
-        return c.list
-
-    def datasets(self, id):
-        ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
-        ds_id = []
-        result= []
-        for i in ds_ids:
-            ds_id.append(i.dataset_id)
-        for i in ds_id:
-            pack = model.Session.query(model.Package).filter(model.Package.id == i).first()
-            if pack != None:
-                result.append(pack.name)
-        return result
-
-
-    def delete_app(self):
-        id = base.request.params.get('id','')
-        logging.warning('deleting...')
-        logging.warning(id)
-        response.headers['Content-Type'] = 'json'
-        valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
-        if valid == None:
-            logging.warning('application not found')
-            #base.abort(404, _('Application not found'))
-            c.result = json.dumps({'help': 'delete app', 'success':False, 'result': _('app not found')})
-            return c.result
-        API_KEY = _get_apikey()#base.request.params.get('apikey','')
-        logging.warning('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-        logging.warning(API_KEY)
-        if len(c.user) == 0 and API_KEY != None:
-            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
-
-            if c.user != None:
-                c.user = c.user.name
-            else:
-                c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
-                return c.result
-            logging.warning(c.user)
-        context = {'user' : c.user} 
-        data_dict = {'owner_id' : valid.owner_id}
-        try:
-            _check_access('app_edit', context, data_dict)
-        except toolkit.NotAuthorized, e:
-            c.result = json.dumps({'help': 'delete app', 'success':False, 'result': _('not authorized')})
-            return c.result
-            #toolkit.abort(401, e.extra_msg)
-            
-        rel = model.Session.query(model.Related).filter(model.Related.id == id).first()
-        rel_datasets = model.Session.query(model.RelatedDataset).filter(model.Related.id == id).all()
-        logging.warning(rel_datasets)
-        model.Session.delete(rel)
-        model.Session.commit()
-        #for i in rel_datasets:
-        #    model.Session.delete(i)
-        #model.Session.commit()
-
-        data_dict = {'related_id':id, 'key':'privacy'}
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-        del_related_extra(context, data_dict)
-        model.Session.commit()
-        c.result = json.dumps({'help': 'delete app', 'success':True, 'result': _('done')})
-        return c.result
-    def add_datasets(self, datasets,  id):
-        related_ids = []
-        for i in datasets:
-            id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
-            if id_query == None:
-                logging.warning('redirecting...')
-                return
-            related_ids.append(id_query.id)
-        logging.warning('related id-s:')
-        logging.warning(related_ids)
-        related_datasets = []
-        for i in range(len(related_ids)):
-            buffer = model.related.RelatedDataset()
-            related_datasets.append(buffer)
-        for i in range(len(related_ids)):
-            related_datasets[i].dataset_id = related_ids[i]
-            related_datasets[i].id = unicode(uuid.uuid4())
-            related_datasets[i].related_id = id
-            related_datasets[i].status = 'active'
-            model.Session.add(related_datasets[i])
-            
-        model.Session.commit()
-        return
-    def mod_app_api(self):
-        API_KEY = _get_apikey() #base.request.params.get('apikey', '')
-        if len(c.user) == 0 and API_KEY != None:
-            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
-        response.headers['Content-Type'] = 'json'
-        if c.user != None:
-            c.user = c.user.name
-        else:
-            c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
-            return c.result
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author,
-                   'auth_user_obj': c.userobj,
-                   'for_view': True}
-        id = base.request.params.get('id','')
-        data_dict = {'id': id}
-        c.result = None
-
-        #id = base.request.params.get('id','')
-        valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
-
-        if valid == None:
-            c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('dataset not found')})
-            return c.result
-
-        related_datasets = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
-        logging.warning('rows to delete...\n'+str(related_datasets))
-
-        for i in related_datasets:
-            model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.id == i.id).delete(synchronize_session=False)
-        model.Session.commit()
-        #all related items deleted...
-        data = {}
-
-        #related = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
-        #data = {}
-        title = base.request.params.get('title','')
-        description = base.request.params.get('description','') 
-        image_url = base.request.params.get('image_url','')
-        url = base.request.params.get('url','')
-        private = base.request.params.get('private','')
-        datasets = base.request.params.get('datasets','')
-
-
-
-        #logging.warning('post data values:')
-        #logging.warning(data)
-        #select the old value:
-        old_data = model.Session.query(model.Related).filter(model.Related.id == id).first()
-        logging.warning("old_data>>>>>>>>>>>>>>>>>>>>>>>")
-        logging.warning(old_data)
-        logging.warning(len(datasets))
-
-        if len(title)== 0:
-            title = old_data.title
-        
-        if len(description)== 0:
-            description = old_data.description
-        if len(image_url)== 0:
-            image_url= old_data.image_url
-        if len(url)== 0:
-            url = old_data.url
-
-        old_data.title = title
-        old_data.description = description
-        old_data.image_url = image_url
-        old_data.url = url
-        old_data.private = private
-        
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-
-        data_dict = {'related_id':id,'key':'privacy'}
-
-        try:
-            _check_access('app_editall', context, data_dict)
-            __builtin__.value = private
-        except toolkit.NotAuthorized, e:
-            __builtin__.value = 'private'
-            c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
-            return c.result
-        if datasets != None or datasets != '':
-            mod_related_extra(context, data_dict)
-
-        model.Session.commit()
-        if datasets != "" or datasets != None:
-            datasets = datasets.split(',')
-            self.add_datasets(datasets, id)
-        c.result = json.dumps({'help': 'mod app', 'success':True, 'result': _('done')})
-        return c.result
-    def valid_dataset(self, dataset_name):
-        dataset =  model.Session.query(model.Package).filter(model.Package.name == dataset_name).first()
-        if dataset != None:
-            return True
-        ds2 = model.Session.query(model.Package).filter(model.Package.title == dataset_name).first()
-        if ds2 != None:
-            return ds2.name
-
-        return False
-
-    def new_app_api(self):
-        API_KEY = _get_apikey() #base.request.params.get('apikey', '')
-
-        if len(c.user) == 0 and API_KEY != None:
-            c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
-            if c.user != None:
-                c.user = c.user.name
-            else:
-                c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')})
-                return c.result
-        context = {'user': c.user}
-        response.headers['Content-Type'] = 'json'
-
-        #request = urllib2.Request('http://192.168.21.27:5000/')
-        #request.add_header('Authorization', 'e8491611-60f7-46a1-8c2a-94d0cc294d6b')
-        #response_dict = json.loads(urllib2.urlopen(request, '{}').read())
-        
-        
-
-        try:
-            _check_access('app_create', context)
-        except toolkit.NotAuthorized, e:
-            c.result = json.dumps({'help': 'mod app', 'success':False, 'result': _('not authorized')}, encoding='utf8')
-            return c.result
-
-
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-
-        data_to_commit = model.related.Related()
-
-        title = base.request.params.get('title','')
-        description= base.request.params.get('description','')
-        url = base.request.params.get('url','')
-        image_url = base.request.params.get('image_url','')
-        datasets = base.request.params.get('datasets','')
-
-        data_to_commit.id = unicode(uuid.uuid4())
-        if len(title) == 0:
-            c.result = json.dumps({'help': 'new app', 'success':False, 'result': _('title is required')})
-            return c.result
-        datasets = datasets.split(',')
-        ds = []
-        for i in datasets:
-            tester = self.valid_dataset(i)
-            if tester == True:
-                ds.append(i)
-            elif type(tester) != bool:
-                ds.append(i)
-        if len(ds) == 0:
-            c.result = json.dumps({'help': 'new app', 'success':False, 'result': _('add some datasets')})
-            return c.result
-        owner_id = c.userobj.id
-
-        data_to_commit.title = title
-        data_to_commit.description = description
-        data_to_commit.url = url
-        data_to_commit.image_url = image_url
-        data_to_commit.created = datetime.datetime.now()
-        data_to_commit.owner_id = owner_id
-        data_to_commit.type = 'application'
-
-        data_dict = {'related_id':data_to_commit.id,'key':'privacy'}
-        model.Session.add(data_to_commit)
-        self.add_datasets(ds,  data_to_commit.id)
-
-        __builtin__.value = 'private'
-        new_related_extra(context, data_dict)
-        
-        model.Session.commit()
-        c.result = json.dumps({'help': 'new app', 'success':True, 'result': _('done')})
-        return c.result
+    
 def can_view(id):
     if own(id) or check(id):
         return True
