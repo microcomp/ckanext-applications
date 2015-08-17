@@ -27,6 +27,7 @@ APIKEY_HEADER_NAME_DEFAULT = 'X-CKAN-API-Key'
 abort = base.abort
 _get_action = logic.get_action
 _check_access = logic.check_access
+_related_id_exists = logic.validators.related_id_exists
 def valid_dataset(dataset_name):
         dataset =  model.Session.query(model.Package).filter(model.Package.name == dataset_name).first()
         if dataset != None:
@@ -96,8 +97,8 @@ def mod_app_api(context, data_dict=None):
         datasets = ""
 
     old_data = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
-    if old_data == None:
-        return
+    logic.get_action('package_show')(context,data_dict)
+
     logging.warning(old_data)
     logging.warning(len(datasets))
     if len(title)== 0:
@@ -132,7 +133,6 @@ def new_app_api(context, data_dict=None):
 
             You must be authorized to create new application. '''
         _check_access('app_create', context)
-       
         data_to_commit = model.related.Related()
 
         try:
@@ -158,7 +158,9 @@ def new_app_api(context, data_dict=None):
 
         data_to_commit.id = unicode(uuid.uuid4())
         if len(title) == 0:
-            return _('Failed to create application, title required')
+            ed = {'message': 'Application name too short'}
+            raise logic.ValidationError(ed)
+           
         datasets = datasets.split(',')
         ds = []
         for i in datasets:
@@ -168,7 +170,9 @@ def new_app_api(context, data_dict=None):
             elif type(tester) != bool:
                 ds.append(i)
         if len(ds) == 0:
-            return _('Failed to create application, at least 1 dataset is required')
+            
+            ed = {'message': 'Failed to create application, at least 1 dataset is required'}
+            raise logic.ValidationError(ed)
         owner_id = c.userobj.id
 
         data_to_commit.title = title
@@ -201,7 +205,7 @@ def datasets(id):
             if pack != None:
                 result.append(pack.name)
         return result
-
+import sys
 @toolkit.side_effect_free
 def delete_app(context, data_dict=None):
     '''
@@ -213,8 +217,12 @@ def delete_app(context, data_dict=None):
     '''
 
     _check_access('app_edit', context, data_dict)
+
     rel = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
     rel_datasets = model.Session.query(model.RelatedDataset).filter(model.Related.id == data_dict['id']).all()
+
+    logic.get_action('package_show')(context,data_dict)
+
     logging.warning(rel_datasets)
     model.Session.delete(rel)
     model.Session.commit()
