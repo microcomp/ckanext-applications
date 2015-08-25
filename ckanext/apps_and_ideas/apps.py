@@ -21,8 +21,6 @@ import db
 from pylons import config, request, response
 
 import json
-APIKEY_HEADER_NAME_KEY = 'apikey_header_name'
-APIKEY_HEADER_NAME_DEFAULT = 'X-CKAN-API-Key'
 
 abort = base.abort
 _get_action = logic.get_action
@@ -35,7 +33,6 @@ def valid_dataset(dataset_name):
         ds2 = model.Session.query(model.Package).filter(model.Package.title == dataset_name).first()
         if ds2 != None:
             return ds2.name
-
         return False
 
 def add_datasets(datasets,  id):
@@ -57,8 +54,7 @@ def add_datasets(datasets,  id):
         related_datasets[i].id = unicode(uuid.uuid4())
         related_datasets[i].related_id = id
         related_datasets[i].status = 'active'
-        model.Session.add(related_datasets[i])
-        
+        model.Session.add(related_datasets[i])   
     model.Session.commit()
     return
 
@@ -97,7 +93,7 @@ def mod_app_api(context, data_dict=None):
         datasets = ""
 
     old_data = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
-    logic.get_action('package_show')(context,data_dict)
+    logic.get_action('related_show')(context,data_dict)
 
     logging.warning(old_data)
     logging.warning(len(datasets))
@@ -206,6 +202,7 @@ def datasets(id):
                 result.append(pack.name)
         return result
 import sys
+
 @toolkit.side_effect_free
 def delete_app(context, data_dict=None):
     '''
@@ -221,7 +218,7 @@ def delete_app(context, data_dict=None):
     rel = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
     rel_datasets = model.Session.query(model.RelatedDataset).filter(model.Related.id == data_dict['id']).all()
 
-    logic.get_action('package_show')(context,data_dict)
+    logic.get_action('related_show')(context,data_dict)
 
     logging.warning(rel_datasets)
     model.Session.delete(rel)
@@ -431,19 +428,7 @@ def is_private(id):
     return info[index].value
 
 
-def check(id):
-    API_KEY = _get_apikey() #base.request.params.get('apikey', '')
-    if len(c.user) == 0 and API_KEY != None:
-        c.user = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
-        if c.user != None:
-            c.user = c.user.name
-        
 
-    context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-    data_dict = {'related_id':id,'key':'privacy'}
-    return check_priv_related_extra(context, data_dict)
 
 @ckan.logic.side_effect_free
 def mod_related_extra(context, data_dict):
@@ -568,25 +553,7 @@ def reported_id(related_id, user_id):
     res = db.RelatedExtra.get(**data_dict)
     res = [x for x in res if x.value.split('*')[0] == user_id]
     return res[0].value.split('*')[1]
-def _get_apikey():
-    apikey_header_name = config.get(APIKEY_HEADER_NAME_KEY,
-                                    APIKEY_HEADER_NAME_DEFAULT)
-    apikey = request.headers.get(apikey_header_name, '')
-    if not apikey:
-        apikey = request.environ.get(apikey_header_name, '')
-    if not apikey:
-        # For misunderstanding old documentation (now fixed).
-        apikey = request.environ.get('HTTP_AUTHORIZATION', '')
-    if not apikey:
-        apikey = request.environ.get('Authorization', '')
-        # Forget HTTP Auth credentials (they have spaces).
-        if ' ' in apikey:
-            apikey = ''
-    if not apikey:
-        return None
-    
-    apikey = unicode(apikey)
-    return apikey
+
 class AppsController(base.BaseController):
     
 
@@ -1097,7 +1064,7 @@ class AppsController(base.BaseController):
         return base.render("related/dashboard.html")
     
 def can_view(id):
-    if own(id) or check(id):
+    if own(id):
         return True
     context = {'model': model, 'session': model.Session,
                 'user': c.user or c.author, 'auth_user_obj': c.userobj,
