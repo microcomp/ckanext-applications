@@ -1,0 +1,110 @@
+  <form class="form-horizontal">
+          <fieldset>
+
+          <!-- Form Name -->
+          <legend>{{title}} </legend>
+          <div class="control-group">
+            <label class="control-label" for="textinput">{{_('Permanent URL')}}</label>
+            <div class="controls">
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;"><textarea style="width:100%; resize: none;" >{{ request.host_url }}/apps/detail?id={{id}}</textarea></p><!--" readonly -->
+            </div>
+          </div> 
+          
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="textinput">{{_('Description')}}</label>
+            <div class="controls">
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if description==''%}{{_('no data')}}{%else%}{{description}}{%endif%}</p><!--" readonly -->
+            </div>
+          </div> 
+
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="textinput">{{_('Date of creation')}}</label>
+            <div class="controls">
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if created==''%}{{_('no data')}}{%else%}{{created}}{%endif%}</p><!--" readonly-->
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="textinput">{{_('Author')}}</label>
+            <div class="controls">
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if owner==''%}{{_('no data')}}{%else%}{{owner}}{%endif%}</p><!--" readonly -->
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label">{{_('URL')}}</label>
+            <div class="controls" style="padding-top: 0.3em; font-size:1.2em;">
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if url==''%}{{_('no data')}}{%else%}{{url}}{%endif%}" readonly-->
+              <a href="{% if url==''%}#{%else%}{{url}}{%endif%}" style="padding-top: 1em;" target="_blank">{% if url==''%}{{_('no data')}}{%else%}{{url}}{%endif%}</a>
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="textinput">{{_('Datasets')}}</label>
+            <div class="controls" style="padding-top: 0.4em;font-size:1.2em;">
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% for x in datasets%} {{x}}, {% endfor %}" readonly-->
+              <!--ul style="padding-top: 0.3em; list-style-type:none;padding-left: -1em; "-->
+                {% for x in datasets%} <!--li style="display:inline; padding-right: 0.3em;"--> <a href="/dataset/{{x}}" target="_blank"> {{x}}</a>,<!--/li--> {% endfor %}
+              <!--/ul-->
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"> {{_('Status')}}</label>
+            <div class="controls">
+              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="-->
+
+             <p style="padding-top: 0.3em;font-size:1.2em;">{%if private=='private'%}{{_('Private')}}{%else%}{{_('Public')}}{%endif%}</p><!--" readonly -->
+            </div>
+          </div>
+
+          </fieldset>
+           <script src="/js/jquery.min.js"></script>
+            <script src="/js/bootbox.js"></script>
+            <script src="/js/bootstrap.min.js"></script>
+          {%if h.check_access('app_edit', data_dict={'owner_id' : owner}) or user==owner %}
+          <a class='btn btn-primary btn-small media-edit' href="/apps/update?id={{id}}" ><span class="fa fa-pencil" > </span> {{_('Edit')}}</a>
+           
+            <noscript><a class='btn btn-primary btn-small media-delete' href="'/apps/delete?id={{id}}'" data-bb="confirm"><span class="fa fa-trash" > </span> {{_('Delete')}}</a> </noscript>
+
+          <a class='btn btn-primary btn-small media-delete' href="#" data-bb="confirm" onclick="bootbox.confirm('{{_("Are you sure?")}}', function(result){if(result){window.location.href='/apps/delete?id={{id}}';}})"><span class="fa fa-trash" > </span> {{_('Delete')}}</a>
+
+        {%endif%}
+        <script type="text/javascript">
+                            function opendialog(){
+                             bootbox.dialog({
+                                  title: "{{_('Error report')}}",
+                                  message: "<form method='post' action='/apps/report'><fieldset>{{_('Report app issue')}}</fieldset>" +
+                                      "<input type='text' name='app_id' value='{{id}}' style='display:none' >" +
+                                      "<textarea rows='7' name='report_text' maxlength='500' placeholder='{{_('Error description')}}' style='width:100%;'>"+
+                                      "{%if userobj != None %}{%if h.reported_by_user(userobj.id, id)== False%}{% for i in h.report_text(userobj.id, id).split('\n')%}{{i}}"+
+                                      "&#10;{%endfor%}"+
+                                      "{%endif%}{%endif%}</textarea>" +
+                                      "<button type='submit' class='btn btn-primary'> {{_('Send')}}</button>" +
+                                      "</form>"
+                                  }
+                              
+                          );}
+        </script>
+        {%if userobj%}
+
+          <a class='btn btn-primary btn-small media-delete' href="#" data-bb="custom_form" onclick="opendialog()"><span class="fa fa-exclamation" > </span> {{_('Report problem')}}</a>
+        
+        {%endif%}
+      </form>
+      
+     
+          {%if userobj %}
+      <noscript>
+      <form method="get" action="/apps/report">
+        <fieldset>{{_('Report app issue')}}</fieldset>
+        <input type='text' name="app_id" value="{{id}}" style="display:none" >
+        <textarea rows="4" name="report_text" placeholder="{{_('Error description')}}" style="width:100%;"></textarea>
+        <button type="submit" class="mybutton"> {{_('Send')}}</button>
+      <form>{%endif%}
+      </noscript>
+      <hr>
