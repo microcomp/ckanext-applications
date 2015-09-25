@@ -1,21 +1,15 @@
 import datetime
 import uuid
-
 import sqlalchemy as sa
 from sqlalchemy.orm import class_mapper
-
-
 related_extra_table = None
 RelatedExtra = None
-
 
 def make_uuid():
     return unicode(uuid.uuid4())
 
-
 def init_db(model):
     class _RelatedExtra(model.DomainObject):
-
         @classmethod
         def get(cls, **kw):
             '''Finds a single entity in the register.'''
@@ -32,13 +26,10 @@ def init_db(model):
             for i in query:
                 model.Session.delete(i)
             return
-
-
         @classmethod
         def related_extra(cls, **kw):
             '''Finds a single entity in the register.'''
             order = kw.pop('order', False)
-
             query = model.Session.query(cls).autoflush(False)
             query = query.filter_by(**kw)
             if order:
@@ -47,8 +38,6 @@ def init_db(model):
 
     global RelatedExtra
     RelatedExtra = _RelatedExtra
-    # We will just try to create the table.  If it already exists we get an
-    # error but we can just skip it and carry on.
     sql = '''
                 CREATE TABLE related_extra (
                     id text NOT NULL,
@@ -63,7 +52,6 @@ def init_db(model):
     except sa.exc.ProgrammingError:
         model.Session.rollback()
     model.Session.commit()
-
     types = sa.types
     global related_extra_table
     related_extra_table = sa.Table('related_extra', model.meta.metadata,
@@ -80,9 +68,7 @@ def init_db(model):
 
 
 def table_dictize(obj, context, **kw):
-    '''Get any model object and represent it as a dict'''
     result_dict = {}
-
     if isinstance(obj, sa.engine.base.RowProxy):
         fields = obj.keys()
     else:
@@ -111,11 +97,7 @@ def table_dictize(obj, context, **kw):
             result_dict[name] = unicode(value)
 
     result_dict.update(kw)
-
-    ##HACK For optimisation to get metadata_modified created faster.
-
     context['metadata_modified'] = max(result_dict.get('revision_timestamp', ''),
                                        context.get('metadata_modified', ''))
-
     return result_dict
 
