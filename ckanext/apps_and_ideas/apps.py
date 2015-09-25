@@ -19,7 +19,6 @@ import ckan.logic
 import __builtin__
 import db
 from pylons import config, request, response
-
 import json
 
 abort = base.abort
@@ -426,10 +425,7 @@ def is_private(id):
             index == i
     logging.warning(info[index].value)
     return info[index].value
-
-
-
-
+    
 @ckan.logic.side_effect_free
 def mod_related_extra(context, data_dict):
     create_related_extra_table(context)
@@ -457,7 +453,6 @@ def del_related_extra(context, data_dict):
     session.commit()
     return {"status":"success"}
     
-
 @ckan.logic.side_effect_free
 def get_related_extra(context, data_dict):
     '''
@@ -495,8 +490,6 @@ def list_reports(page, filter_id):
             pass
     if page > length//10+1:   
         base.abort(400, ('"page" parameter out of range')) 
-    
-    #res = res[page-1*10:page*10+4]
 
     return {'reports': result, 'count': length, 'delall': (length > 0) and (filter_id != ''), 'related_id':filter_id}
 def reports_num(related_id):
@@ -555,8 +548,6 @@ def reported_id(related_id, user_id):
     return res[0].value.split('*')[1]
 
 class AppsController(base.BaseController):
-    
-
     def delete_all_reports(self):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -592,8 +583,6 @@ class AppsController(base.BaseController):
             base.abort(400, ('"page" parameter must be an integer'))
 
         c.filter = base.request.params.get('id','')
-        
-        
         return base.render('reports/admin.html')
 
 
@@ -723,7 +712,6 @@ class AppsController(base.BaseController):
                 if check_priv_related_extra(context, data_dict) == False:
                     pl.append(i)
 
-        
         def search_url(params):
             url = h.url_for(controller='ckanext.apps_and_ideas.apps:AppsController', action='search')
             params = [(k, v.encode('utf-8')
@@ -762,8 +750,6 @@ class AppsController(base.BaseController):
             {'value': 'created_desc', 'text': _('Newest')},
             {'value': 'created_asc', 'text': _('Oldest')}
         )
-    
-
         return base.render("related/dashboard.html")
 
     def dashboard(self):
@@ -776,7 +762,6 @@ class AppsController(base.BaseController):
             'sort': base.request.params.get('sort', ''),
             'featured': base.request.params.get('featured', '')
         }
-
         params_nopage = [(k, v) for k, v in base.request.params.items()
                          if k != 'page']
         try:
@@ -803,8 +788,6 @@ class AppsController(base.BaseController):
         c.pr = []
         c.priv_private = False
         c.privonly = base.request.params.get('private', '') == 'on'
-
-
         for i in related_list:
             data_dict = {'related_id':i['id'],'key':'privacy'}
             if check_priv_related_extra(context, data_dict):
@@ -817,8 +800,7 @@ class AppsController(base.BaseController):
                     public_list.append(i)
                 except logic.NotAuthorized:
                     logging.warning("access denied")
-            
-            
+                    
         c.page = h.Page(
             collection=public_list,
             page=page,
@@ -828,7 +810,6 @@ class AppsController(base.BaseController):
         )
 
         c.filters = dict(params_nopage)
-
         c.type_options = self._type_options()
         c.sort_options = (
             {'value': 'view_count_desc', 'text': _('Most Viewed')},
@@ -836,7 +817,6 @@ class AppsController(base.BaseController):
             {'value': 'created_desc', 'text': _('Newest')},
             {'value': 'created_asc', 'text': _('Oldest')}
         )
-
         return base.render("related/dashboard.html")
     
     def read(self, id):
@@ -857,10 +837,8 @@ class AppsController(base.BaseController):
             base.abort(404, _('The requested related item was not found'))
 
         related.view_count = model.Related.view_count + 1
-
         model.Session.add(related)
         model.Session.commit()
-
         base.redirect(related.url)
 
     def list(self, id):
@@ -934,7 +912,6 @@ class AppsController(base.BaseController):
                     df.unflatten(
                         logic.tuplize_dict(
                             logic.parse_params(base.request.params))))
-
                 if is_edit:
                     data['id'] = related_id
                 else:
@@ -958,9 +935,7 @@ class AppsController(base.BaseController):
         else:
             if is_edit:
                 data = related
-
         c.types = self._type_options()
-
         c.pkg_id = id
         vars = {'data': data, 'errors': errors, 'error_summary': error_summary}
         c.form = base.render("related/edit_form.html", extra_vars=vars)
@@ -970,10 +945,8 @@ class AppsController(base.BaseController):
         if 'cancel' in base.request.params:
             h.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='edit',
                           id=id, related_id=related_id)
-
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
-
         try:
             if base.request.method == 'POST':
                 logic.get_action('related_delete')(context, {'id': related_id})
@@ -1024,9 +997,6 @@ class AppsController(base.BaseController):
         related_list = logic.get_action('related_list')(context, data_dict)
         # Update ordering in the context
         logging.warn('---search debug---')
-
-        
-
         new_list = [x for x in related_list if id == x['id']]
         
         def search_url(params):
@@ -1050,7 +1020,6 @@ class AppsController(base.BaseController):
         )
 
         c.filters = dict(params_nopage)
-        
         c.type_options = self._type_options()
         c.sort_options = (
             {'value': '', 'text': _('Most viewed')},
@@ -1059,8 +1028,6 @@ class AppsController(base.BaseController):
             {'value': 'created_desc', 'text': _('Newest')},
             {'value': 'created_asc', 'text': _('Oldest')}
         )
-    
-
         return base.render("related/dashboard.html")
     
 def can_view(id):
@@ -1087,5 +1054,3 @@ def is_admin():
     except toolkit.NotAuthorized, e:
          return False         
     return False
-
-
