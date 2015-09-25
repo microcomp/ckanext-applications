@@ -3,9 +3,7 @@ import ckan.plugins.toolkit as toolkit
 import ckan.logic as logic
 import json
 import os
-
 import detail
-
 import apps
 import db 
 import ckan.logic
@@ -15,9 +13,6 @@ import logging
 
 class AppsAndIdeasPlugin(plugins.SingletonPlugin):
     controller = 'ckanext.apps_and_ideas.related:RelatedController'
-    '''An example theme plugin.
-
-    '''
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.interfaces.IActions)
     plugins.implements(plugins.IRoutes, inherit=True)
@@ -45,7 +40,6 @@ class AppsAndIdeasPlugin(plugins.SingletonPlugin):
         map.connect('report_admin', '/admin/reports', action='list_reports', controller='ckanext.apps_and_ideas.apps:AppsController')
         return map
     def get_actions(self):
-    # Registers the custom API method defined above
         return {'delete_app':apps.delete_app,
                 'list_apps': apps.list_apps,
                 'mod_app': apps.mod_app_api,
