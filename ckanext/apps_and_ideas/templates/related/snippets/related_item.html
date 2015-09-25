@@ -3,9 +3,9 @@
 'application': h.url_for_static('/base/images/placeholder-application.png')
 } %}
 {% set tooltip = _('Go to {related_item_type}').format(related_item_type=related.type|replace('_', ' ')|title) %}
-    {#% if h.check_2(related.id) %#}
+
 {% if h.is_priv(related.id) == 'public' or h.can_v(related.id) %}
-<li class="related-item media-item" data-module="related-item">
+<li class="related-item media-item" data-module="related-item" style="height: 280px;">
   <img src="{{ related.image_url or placeholder_map[related.type] or h.url_for_static('/base/images/placeholder-image.png') }}" alt="{{ related.title }}" class="media-image">
   <h3 class="media-heading">{{ related.title }} {%if h.is_priv(related.id) != 'public' %} <i class='label red'>{{_('Private')}}</i>{%endif%} 
 {%if h.reports_num(related.id) > 3 %} <span class="label" style="background-color: red">{{_('This app was reported by users')}}</span>{%endif%}
@@ -28,10 +28,6 @@
   </a>
   {% if pkg_id %}
     {{ h.nav_link(_('Edit'), controller='ckanext.apps_and_ideas.detail:DetailController', action='edit_app',  id=related.id, class_='btn btn-primary btn-small media-edit') }}
-
-
-  {#% endif %#}
-
 </li>
 {%endif%}
 {% if position is divisibleby 3 %}
