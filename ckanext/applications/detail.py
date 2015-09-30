@@ -1,9 +1,11 @@
 # coding=utf-8
 import urllib
+
 import datetime
 import uuid
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 import ckan.model as model
 import ckan.logic as logic
 import ckan.lib.base as base
@@ -13,9 +15,12 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as toolkit
 from ckan.common import _, c
 import logging
+
 import json
 import os
+
 import db
+
 import ckan.logic
 import __builtin__
 
@@ -24,7 +29,7 @@ data_path = "/data/"
 abort = base.abort
 _get_action = logic.get_action
 _check_access = logic.check_access
-#log = logging.getLogger('ckanext_apps_and_ideas')
+#log = logging.getLogger('ckanext_applications')
 def create_related_extra_table(context):
     if db.related_extra_table is None:
         db.init_db(context['model'])
@@ -63,10 +68,13 @@ def mod_related_extra(context, data_dict):
         if info[i].key == 'privacy':
             index == i
     info[index].related_id = data_dict.get('related_id')
+    
     info[index].key = data_dict.get('key')
     info[index].value = __builtin__.value
     info[index].save()
     session = context['session']
+
+    #session.add(info)
     session.commit()
     return {"status":"success"}
 
@@ -78,6 +86,7 @@ def del_related_extra(context, data_dict):
     session.commit()
     return {"status":"success"}
     
+
 @ckan.logic.side_effect_free
 def get_related_extra(context, data_dict):
     '''
@@ -88,6 +97,7 @@ def get_related_extra(context, data_dict):
         db.init_db(context['model'])
     res = db.RelatedExtra.get(**data_dict)
     return res
+
 
 class DetailController(base.BaseController):  
     def list(self, id):
@@ -107,20 +117,26 @@ class DetailController(base.BaseController):
 
         try:
             c.pkg_dict = logic.get_action('package_show')(context, data_dict)
+
             c.pkg = context['package']
             logging.warning(c.pkg)
             c.resources_json = h.json.dumps(c.pkg_dict.get('resources', []))
+         
+        
         except logic.NotFound:
             base.abort(404, base._('Dataset not found'))
         except logic.NotAuthorized:
             base.abort(401, base._('Unauthorized to read package %s') % id)
         logging.warning(c.pkg.related)
+
         related_list = []
+
         for i in c.pkg.related:
             data_dict = {'related_id':i.id,'key':'privacy'}
             if check_priv_related_extra(context, data_dict):
                 related_list.append(i)
             else:
+                
                 try:
                     logic.check_access('app_edit', context, data_dict)
                     related_list.append(i)
@@ -131,10 +147,6 @@ class DetailController(base.BaseController):
         return base.render("package/related_list.html")
 
     def _type_options(self):
-        '''
-        A tuple of options for the different related types for use in
-        the form.select() template macro.
-        '''
         return ({"text": _("API"), "value": "api"},
                 {"text": _("Application"), "value": "application"},
                 {"text": _("Idea"), "value": "idea"},
@@ -150,10 +162,13 @@ class DetailController(base.BaseController):
 
         data_dict = {
             'type_filter': 'application',
-            'sort': base.request.params.get('sort', '')
+            'sort': base.request.params.get('sort', ''),
+            #'featured': base.request.params.get('featured', '')
         }
+        
         id = base.request.params.get('id','')
         c.id = id
+
         params_nopage = [(k, v) for k, v in base.request.params.items()
                          if k != 'page']
         try:
@@ -162,9 +177,12 @@ class DetailController(base.BaseController):
             base.abort(400, ('"page" parameter must be an integer'))
     
         related_list = logic.get_action('related_list')(context, data_dict)
+        # Update ordering in the context
+        
         new_list = [x for x in related_list if id == x['id']]
+        
         def search_url(params):
-            url = h.url_for(controller='ckanext.apps_and_ideas.apps:AppsController', action='search')
+            url = h.url_for(controller='ckanext.applications.apps:AppsController', action='search')
             params = [(k, v.encode('utf-8')
                       if isinstance(v, basestring) else str(v))
                       for k, v in params]
@@ -184,6 +202,7 @@ class DetailController(base.BaseController):
         )
 
         c.filters = dict(params_nopage)
+        
         c.type_options = self._type_options()
         c.sort_options = (
             {'value': '', 'text': _('Most viewed')},
@@ -201,6 +220,7 @@ class DetailController(base.BaseController):
         self.owner_id = new_list[0]['owner_id']
         owner_id = self.owner_id
         c.img = new_list[0]['image_url']
+
         c.owner = model.Session.query(model.User).filter(model.User.id == owner_id).first().name
         ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == c.id).all()
         ds_id = []
@@ -212,6 +232,8 @@ class DetailController(base.BaseController):
         for i in ds_id:
             pack = model.Session.query(model.Package).filter(model.Package.id == i).first()
             c.datasets.append(pack.name)
+        #c.datasets = c.data
+        
 
         data_dict2 = {'related_id':c.id,'key':'privacy'}
         privacy_list = get_related_extra(context, data_dict2)
@@ -219,13 +241,18 @@ class DetailController(base.BaseController):
             c.private = "no information"
         else:
             c.private = privacy_list[0].value
+        
         data_dict = {'related_id':c.id,'key':'privacy'}
+
         if check_priv_related_extra(context, data_dict) == False:
             try:
                 logic.check_access('app_edit', context, {'owner_id': owner_id})
             except logic.NotAuthorized:
                 logging.warning("access denied")
                 base.abort(404, ('Application not found'))
+
+        logging.warning(c.datasets)
+        logging.warning(c.private)
         return base.render("related/dashboard.html")
         
     def new_app(self):
@@ -239,8 +266,11 @@ class DetailController(base.BaseController):
         for i in all_apps:
             c.app_names.append(i.name)
         logging.warning(c.app_names)
+
         c.dataset = base.request.params.get('dataset','')
+        
         return base.render("related/dashboard.html")
+
 
     def new_app_in(self):
         context = {'model': model, 'session': model.Session,
@@ -248,13 +278,17 @@ class DetailController(base.BaseController):
                    'for_view': True}
         data_dict = {}
         data = {}
+
         related = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
         data = related
         logging.warning('post data values:')
         logging.warning(data)
         owner_id = c.userobj.id
+        
         data_to_commit = model.related.Related()
+
         logging.warning(data_to_commit)   
+
         data_to_commit.id = unicode(uuid.uuid4())
         data_to_commit.title = data['title']
         data_to_commit.description = data['description']
@@ -269,11 +303,13 @@ class DetailController(base.BaseController):
         dat["url"] = data_to_commit.url
         dat["image_url"] = data_to_commit.image_url
         dat["datasets"] = data['datasets']
+
         __builtin__.vars = {}
         c.errorrs = {}
         datasets = data['datasets'].split(',')
         if len(data_to_commit.title) > 3 and len(data_to_commit.url) > 3:
             model.Session.add(data_to_commit)
+            
             datasets_bool  = self.add_datasets(datasets,  data_to_commit.id)
             data_dict = {'related_id':data_to_commit.id,'key':'privacy'}
             __builtin__.value = 'private'
@@ -281,12 +317,12 @@ class DetailController(base.BaseController):
             if datasets_bool:
                 model.Session.commit()
                 __builtin__.vars = {}
-                return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
+                return toolkit.redirect_to(controller='ckanext.applications.apps:AppsController', action='dashboard')
             else:
                 errors['datasets'] = _("Invalid dataset(s)")
                 vars = {'errors': errors, 'data':dat}    
                 __builtin__.vars = vars
-                return toolkit.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='new_app')
+                return toolkit.redirect_to(controller='ckanext.applications.detail:DetailController', action='new_app')
         else:
             if len(data_to_commit.title) < 3:
                 errors['title'] = _("Title too short")
@@ -301,7 +337,9 @@ class DetailController(base.BaseController):
             vars = {'errors': errors, 'data':dat}    
             __builtin__.vars = vars
 
-            return toolkit.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='new_app')
+            return toolkit.redirect_to(controller='ckanext.applications.detail:DetailController', action='new_app')
+
+
 
     def add_datasets(self, datasets,  id):
         related_ids = []
@@ -323,20 +361,25 @@ class DetailController(base.BaseController):
             related_datasets[i].related_id = id
             related_datasets[i].status = 'active'
             model.Session.add(related_datasets[i])
+            
         model.Session.commit()
         return True
         
     def edit_app(self):
+        
         id = base.request.params.get('id','')
         data_from_db = model.Session.query(model.Related).filter(model.Related.id == id).first()
         if data_from_db == None:
             base.abort(404, _('Application not found'))
+        
         context = {'user' : c.user} 
         data_dict = {'owner_id' : data_from_db.owner_id}
         try:
             _check_access('app_edit', context, data_dict)
         except toolkit.NotAuthorized, e:
             toolkit.abort(401, e.extra_msg)
+        
+        
         logging.warning(data_from_db)
         data, errors, error_summary = {}, {}, {}
         data["id"] = data_from_db.id
@@ -351,12 +394,14 @@ class DetailController(base.BaseController):
         data["featured"] = data_from_db.featured
         c.id = data["id"]
         c.data = data_from_db
+
         c.errors  = errors
         c.error_summary = error_summary
         name_query = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == data["id"] ).all()
         names = []
         for i in name_query:
             names.append(i.dataset_id)
+            
         dataset_names = []
         for i in names:
             query_data = model.Session.query(model.Package).filter(model.Package.id == i).first()
@@ -366,23 +411,29 @@ class DetailController(base.BaseController):
         c.datasets = data['datasets']
         vars = {'data': data, 'errors': errors, 'error_summary': error_summary}
         return base.render("related/update.html", extra_vars = vars)
+
     def edit_app_do(self):
         data, errors, error_summary = {}, {}, {}
         id = base.request.params.get('id','')
         valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
         if valid == None:
             base.abort(404, _('Application not found'))
+
         data = {}
+
         related = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
         data = related
         logging.warning('post data values:')
         logging.warning(data)
         old_data = model.Session.query(model.Related).filter(model.Related.id == id).first()
+
         logging.warning(type(old_data))
+
         old_data.title = data["title"] 
         old_data.description =data["description"]
         old_data.image_url =data["image_url"] 
         old_data.url =data["url"] 
+        #old_data.featured = data["featured"]
         c.data = old_data
         c.errors  = errors
         c.error_summary = error_summary
@@ -407,6 +458,7 @@ class DetailController(base.BaseController):
         for i in related_datasets:
             model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.id == i.id).delete(synchronize_session=False)
         model.Session.commit()
+        #model.Session.add(old_data)
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
@@ -418,20 +470,25 @@ class DetailController(base.BaseController):
             __builtin__.value = data['private']
         except toolkit.NotAuthorized, e:
             __builtin__.value = 'private'
+        
         mod_related_extra(context, data_dict)
+
         model.Session.commit()
+
         datasets = data['datasets'].split(',')
         self.add_datasets(datasets, id)
-        return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
+        return toolkit.redirect_to(controller='ckanext.applications.apps:AppsController', action='dashboard')
         
     def delete_app(self):
         id = base.request.params.get('id','')
         logging.warning('deleting...')
         logging.warning(id)
+
         valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
         if valid == None:
             logging.warning('application not found')
             base.abort(404, _('Application not found'))
+
         context = {'user' : c.user} 
         data_dict = {'owner_id' : valid.owner_id}
         try:
@@ -441,6 +498,7 @@ class DetailController(base.BaseController):
             
         rel = model.Session.query(model.Related).filter(model.Related.id == id).first()
         rel_datasets = model.Session.query(model.RelatedDataset).filter(model.Related.id == id).all()
+        
         model.Session.delete(rel)
         model.Session.commit()
         logging.warning(' related datasets >>>>')
@@ -451,7 +509,7 @@ class DetailController(base.BaseController):
                    'for_view': True}
         del_related_extra(context, data_dict)
         model.Session.commit()
-        return toolkit.redirect_to(controller='ckanext.apps_and_ideas.apps:AppsController', action='dashboard')
+        return toolkit.redirect_to(controller='ckanext.applications.apps:AppsController', action='dashboard')
 
 def errors_and_other_stuff():
     return __builtin__.vars
