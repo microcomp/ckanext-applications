@@ -67,8 +67,8 @@
                    <input id="{{i.split('=')[0]}}" type="text" name="{{i.split('=')[0]}}" value="{{i.split('=')[1]}}" style="display: none;"/> {%endif%}
                 {%endfor%}
               {%endif%}
-              <label for="field-sitewide-search">Search Applications</label>
-              <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}"  style="display:inline; width: 70%; height: 3.25em; margin-bottom: 0em;"/>
+              <label for="field-sitewide-search">{{_('Search Applications')}}</label>
+              <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}{{_('Search')}}{%else%}{{c.name}}{%endif%}"  style="display:inline; width: 70%; height: 3.25em; margin-bottom: 0em;"/>
               
               <button class="btn-search" type="submit" style="display:inline;">{{_('Search')}}</button>        
     </form>
