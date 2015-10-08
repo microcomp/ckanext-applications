@@ -55,7 +55,7 @@
     border-radius: 5px;
     color: white;
     background-color: #bd0a26;
-    margin-bottom: 1.5em;
+    margin-bottom: 1.2`em;
 }
 </style>
 {%if c.action != 'detail' %}
@@ -78,7 +78,22 @@
   {% block related_items %}
   {%if c.action != 'detail' %}
       {#% if c.controller != 'ckanext.apps_and_ideas.detail:DetailController' %#}
-        {{super()}}
+        {% if item_count %}
+          {%if c.language == 'sk' %}
+            <p>Zobrazené položky <strong>{{ page.first_item }} - {{ page.last_item }}</strong> z <strong>{{ item_count }}</strong>  súvisiace položky nájdené.</p>
+          {%else%}
+          {% trans first=page.first_item, last=page.last_item, item_count=item_count %}
+              <p>Showing items <strong>{{ first }} - {{ last }}</strong> of <strong>{{ item_count }}</strong> related items found</p>
+            {% endtrans %}
+               
+          {%endif%}
+        {% elif c.filters.type %}
+          {% trans item_count=item_count %}
+            <p><strong>{{ item_count }}</strong> related items found</p>
+          {% endtrans %}
+        {% else %}
+          <p class="empty">{{ _('There have been no apps submitted yet.') }}
+        {% endif %}
       {%endif%}
   {% endblock %}
 
@@ -124,10 +139,12 @@
       <section class="module module-narrow module-shallow">
         <h2 class="module-heading">{{ _('What are applications?') }}</h2>
         <div class="module-content">
-          {% trans %}
-            These are applications built with the datasets as well as ideas for
-            things that could be done with them.
-          {% endtrans %}
+          {%if c.language == 'sk'%}
+          Toto sú aplikácie zostavené datasetmi ako aj nápadmi pre ich iné využitie.
+          {%else%}
+          {{_('These are applications built with the datasets as well as ideas for things that could be done with them.')}}
+          {%endif%}
+
         </div>
       </section>
 
