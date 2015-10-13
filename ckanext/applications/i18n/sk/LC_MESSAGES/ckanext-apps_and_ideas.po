@@ -330,30 +330,7 @@ msgstr "Nová aplikácia"
 msgid "Apps & Ideas"
 msgstr "Aplikácie & Nápady"
 
-#: ckanext/apps_and_ideas/templates/package/dashboard.html:21
-#, python-format
-msgid ""
-"\n"
-"            <p>Showing items <strong>%(first)s - %(last)s</strong> of "
-"<strong>%(item_count)s</strong> related items found</p>\n"
-"          "
-msgstr ""
-"\n"
-"           <p>Zobrazené položky <strong>%(first)s - %(last)s</strong> of "
-"<strong>%(item_count)s</strong> súvisiace položky nájdené</p>\n"
-"          "
 
-#: ckanext/apps_and_ideas/templates/package/dashboard.html:25
-#, python-format
-msgid ""
-"\n"
-"            <p><strong>%(item_count)s</strong> related items found</p>\n"
-"          "
-msgstr ""
-"\n"
-"            <p><strong>%(item_count)s</strong> súvisiace položky "
-"nájdené</p>\n"
-"          "
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:29
 msgid "There have been no apps submitted yet."
@@ -364,19 +341,6 @@ msgstr "Ešte neboli pridané žiadne aplikácie."
 msgid "What are applications?"
 msgstr "Co sú to aplikácie?"
 
-#: ckanext/apps_and_ideas/templates/package/dashboard.html:50
-#: ckanext/apps_and_ideas/templates/related/dashboard.html:335
-msgid ""
-"\n"
-"        These are applications built with the datasets as well as ideas "
-"for\n"
-"        things that could be done with them.\n"
-"      "
-msgstr ""
-"\n"
-"       Toto sú aplikácie zostavené datasetmi ako aj nápadmi pre\n"
-"       ich iné využitie.\n"
-"      "
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:58
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:343
@@ -633,4 +597,50 @@ msgstr "nahlásené od"
 #: ckanext/apps_and_ideas/templates/reports/admin.html:32
 msgid "Remove report"
 msgstr "Odstrániť hlásenie"
+
+
+#: ckanext/applications/templates/package/dashboard.html:54
+msgid ""
+"\n"
+"        These are applications built with the datasets as well as ideas for\n"
+"        things that could be done with them.\n"
+"      "
+msgstr ""
+"\n"
+"        Toto sú aplikácie zostavené datasetmi ako aj nápadmi pre ich iné využitie."
+"      "
+
+
+#: ckanext/applications/templates/package/dashboard.html:29
+#: ckanext/applications/templates/related/dashboard.html:86
+#, python-format
+msgid ""
+"\n"
+"            <p><strong>%(item_count)s</strong> related items found</p>\n"
+"          "
+msgstr ""
+"\n"
+"            <p><strong>%(item_count)</strong> súvisiace položky nájdené.</p>\n"
+"          "
+
+#: ckanext/applications/templates/related/dashboard.html:137
+msgid ""
+"These are applications built with the datasets as well as ideas for things "
+"that could be done with them."
+msgstr  ""
+"Toto sú aplikácie zostavené datasetmi ako aj nápadmi pre ich iné využitie."
+
+#: ckanext/applications/templates/package/dashboard.html:22
+#: ckanext/applications/templates/related/dashboard.html:82
+#, python-format
+msgid ""
+"\n"
+"              <p>Showing items <strong>%(first)s - %(last)s</strong> of "
+"<strong>%(item_count)s</strong> related items found</p>\n"
+"            "
+msgstr ""
+"\n"
+"              <p>Zobrazené položky <strong>%(first)s - %(last)s</strong> z\n" 
+"<strong>%(item_count)s</strong>  súvisiace položky nájdené.</p>"
+"            "
 

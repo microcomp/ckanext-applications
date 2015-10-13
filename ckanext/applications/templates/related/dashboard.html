@@ -40,24 +40,7 @@
       </h1>
   {% if c.controller != 'ckanext.apps_and_ideas.detail:DetailController' %}
 
-<style type="text/css">
-.btn-search{  
-    padding: 0.25em;
-    color: white;
-    background-color: #bd0a26;
-    padding: 0.3em;
-    padding-left: 0.6em;
-    padding-right: 0.6em;
-    margin: 0.7em;
-    border: 1px solid #bd0a26;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    color: white;
-    background-color: #bd0a26;
-    margin-bottom: 1.2`em;
-}
-</style>
+
 {%if c.action != 'detail' %}
     <form class="section site-search simple-input" action="/apps/search" method="get" >
             <!--div class="field"!-->
@@ -161,7 +144,7 @@
     {% endif %}
           </div>
 
-          <div class="control-group">
+
             <label for="field-sort">{{ _('Sort by') }}</label>
             <select id="field-sort" name="sort">
               <option value="">{{ _('Default') }}</option>
@@ -194,4 +177,3 @@
      {%endif%}
     {%endif%}
 {% endblock %}
-

@@ -4,7 +4,7 @@
           <!-- Form Name -->
           <legend>{{title}} </legend>
           <div class="control-group">
-            <label class="control-label" for="textinput">{{_('Permanent URL')}}</label>
+            <label class="control-label" >{{_('Permanent URL')}}</label>
             <div class="controls">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;"><textarea style="width:100%; resize: none;" >{{ request.host_url }}/apps/detail?id={{id}}</textarea></p><!--" readonly -->
             </div>
@@ -12,7 +12,7 @@
           
           <!-- Text input-->
           <div class="control-group">
-            <label class="control-label" for="textinput">{{_('Description')}}</label>
+            <label class="control-label" >{{_('Description')}}</label>
             <div class="controls">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if description==''%}{{_('no data')}}{%else%}{{description}}{%endif%}</p><!--" readonly -->
             </div>
@@ -20,7 +20,7 @@
 
           <!-- Text input-->
           <div class="control-group">
-            <label class="control-label" for="textinput">{{_('Date of creation')}}</label>
+            <label class="control-label" >{{_('Date of creation')}}</label>
             <div class="controls">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if created==''%}{{_('no data')}}{%else%}{{created}}{%endif%}</p><!--" readonly-->
             </div>
@@ -28,7 +28,7 @@
 
           <!-- Text input-->
           <div class="control-group">
-            <label class="control-label" for="textinput">{{_('Author')}}</label>
+            <label class="control-label" >{{_('Author')}}</label>
             <div class="controls">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if owner==''%}{{_('no data')}}{%else%}{{owner}}{%endif%}</p><!--" readonly -->
             </div>
@@ -45,7 +45,7 @@
 
           <!-- Text input-->
           <div class="control-group">
-            <label class="control-label" for="textinput">{{_('Datasets')}}</label>
+            <label class="control-label" >{{_('Datasets')}}</label>
             <div class="controls" style="padding-top: 0.4em;font-size:1.2em;">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% for x in datasets%} {{x}}, {% endfor %}" readonly-->
               <!--ul style="padding-top: 0.3em; list-style-type:none;padding-left: -1em; "-->
