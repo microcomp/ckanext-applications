@@ -38,7 +38,6 @@
           <div class="control-group">
             <label class="control-label">{{_('URL')}}</label>
             <div class="controls" style="padding-top: 0.3em; font-size:1.2em;">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if url==''%}{{_('no data')}}{%else%}{{url}}{%endif%}" readonly-->
               <a href="{% if url==''%}#{%else%}{{url}}{%endif%}" style="padding-top: 1em;" target="_blank">{% if url==''%}{{_('no data')}}{%else%}{{url}}{%endif%}</a>
             </div>
           </div>
@@ -47,8 +46,6 @@
           <div class="control-group">
             <label class="control-label" >{{_('Datasets')}}</label>
             <div class="controls" style="padding-top: 0.4em;font-size:1.2em;">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% for x in datasets%} {{x}}, {% endfor %}" readonly-->
-              <!--ul style="padding-top: 0.3em; list-style-type:none;padding-left: -1em; "-->
                 {% for x in datasets%} <!--li style="display:inline; padding-right: 0.3em;"--> <a href="/dataset/{{x}}" target="_blank"> {{x}}</a>,<!--/li--> {% endfor %}
               <!--/ul-->
             </div>
@@ -56,8 +53,6 @@
           <div class="control-group">
             <label class="control-label"> {{_('Status')}}</label>
             <div class="controls">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="-->
-
              <p style="padding-top: 0.3em;font-size:1.2em;">{%if private=='private'%}{{_('Private')}}{%else%}{{_('Public')}}{%endif%}</p><!--" readonly -->
             </div>
           </div>
@@ -105,6 +100,6 @@
         <input type='text' name="app_id" value="{{id}}" style="display:none" >
         <textarea rows="4" name="report_text" placeholder="{{_('Error description')}}" style="width:100%;"></textarea>
         <button type="submit" class="mybutton"> {{_('Send')}}</button>
-      <form>{%endif%}
+      </form>{%endif%}
       </noscript>
       <hr>
