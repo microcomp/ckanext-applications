@@ -27,8 +27,9 @@
      {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
                   {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=c.datasets, error='', classes=['control-full'], attrs=tag_attrs) }}
 
-    <label class="control-label" for="status" >{{_('Status')}}</label>
+    
     {%if h.is_admin() %}
+    <label class="control-label" for="status" >{{_('Status')}}</label>
    <select id="status" name="private" style="margin-left: 0.6em;">
       {% if h.is_priv(c.data['id']) == 'public'%} 
         <option value="private"  >{{_('Private')}}</option>
@@ -40,6 +41,7 @@
     </select>
 
     {%else%}
+    <label class="control-label" >{{_('Status')}}</label>
       <p style="padding-top: 0.35em; font-size:1em;">{% if h.is_priv(c.data['id']) %}{{_('Private')}}{%else%}{{_('Public')}}{%endif%}</p>
     {%endif%}
   {% endblock %}
@@ -55,7 +57,6 @@
               </div>
             </form>
           </div>
-      </section>
-   </div> 
+
 
 {%endblock%}
