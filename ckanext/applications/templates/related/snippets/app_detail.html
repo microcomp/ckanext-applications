@@ -1,59 +1,59 @@
   <form class="form-horizontal">
           <fieldset>
 
-          <!-- Form Name -->
-          <legend>{{title}} </legend>
-          <div class="control-group">
-            <label class="control-label" >{{_('Permanent URL')}}</label>
-            <div class="controls">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;"><textarea style="width:100%; resize: none;" >{{ request.host_url }}/apps/detail?id={{id}}</textarea></p><!--" readonly -->
-            </div>
-          </div> 
           
-          <!-- Text input-->
+          <legend>{{title}} </legend>
+                  
+          <div class="control-group">
+            <label class="control-label">{{_('URL')}} </label>
+            <div class="controls" style="padding-top: 0.3em; font-size:1.2em;">
+              <a href="{% if url==''%}#{%else%}{{url}}{%endif%}" style="padding-top: 1em;" target="_blank">{% if urlx==''%}{{_('no data')}}{%else%}{{urlx}}{%endif%}</a>
+            </div>
+
+          </div>
+
           <div class="control-group">
             <label class="control-label" >{{_('Description')}}</label>
             <div class="controls">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if description==''%}{{_('no data')}}{%else%}{{description}}{%endif%}</p><!--" readonly -->
+              <p style="padding-top: 0.3em;font-size:1.2em;">{% if description==''%}{{_('no data')}}{%else%}{{description}}{%endif%}</p>
             </div>
           </div> 
 
-          <!-- Text input-->
+
           <div class="control-group">
             <label class="control-label" >{{_('Date of creation')}}</label>
             <div class="controls">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if created==''%}{{_('no data')}}{%else%}{{created}}{%endif%}</p><!--" readonly-->
+              <p style="padding-top: 0.3em;font-size:1.2em;">{% if created==''%}{{_('no data')}}{%else%}{{created}}{%endif%}</p>
             </div>
           </div>
 
-          <!-- Text input-->
+
           <div class="control-group">
             <label class="control-label" >{{_('Author')}}</label>
             <div class="controls">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if owner==''%}{{_('no data')}}{%else%}{{owner}}{%endif%}</p><!--" readonly -->
+              <p style="padding-top: 0.3em;font-size:1.2em;">{% if owner==''%}{{_('no data')}}{%else%}{{owner}}{%endif%}</p>
             </div>
           </div>
 
-          <!-- Text input-->
+
           <div class="control-group">
-            <label class="control-label">{{_('URL')}}</label>
-            <div class="controls" style="padding-top: 0.3em; font-size:1.2em;">
-              <a href="{% if url==''%}#{%else%}{{url}}{%endif%}" style="padding-top: 1em;" target="_blank">{% if url==''%}{{_('no data')}}{%else%}{{url}}{%endif%}</a>
+            <label class="control-label" >{{_('Permanent URL')}}</label>
+            <div class="controls">
+              <p style="padding-top: 0.3em;font-size:1.2em;"><textarea style="width:100%; resize: none;" >{{ request.host_url }}/apps/detail?id={{id}}</textarea></p>
             </div>
-          </div>
+          </div> 
 
-          <!-- Text input-->
           <div class="control-group">
             <label class="control-label" >{{_('Datasets')}}</label>
             <div class="controls" style="padding-top: 0.4em;font-size:1.2em;">
-                {% for x in datasets%} <!--li style="display:inline; padding-right: 0.3em;"--> <a href="/dataset/{{x}}" target="_blank"> {{x}}</a>,<!--/li--> {% endfor %}
+                {% for x in datasets%}  <a href="/dataset/{{x}}" target="_blank"> {{x}}</a>,{% endfor %}
               <!--/ul-->
             </div>
           </div>
           <div class="control-group">
             <label class="control-label"> {{_('Status')}}</label>
             <div class="controls">
-             <p style="padding-top: 0.3em;font-size:1.2em;">{%if private=='private'%}{{_('Private')}}{%else%}{{_('Public')}}{%endif%}</p><!--" readonly -->
+             <p style="padding-top: 0.3em;font-size:1.2em;">{%if private=='private'%}{{_('Private')}}{%else%}{{_('Public')}}{%endif%}</p>
             </div>
           </div>
 
