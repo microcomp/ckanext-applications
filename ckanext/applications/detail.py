@@ -221,7 +221,7 @@ class DetailController(base.BaseController):
         owner_id = self.owner_id
         c.img = new_list[0]['image_url']
 
-        c.owner = model.Session.query(model.User).filter(model.User.id == owner_id).first().name
+        c.owner = model.Session.query(model.User).filter(model.User.id == owner_id).first().fullname
         ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == c.id).all()
         ds_id = []
         for i in ds_ids:
