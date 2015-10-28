@@ -47,13 +47,57 @@ def new_related_extra(context, data_dict):
     return {"status":"success"}
 
 @ckan.logic.side_effect_free
+def add_app_owner(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra()
+    info.related_id = data_dict.get('related_id')
+    info.key = data_dict.get('key')
+    info.value = data_dict.get('value')
+    info.save()
+    session = context['session']
+    session.add(info)
+    session.commit()
+    return {"status":"success"}
+
+@ckan.logic.side_effect_free
+def mod_app_owner(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**data_dict)
+    index = 0
+    for i in range(len(info)):
+        if info[i].key == 'owner':
+            index = i
+    info[index].related_id = data_dict.get('related_id')
+    
+    info[index].key = data_dict.get('key')
+    info[index].value = data_dict.get('value')
+    info[index].save()
+    session = context['session']
+    session.commit()
+    return {"status":"success"}
+
+@ckan.logic.side_effect_free
+def get_app_owner(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**data_dict)
+    index = 0
+    for i in range(len(info)):
+        if info[i].key == 'owner':
+            index = i
+    info[index].related_id = data_dict.get('related_id')
+    
+    logging.warning(info[index])
+    logging.warning(info)
+    return info[index].value
+
+@ckan.logic.side_effect_free
 def check_priv_related_extra(context, data_dict):
     create_related_extra_table(context)
     info = db.RelatedExtra.get(**data_dict)
     index = 0
     for i in range(len(info)):
         if info[i].key == 'privacy':
-            index == i
+            index = i
     info[index].related_id = data_dict.get('related_id')
     
     logging.warning(info[index].value)
@@ -66,7 +110,7 @@ def mod_related_extra(context, data_dict):
     index = 0
     for i in range(len(info)):
         if info[i].key == 'privacy':
-            index == i
+            index = i
     info[index].related_id = data_dict.get('related_id')
     
     info[index].key = data_dict.get('key')
@@ -85,7 +129,8 @@ def del_related_extra(context, data_dict):
     session = context['session']
     session.commit()
     return {"status":"success"}
-    
+
+
 
 @ckan.logic.side_effect_free
 def get_related_extra(context, data_dict):
@@ -162,8 +207,7 @@ class DetailController(base.BaseController):
 
         data_dict = {
             'type_filter': 'application',
-            'sort': base.request.params.get('sort', ''),
-            #'featured': base.request.params.get('featured', '')
+            'sort': base.request.params.get('sort', '')
         }
         
         id = base.request.params.get('id','')
@@ -221,7 +265,8 @@ class DetailController(base.BaseController):
         owner_id = self.owner_id
         c.img = new_list[0]['image_url']
 
-        c.owner = model.Session.query(model.User).filter(model.User.id == owner_id).first().name
+        c.owner = get_app_owner(context, {"related_id":c.id})
+        #model.Session.query(model.User).filter(model.User.id == owner_id).first().fullname
         ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == c.id).all()
         ds_id = []
         for i in ds_ids:
@@ -253,6 +298,7 @@ class DetailController(base.BaseController):
 
         logging.warning(c.datasets)
         logging.warning(c.private)
+        logging.warning(c.owner)
         return base.render("related/dashboard.html")
         
     def new_app(self):
@@ -299,6 +345,7 @@ class DetailController(base.BaseController):
         data_to_commit.type = 'application'
         errors, error_summary, dat = {}, {}, {}
         dat["title"] = data_to_commit.title
+        dat["owner"] = data["owner"]
         dat["description"] = data_to_commit.description
         dat["url"] = data_to_commit.url
         dat["image_url"] = data_to_commit.image_url
@@ -314,8 +361,10 @@ class DetailController(base.BaseController):
             data_dict = {'related_id':data_to_commit.id,'key':'privacy'}
             __builtin__.value = 'private'
             new_related_extra(context, data_dict)
+            add_app_owner(context, {'related_id': data_to_commit.id,'key':'owner', 'value': dat["owner"] })
             if datasets_bool:
                 model.Session.commit()
+
                 __builtin__.vars = {}
                 return toolkit.redirect_to(controller='ckanext.applications.apps:AppsController', action='dashboard')
             else:
@@ -392,8 +441,10 @@ class DetailController(base.BaseController):
         data["owner_id"] = data_from_db.owner_id
         data["view_count"] = data_from_db.view_count
         data["featured"] = data_from_db.featured
+        data["owner"] = get_app_owner(context, {"related_id":id})
+        logging.warning(data)
         c.id = data["id"]
-        c.data = data_from_db
+        c.data = data
 
         c.errors  = errors
         c.error_summary = error_summary
@@ -441,6 +492,8 @@ class DetailController(base.BaseController):
                 
         if len(data['title']) < 3:
             errors['title'] = [_('Title too short')]
+        if len(data['owner']) < 3:
+            errors['owner'] = [_('Invalid owner')]
         if len(data['url']) < 3:
             errors['url'] = [_("URL incorrect")]
         for i in data['datasets'].split(','):
@@ -477,6 +530,7 @@ class DetailController(base.BaseController):
 
         datasets = data['datasets'].split(',')
         self.add_datasets(datasets, id)
+        mod_app_owner(context, {'dataset_id':id, 'key':'owner', 'value':data['owner']})
         return toolkit.redirect_to(controller='ckanext.applications.apps:AppsController', action='dashboard')
         
     def delete_app(self):

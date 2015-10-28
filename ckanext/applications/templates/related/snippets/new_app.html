@@ -45,6 +45,7 @@
               {% if data %}
                 {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value=data['title'], error="", classes=['control-full']) }}
                 {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value=data['url'], error="", classes=['control-full']) }}
+                 {{ form.input('owner', label=_('Owner'), id='field-url', placeholder=_('owner'), value=data['owner'], error="", classes=['control-full']) }}
                 {{ form.input('image_url', label=_('Image URL'), id='field-image-url', placeholder=_('http://example.com/image.png'), value=data['image_url'], error="", classes=['control-full']) }}
                 {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value=data['description'], error="") }}
                  {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
@@ -52,6 +53,7 @@
               {%else%}
                 {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value="", error="", classes=['control-full']) }}
                 {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value="", error="", classes=['control-full']) }}
+                 {{ form.input('owner', label=_('Owner'), id='field-url', placeholder=_('owner'), value="", error="", classes=['control-full']) }}
                 {{ form.input('image_url', label=_('Image URL'), id='field-image-url', placeholder=_('http://example.com/image.png'), value="", error="", classes=['control-full']) }}
                 {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value="", error="") }}
                  {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}

@@ -21,6 +21,7 @@
 {% block fields %}
     {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value=c.data['title'], error=c.errors.title, classes=['control-full']) }}
     {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value=c.data['url'], error=c.errors.url, classes=['control-full']) }}
+    {{ form.input('owner', label=_('Owner'), id='field-owner', placeholder=_('owner'), value=c.data['owner'], error=c.errors.owner, classes=['control-full']) }}
     {{ form.input('image_url', label=_('Image URL'), id='field-image-url', placeholder=_('http://example.com/image.png'), value=c.data['image_url'], error=c.errors.image_url, classes=['control-full']) }}
     
     {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value=c.data['description'], error=c.errors.description) }}
