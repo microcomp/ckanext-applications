@@ -644,3 +644,33 @@ msgstr ""
 "<strong>%(item_count)s</strong>  súvisiace položky nájdené.</p>"
 "            "
 
+#: ckanext/applications/templates/related/snippets/app_detail.html:28
+msgid "Detailed description of the application."
+msgstr "Podrobný popis aplikácie."
+
+
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:36
+msgid "Date, when the application was added to database."
+msgstr "Dátum, kedy bola pridaná aplikácia do databázy."
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:44
+msgid "User, who added this application to database."
+msgstr "Užívateľ, ktorý pridal túto aplikáciu do databázy."
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:55
+msgid "Datasets, where the application is mentioned."
+msgstr "Zoznam datasetov."
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:62
+msgid "Application status. (private/public)"
+msgstr "Stav aplikácie. (Verejný/Súkromný)"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:18
+msgid "URL where the application can be found."
+msgstr "URL adresa aplikácie."
+
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:18
+msgid "Go to application"
+msgstr "Prejsť na aplikáciu "

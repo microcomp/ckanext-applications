@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-applications 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-12 11:24+0200\n"
+"POT-Creation-Date: 2015-10-28 11:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -189,7 +189,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:29
-#: ckanext/applications/templates/related/dashboard.html:86
+#: ckanext/applications/templates/related/dashboard.html:74
 #, python-format
 msgid ""
 "\n"
@@ -198,12 +198,12 @@ msgid ""
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:33
-#: ckanext/applications/templates/related/dashboard.html:90
+#: ckanext/applications/templates/related/dashboard.html:78
 msgid "There have been no apps submitted yet."
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:52
-#: ckanext/applications/templates/related/dashboard.html:135
+#: ckanext/applications/templates/related/dashboard.html:123
 msgid "What are applications?"
 msgstr ""
 
@@ -216,7 +216,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:62
-#: ckanext/applications/templates/related/dashboard.html:142
+#: ckanext/applications/templates/related/dashboard.html:135
 msgid "Filter Results"
 msgstr ""
 
@@ -229,12 +229,12 @@ msgid "All"
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:77
-#: ckanext/applications/templates/related/dashboard.html:155
+#: ckanext/applications/templates/related/dashboard.html:148
 msgid "Sort by"
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:79
-#: ckanext/applications/templates/related/dashboard.html:157
+#: ckanext/applications/templates/related/dashboard.html:150
 msgid "Default"
 msgstr ""
 
@@ -243,7 +243,7 @@ msgid "Only show featured items"
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:94
-#: ckanext/applications/templates/related/dashboard.html:179
+#: ckanext/applications/templates/related/dashboard.html:172
 msgid "Apply"
 msgstr ""
 
@@ -299,7 +299,7 @@ msgstr ""
 
 #: ckanext/applications/templates/package/snippets/additional_info.html:22
 #: ckanext/applications/templates/package/snippets/additional_info.html:27
-#: ckanext/applications/templates/related/snippets/app_detail.html:31
+#: ckanext/applications/templates/related/snippets/app_detail.html:44
 msgid "Author"
 msgstr ""
 
@@ -327,16 +327,16 @@ msgstr ""
 msgid "New app"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:70
+#: ckanext/applications/templates/related/dashboard.html:53
 msgid "Search Applications"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:71
-#: ckanext/applications/templates/related/dashboard.html:73
+#: ckanext/applications/templates/related/dashboard.html:54
+#: ckanext/applications/templates/related/dashboard.html:56
 msgid "Search"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:82
+#: ckanext/applications/templates/related/dashboard.html:68
 #, python-format
 msgid ""
 "\n"
@@ -345,22 +345,22 @@ msgid ""
 "            "
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:125
+#: ckanext/applications/templates/related/dashboard.html:113
 msgid "Image"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:137
+#: ckanext/applications/templates/related/dashboard.html:128
 msgid ""
 "These are applications built with the datasets as well as ideas for things "
 "that could be done with them."
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:168
+#: ckanext/applications/templates/related/dashboard.html:161
 msgid "Only show private items"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:180
-#: ckanext/applications/templates/related/update.html:53
+#: ckanext/applications/templates/related/dashboard.html:173
+#: ckanext/applications/templates/related/update.html:55
 #: ckanext/applications/templates/related/snippets/related_form.html:20
 msgid "Cancel"
 msgstr ""
@@ -394,7 +394,6 @@ msgid "My Related Item"
 msgstr ""
 
 #: ckanext/applications/templates/related/update.html:23
-#: ckanext/applications/templates/related/snippets/app_detail.html:39
 #: ckanext/applications/templates/related/snippets/new_app.html:47
 #: ckanext/applications/templates/related/snippets/new_app.html:54
 msgid "URL"
@@ -419,7 +418,7 @@ msgid "http://example.com/image.png"
 msgstr ""
 
 #: ckanext/applications/templates/related/update.html:26
-#: ckanext/applications/templates/related/snippets/app_detail.html:15
+#: ckanext/applications/templates/related/snippets/app_detail.html:28
 #: ckanext/applications/templates/related/snippets/new_app.html:49
 #: ckanext/applications/templates/related/snippets/new_app.html:56
 msgid "Description"
@@ -432,7 +431,7 @@ msgid "A little information about the item..."
 msgstr ""
 
 #: ckanext/applications/templates/related/update.html:28
-#: ckanext/applications/templates/related/snippets/app_detail.html:48
+#: ckanext/applications/templates/related/snippets/app_detail.html:55
 #: ckanext/applications/templates/related/snippets/new_app.html:51
 #: ckanext/applications/templates/related/snippets/new_app.html:58
 #: ckanext/applications/templates/related/snippets/related_form.html:12
@@ -446,83 +445,115 @@ msgstr ""
 msgid "eg. default"
 msgstr ""
 
-#: ckanext/applications/templates/related/update.html:30
-#: ckanext/applications/templates/related/snippets/app_detail.html:57
+#: ckanext/applications/templates/related/update.html:32
+#: ckanext/applications/templates/related/update.html:44
+#: ckanext/applications/templates/related/snippets/app_detail.html:62
 msgid "Status"
-msgstr ""
-
-#: ckanext/applications/templates/related/update.html:34
-#: ckanext/applications/templates/related/update.html:37
-#: ckanext/applications/templates/related/update.html:43
-#: ckanext/applications/templates/related/snippets/app_detail.html:61
-#: ckanext/applications/templates/related/snippets/related_item.html:10
-msgid "Private"
 msgstr ""
 
 #: ckanext/applications/templates/related/update.html:35
 #: ckanext/applications/templates/related/update.html:38
-#: ckanext/applications/templates/related/update.html:43
-#: ckanext/applications/templates/related/snippets/app_detail.html:61
+#: ckanext/applications/templates/related/update.html:45
+#: ckanext/applications/templates/related/snippets/app_detail.html:64
+#: ckanext/applications/templates/related/snippets/related_item.html:10
+msgid "Private"
+msgstr ""
+
+#: ckanext/applications/templates/related/update.html:36
+#: ckanext/applications/templates/related/update.html:39
+#: ckanext/applications/templates/related/update.html:45
+#: ckanext/applications/templates/related/snippets/app_detail.html:64
 msgid "Public"
 msgstr ""
 
-#: ckanext/applications/templates/related/update.html:54
+#: ckanext/applications/templates/related/update.html:56
 #: ckanext/applications/templates/related/snippets/new_app.html:64
 #: ckanext/applications/templates/related/snippets/related_form.html:21
 msgid "Save"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:7
-msgid "Permanent URL"
+#: ckanext/applications/templates/related/snippets/app_detail.html:18
+msgid "Go to application"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:17
-#: ckanext/applications/templates/related/snippets/app_detail.html:25
-#: ckanext/applications/templates/related/snippets/app_detail.html:33
-#: ckanext/applications/templates/related/snippets/app_detail.html:41
-#: ckanext/applications/templates/related/snippets/app_detail.html:42
+#: ckanext/applications/templates/related/snippets/app_detail.html:18
+msgid "URL where the application can be found."
+msgstr ""
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:20
+#: ckanext/applications/templates/related/snippets/app_detail.html:30
+#: ckanext/applications/templates/related/snippets/app_detail.html:38
+#: ckanext/applications/templates/related/snippets/app_detail.html:46
 msgid "no data"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:23
+#: ckanext/applications/templates/related/snippets/app_detail.html:28
+msgid "Detailed description of the application."
+msgstr ""
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:36
 msgid "Date of creation"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:70
+#: ckanext/applications/templates/related/snippets/app_detail.html:36
+msgid "Date, when the application was added to database."
+msgstr ""
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:44
+msgid "User, who added this application to database."
+msgstr ""
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:55
+msgid "Datasets, where the application is mentioned."
+msgstr ""
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:62
+msgid "Application status. (private/public)"
+msgstr ""
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:74
 #: ckanext/applications/templates/related/snippets/related_item.html:30
 msgid "Edit"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:72
-#: ckanext/applications/templates/related/snippets/app_detail.html:74
+#: ckanext/applications/templates/related/snippets/app_detail.html:76
+#: ckanext/applications/templates/related/snippets/app_detail.html:78
 msgid "Delete"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:74
+#: ckanext/applications/templates/related/snippets/app_detail.html:78
 msgid "Are you sure?"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:80
+#: ckanext/applications/templates/related/snippets/app_detail.html:84
 msgid "Error report"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:81
-#: ckanext/applications/templates/related/snippets/app_detail.html:104
+#: ckanext/applications/templates/related/snippets/app_detail.html:85
+#: ckanext/applications/templates/related/snippets/app_detail.html:108
 msgid "Report app issue"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:83
-#: ckanext/applications/templates/related/snippets/app_detail.html:106
+#: ckanext/applications/templates/related/snippets/app_detail.html:87
+#: ckanext/applications/templates/related/snippets/app_detail.html:110
 msgid "Error description"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:87
-#: ckanext/applications/templates/related/snippets/app_detail.html:107
+#: ckanext/applications/templates/related/snippets/app_detail.html:91
+#: ckanext/applications/templates/related/snippets/app_detail.html:111
 msgid "Send"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:95
+#: ckanext/applications/templates/related/snippets/app_detail.html:99
 msgid "Report problem"
+msgstr ""
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:115
+msgid "Permanent URL"
+msgstr ""
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:115
+msgid "Permanent URL of this page"
 msgstr ""
 
 #: ckanext/applications/templates/related/snippets/new_app.html:14
