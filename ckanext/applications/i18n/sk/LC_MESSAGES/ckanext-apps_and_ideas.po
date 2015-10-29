@@ -674,3 +674,10 @@ msgstr "URL adresa aplikácie."
 #: ckanext/applications/templates/related/snippets/app_detail.html:18
 msgid "Go to application"
 msgstr "Prejsť na aplikáciu "
+
+#: ckanext/applications/templates/related/update.html:24
+#: ckanext/applications/templates/related/snippets/new_app.html:48
+#: ckanext/applications/templates/related/snippets/new_app.html:56
+msgid "owner"
+msgstr "Vlastník"
+

@@ -66,6 +66,8 @@ def mod_app_api(context, data_dict=None):
     for i in related_datasets:
         model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.id == i.id).delete(synchronize_session=False)
     model.Session.commit()
+    old_data = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
+    logic.get_action('related_show')(context,data_dict)
     #all related items deleted...
     data = {}
     try:
@@ -127,9 +129,13 @@ def mod_app_api(context, data_dict=None):
     if datasets != None or datasets != '':
         related_extra.mod_related_extra(context, data_dict2)
     model.Session.commit()
+    logging.warning(related_datasets)
     if datasets != "" or datasets != None:
         datasets = datasets.split(',')
+        logging.warning(datasets)
         add_datasets(datasets, id)
+    else:
+        add_datasets(related_datasets, id)
     related_extra.mod_app_owner(context, {'related_id':old_data.id,'key':'owner', 'value':owner})
     return _('done')
     
