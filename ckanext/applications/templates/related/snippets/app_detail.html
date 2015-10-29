@@ -26,8 +26,8 @@ $(document).ready(function(){$('[data-toggle="DESC_tooltip"]').tooltip();});
 
           <div class="control-group">
             <label class="control-label" style="width: 22%">{{_('Description')}} <a href="#" data-toggle="DESC_tooltip" title="{{_('Detailed description of the application.')}}"><i class="fa fa-info-circle"></i></a></label>
-            <div class="controls">
-              <p style="padding-top: 0.25em; padding-left:1.5em;font-size:1em;">{% if description==''%}{{_('no data')}}{%else%}{{description}}{%endif%}</p>
+            <div class="controls" style="padding-top:0.25em; padding-left:1.5em;font-size:1em;">
+              {% if description==''%}<p >{{_('no data')}}</p>{%else%}{{h.render_markdown(description)}}{%endif%}
             </div>
           </div> 
 

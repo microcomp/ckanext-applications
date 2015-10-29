@@ -5,7 +5,7 @@ import json
 import os
 
 import detail
-
+import related_extra
 import apps
 import db 
 import ckan.logic
@@ -52,14 +52,14 @@ class Applications(plugins.SingletonPlugin):
                 'new_app': apps.new_app_api}
     def get_helpers(self):
         return {'own': apps.own,
-                'is_priv': apps.is_private,
+                'is_priv': related_extra.is_private,
                 'extra_v': detail.errors_and_other_stuff,
                 'del_x':detail.del_xtra,
                 'can_v': apps.can_view,
                 'is_admin': apps.is_admin,
-                'list_reports': apps.list_reports,
+                'list_reports': related_extra.list_reports,
                 'app_name': apps.app_name,
-                'reports_num': apps.reports_num,
-                'reported_by_user': apps.reported_by_user,
-                'reported_by': apps.reported_by,
-                'report_text': apps.report_text}
+                'reports_num': related_extra.reports_num,
+                'reported_by_user': related_extra.reported_by_user,
+                'reported_by': related_extra.reported_by,
+                'report_text': related_extra.report_text}

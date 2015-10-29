@@ -20,6 +20,7 @@ import __builtin__
 import db
 from pylons import config, request, response
 
+import related_extra
 import json
 
 abort = base.abort
@@ -116,7 +117,7 @@ def mod_app_api(context, data_dict=None):
     __builtin__.value = private
 
     if datasets != None or datasets != '':
-        mod_related_extra(context, data_dict2)
+        related_extra.mod_related_extra(context, data_dict2)
     model.Session.commit()
     if datasets != "" or datasets != None:
         datasets = datasets.split(',')
@@ -184,7 +185,7 @@ def new_app_api(context, data_dict=None):
         add_datasets(ds,  data_to_commit.id)
 
         __builtin__.value = 'private'
-        new_related_extra(context, data_dict2)
+        related_extra.new_related_extra(context, data_dict2)
         
         model.Session.commit()
         c.result =_('done')
@@ -223,7 +224,7 @@ def delete_app(context, data_dict=None):
     logging.warning(rel_datasets)
     model.Session.delete(rel)
     model.Session.commit()
-    del_related_extra(context, data_dict)
+    related_extra.del_related_extra(context, data_dict)
     model.Session.commit()
     c.result = _('done')
     return c.result
@@ -263,7 +264,7 @@ def list_apps(context, data_dict=None):
 
         for i in related_list:
             data_dict = {'related_id':i['id'],'key':'privacy'}
-            if check_priv_related_extra(context, data_dict):
+            if related_extra.check_priv_related_extra(context, data_dict):
                 public_list.append(i)
             else:
                 data_dict = {'owner_id': i['owner_id']}
@@ -342,61 +343,8 @@ def list_apps(context, data_dict=None):
 
         return c.list
 
-#log = logging.getLogger('ckanext_applications')
-def create_related_extra_table(context):
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-@ckan.logic.side_effect_free
-def new_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra()
-    info.related_id = data_dict.get('related_id')
-    info.key = data_dict.get('key')
-    info.value = __builtin__.value
-    info.save()
-    session = context['session']
-    session.add(info)
-    session.commit()
-    return {"status":"success"}
-@ckan.logic.side_effect_free
-def new_report(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra()
-    info.related_id = data_dict.get('related_id')
-    info.key = data_dict.get('key')
-    info.value = data_dict.get('value')
-    info.save()
-    session = context['session']
-    session.add(info)
-    session.commit()
-    return {"status":"success"}
-@ckan.logic.side_effect_free
-def update_report(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.get(**{'id':data_dict.get('id')})
-    info[0].related_id = data_dict.get('related_id')
-    info[0].key = data_dict.get('key')
-    info[0].value = data_dict.get('value')
-    info[0].save()
-    session = context['session']
-    #session.add(info)
-    session.commit()
-    return {"status":"success"}
+log = logging.getLogger('ckanext_applications')
 
-@ckan.logic.side_effect_free
-def check_priv_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.get(**data_dict)
-    index = 0
-    for i in range(len(info)):
-        if info[i].key == 'privacy':
-            index == i
-    info[index].related_id = data_dict.get('related_id')
-    if own(data_dict['related_id']):
-        return True
-    logging.warning(info[index].value)
-    return info[index].value == 'public'
- 
 def own(id):
     owner_id = model.Session.query(model.Related) \
                 .filter(model.Related.id == id).first()
@@ -412,147 +360,7 @@ def app_name(id):
     app_name = model.Session.query(model.Related).filter(model.Related.id == id).first().title
     return app_name
 
-def is_private(id):
 
-    context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-    data_dict = {'related_id':id,'key':'privacy'}
-    create_related_extra_table(context)
-    info = db.RelatedExtra.get(**data_dict)
-    index = 0
-    for i in range(len(info)):
-        if info[i].key == 'privacy':
-            index == i
-    logging.warning(info[index].value)
-    return info[index].value
-
-
-
-
-@ckan.logic.side_effect_free
-def mod_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.get(**data_dict)
-    index = 0
-    for i in range(len(info)):
-        if info[i].key == 'privacy':
-            index == i
-    info[index].related_id = data_dict.get('related_id')
-    
-    info[index].key = data_dict.get('key')
-    info[index].value = __builtin__.value
-    info[index].save()
-    session = context['session']
-
-    #session.add(info)
-    session.commit()
-    return {"status":"success"}
-
-@ckan.logic.side_effect_free
-def del_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.delete(**data_dict)
-    session = context['session']
-    session.commit()
-    return {"status":"success"}
-    
-
-@ckan.logic.side_effect_free
-def get_related_extra(context, data_dict):
-    '''
-    This function retrieves extra information about given tag_id and
-    possibly more filtering criterias. 
-    '''
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-    res = db.RelatedExtra.get(**data_dict)
-    return res
-def list_reports(page, filter_id):
-    context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-    data_dict = {}
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-    res = db.RelatedExtra.getALL(**data_dict)
-
-    res = [x for x in res if x.key == 'report']
-
-    if filter_id != '':
-        res = [x for x in res if x.related_id == filter_id]
-    length = len(res)
-    result = []
-    try:
-        page = int(page)
-    except ValueError:
-        page = 1
-    
-    for i in range(page*10-10,page*10):
-        try:
-            result.append(res[i])
-        except IndexError:
-            pass
-    if page > length//10+1:   
-        base.abort(400, ('"page" parameter out of range')) 
-    
-    #res = res[page-1*10:page*10+4]
-
-    return {'reports': result, 'count': length, 'delall': (length > 0) and (filter_id != ''), 'related_id':filter_id}
-def reports_num(related_id):
-    context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-    data_dict = {'related_id': related_id, 'key':'report'}
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-    res = db.RelatedExtra.get(**data_dict)
-    return len(res)
-
-def reported_by_user(user_id, related_id):
-    context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-    data_dict = {'related_id': related_id, 'key':'reported_by'}
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-    res = db.RelatedExtra.get(**data_dict)
-    res = [x for x in res if x.value.split('*')[0] == c.userobj.id]
-
-    return len(res) == 0
-def report_text(user_id, related_id):
-    context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-    data_dict = {'related_id': related_id, 'key':'reported_by'}
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-    res = db.RelatedExtra.get(**data_dict)
-    res = [x for x in res if x.value.split('*')[0] == c.userobj.id]
-    data_dict2 = {'related_id': related_id, 'key':'report', 'id': res[0].value.split('*')[1]}
-    res = db.RelatedExtra.get(**data_dict2)
-    return res[0].value
-
-def reported_by(related_id, report_id):
-    context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-    data_dict = {'related_id': related_id, 'key':'reported_by'}
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-    res = db.RelatedExtra.get(**data_dict)
-    res = [x for x in res if x.value.split('*')[1] == report_id]
-    return res[0].value.split('*')[0]
-def reported_id(related_id, user_id):
-    context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-    data_dict = {'related_id': related_id, 'key':'reported_by'}
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-    res = db.RelatedExtra.get(**data_dict)
-    res = [x for x in res if x.value.split('*')[0] == user_id]
-    return res[0].value.split('*')[1]
 
 class AppsController(base.BaseController):
     
@@ -616,9 +424,9 @@ class AppsController(base.BaseController):
             value = value[:500]
         logging.warning(value)
         id_ = unicode(uuid.uuid4())
-        if reported_by_user(c.userobj.id, app_id) == False:
-            rep_id = reported_id(app_id, c.userobj.id)
-            update_report(context, {'id':rep_id, 'related_id': app_id,'key': key, 'value':value})
+        if related_extra.reported_by_user(c.userobj.id, app_id) == False:
+            rep_id = related_extra.reported_id(app_id, c.userobj.id)
+            related_extra.update_report(context, {'id':rep_id, 'related_id': app_id,'key': key, 'value':value})
             return h.redirect_to(controller='ckanext.applications.detail:DetailController', action='detail', id=app_id)
         data_dict = {
             'id': id_,
@@ -626,7 +434,7 @@ class AppsController(base.BaseController):
             'key': key,
             'value': value
         }
-        new_report(context, data_dict)
+        related_extra.new_report(context, data_dict)
         id2 = unicode(uuid.uuid4())
         data = {'related_id': app_id,
             'key': key,
@@ -638,7 +446,7 @@ class AppsController(base.BaseController):
             'key': 'reported_by',
             'value': c.userobj.id+"*"+report_id[0].id
         }
-        new_report(context, data_dict2)
+        related_extra.new_report(context, data_dict2)
         return h.redirect_to(controller='ckanext.applications.detail:DetailController', action='detail', id=app_id)
 
     def delete_app_report(self):
@@ -657,8 +465,8 @@ class AppsController(base.BaseController):
         data_dict3 = {'id': report_user[0].id}
         try:
             logic.check_access('app_editall', context)
-            del_related_extra(context, data_dict)
-            del_related_extra(context, data_dict3)
+            related_extra.del_related_extra(context, data_dict)
+            related_extra.del_related_extra(context, data_dict3)
         except logic.NotAuthorized:
             base.abort(401, base._('Not authorized to see this page'))
 
@@ -707,7 +515,7 @@ class AppsController(base.BaseController):
         public_list = []      
         for i in new_list:
             data_dict = {'related_id':i['id'],'key':'privacy'}
-            if check_priv_related_extra(context, data_dict):
+            if related_extra.check_priv_related_extra(context, data_dict):
                 public_list.append(i)
             else:
                 try:
@@ -720,7 +528,7 @@ class AppsController(base.BaseController):
         if private_only:
             for i in public_list:
                 data_dict = {'related_id':i['id'],'key':'privacy'}
-                if check_priv_related_extra(context, data_dict) == False:
+                if related_extra.check_priv_related_extra(context, data_dict) == False:
                     pl.append(i)
 
         
@@ -807,7 +615,7 @@ class AppsController(base.BaseController):
 
         for i in related_list:
             data_dict = {'related_id':i['id'],'key':'privacy'}
-            if check_priv_related_extra(context, data_dict):
+            if related_extra.check_priv_related_extra(context, data_dict):
                 public_list.append(i)
             else:
                 data_dict = {'owner_id': i['owner_id']}

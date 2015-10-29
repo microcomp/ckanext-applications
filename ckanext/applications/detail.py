@@ -19,7 +19,7 @@ import logging
 import json
 import os
 
-import db
+import related_extra
 
 import ckan.logic
 import __builtin__
@@ -29,119 +29,21 @@ data_path = "/data/"
 abort = base.abort
 _get_action = logic.get_action
 _check_access = logic.check_access
-#log = logging.getLogger('ckanext_applications')
-def create_related_extra_table(context):
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-@ckan.logic.side_effect_free
-def new_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra()
-    info.related_id = data_dict.get('related_id')
-    info.key = data_dict.get('key')
-    info.value = __builtin__.value
-    info.save()
-    session = context['session']
-    session.add(info)
-    session.commit()
-    return {"status":"success"}
-
-@ckan.logic.side_effect_free
-def add_app_owner(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra()
-    info.related_id = data_dict.get('related_id')
-    info.key = data_dict.get('key')
-    info.value = data_dict.get('value')
-    info.save()
-    session = context['session']
-    session.add(info)
-    session.commit()
-    return {"status":"success"}
-
-@ckan.logic.side_effect_free
-def mod_app_owner(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.get(**data_dict)
-    index = 0
-    for i in range(len(info)):
-        if info[i].key == 'owner':
-            index = i
-    info[index].related_id = data_dict.get('related_id')
-    
-    info[index].key = data_dict.get('key')
-    info[index].value = data_dict.get('value')
-    info[index].save()
-    session = context['session']
-    session.commit()
-    return {"status":"success"}
-
-@ckan.logic.side_effect_free
-def get_app_owner(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.get(**data_dict)
-    index = 0
-    for i in range(len(info)):
-        if info[i].key == 'owner':
-            index = i
-    info[index].related_id = data_dict.get('related_id')
-    
-    logging.warning(info[index])
-    logging.warning(info)
-    return info[index].value
-
-@ckan.logic.side_effect_free
-def check_priv_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.get(**data_dict)
-    index = 0
-    for i in range(len(info)):
-        if info[i].key == 'privacy':
-            index = i
-    info[index].related_id = data_dict.get('related_id')
-    
-    logging.warning(info[index].value)
-    return info[index].value == 'public'
-
-@ckan.logic.side_effect_free
-def mod_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.get(**data_dict)
-    index = 0
-    for i in range(len(info)):
-        if info[i].key == 'privacy':
-            index = i
-    info[index].related_id = data_dict.get('related_id')
-    
-    info[index].key = data_dict.get('key')
-    info[index].value = __builtin__.value
-    info[index].save()
-    session = context['session']
-
-    #session.add(info)
-    session.commit()
-    return {"status":"success"}
-
-@ckan.logic.side_effect_free
-def del_related_extra(context, data_dict):
-    create_related_extra_table(context)
-    info = db.RelatedExtra.delete(**data_dict)
-    session = context['session']
-    session.commit()
-    return {"status":"success"}
+log = logging.getLogger('ckanext_applications')
 
 
-
-@ckan.logic.side_effect_free
-def get_related_extra(context, data_dict):
-    '''
-    This function retrieves extra information about given tag_id and
-    possibly more filtering criterias. 
-    '''
-    if db.related_extra_table is None:
-        db.init_db(context['model'])
-    res = db.RelatedExtra.get(**data_dict)
-    return res
+#@ckan.logic.side_effect_free
+#def related_extra.check_priv_related_extra(context, data_dict):
+#    create_related_extra_table(context)
+#    info = db.RelatedExtra.get(**data_dict)
+#    index = 0
+#    for i in range(len(info)):
+#        if info[i].key == 'privacy':
+#            index = i
+#    info[index].related_id = data_dict.get('related_id')
+#    
+#    logging.warning(info[index].value)
+#    return info[index].value == 'public'
 
 
 class DetailController(base.BaseController):  
@@ -178,7 +80,7 @@ class DetailController(base.BaseController):
 
         for i in c.pkg.related:
             data_dict = {'related_id':i.id,'key':'privacy'}
-            if check_priv_related_extra(context, data_dict):
+            if related_extra.check_priv_related_extra(context, data_dict):
                 related_list.append(i)
             else:
                 
@@ -265,12 +167,8 @@ class DetailController(base.BaseController):
         owner_id = self.owner_id
         c.img = new_list[0]['image_url']
 
-<<<<<<< HEAD
-        c.owner = get_app_owner(context, {"related_id":c.id})
+        c.owner = related_extra.get_app_owner(context, {"related_id":c.id})
         #model.Session.query(model.User).filter(model.User.id == owner_id).first().fullname
-=======
-        c.owner = model.Session.query(model.User).filter(model.User.id == owner_id).first().fullname
->>>>>>> 307d441396d5c06cea1068abb40d79d2603d319e
         ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == c.id).all()
         ds_id = []
         for i in ds_ids:
@@ -285,7 +183,7 @@ class DetailController(base.BaseController):
         
 
         data_dict2 = {'related_id':c.id,'key':'privacy'}
-        privacy_list = get_related_extra(context, data_dict2)
+        privacy_list = related_extra.get_related_extra(context, data_dict2)
         if len(privacy_list) == 0:
             c.private = "no information"
         else:
@@ -293,7 +191,7 @@ class DetailController(base.BaseController):
         
         data_dict = {'related_id':c.id,'key':'privacy'}
 
-        if check_priv_related_extra(context, data_dict) == False:
+        if related_extra.check_priv_related_extra(context, data_dict) == False:
             try:
                 logic.check_access('app_edit', context, {'owner_id': owner_id})
             except logic.NotAuthorized:
@@ -364,8 +262,8 @@ class DetailController(base.BaseController):
             datasets_bool  = self.add_datasets(datasets,  data_to_commit.id)
             data_dict = {'related_id':data_to_commit.id,'key':'privacy'}
             __builtin__.value = 'private'
-            new_related_extra(context, data_dict)
-            add_app_owner(context, {'related_id': data_to_commit.id,'key':'owner', 'value': dat["owner"] })
+            related_extra.new_related_extra(context, data_dict)
+            related_extra.add_app_owner(context, {'related_id': data_to_commit.id,'key':'owner', 'value': dat["owner"] })
             if datasets_bool:
                 model.Session.commit()
 
@@ -445,7 +343,7 @@ class DetailController(base.BaseController):
         data["owner_id"] = data_from_db.owner_id
         data["view_count"] = data_from_db.view_count
         data["featured"] = data_from_db.featured
-        data["owner"] = get_app_owner(context, {"related_id":id})
+        data["owner"] = related_extra.get_app_owner(context, {"related_id":id})
         logging.warning(data)
         c.id = data["id"]
         c.data = data
@@ -528,13 +426,13 @@ class DetailController(base.BaseController):
         except toolkit.NotAuthorized, e:
             __builtin__.value = 'private'
         
-        mod_related_extra(context, data_dict)
+        related_extra.mod_related_extra(context, data_dict)
 
         model.Session.commit()
 
         datasets = data['datasets'].split(',')
         self.add_datasets(datasets, id)
-        mod_app_owner(context, {'dataset_id':id, 'key':'owner', 'value':data['owner']})
+        related_extra.mod_app_owner(context, {'related_id':id, 'key':'owner', 'value':data['owner']})
         return toolkit.redirect_to(controller='ckanext.applications.apps:AppsController', action='dashboard')
         
     def delete_app(self):
@@ -565,7 +463,7 @@ class DetailController(base.BaseController):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
-        del_related_extra(context, data_dict)
+        related_extra.del_related_extra(context, data_dict)
         model.Session.commit()
         return toolkit.redirect_to(controller='ckanext.applications.apps:AppsController', action='dashboard')
 
