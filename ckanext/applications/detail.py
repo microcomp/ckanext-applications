@@ -167,7 +167,11 @@ class DetailController(base.BaseController):
         owner_id = self.owner_id
         c.img = new_list[0]['image_url']
 
+<<<<<<< HEAD
         c.owner = related_extra.get_app_owner(context, {"related_id":c.id})
+=======
+        c.owner = get_app_owner(context, {"related_id":c.id})
+>>>>>>> 5d5779fee7fdca5d2a5bf18b02c87db67f896ef9
         #model.Session.query(model.User).filter(model.User.id == owner_id).first().fullname
         ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == c.id).all()
         ds_id = []
