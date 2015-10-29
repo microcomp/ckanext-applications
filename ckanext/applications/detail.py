@@ -31,21 +31,6 @@ _get_action = logic.get_action
 _check_access = logic.check_access
 log = logging.getLogger('ckanext_applications')
 
-
-#@ckan.logic.side_effect_free
-#def related_extra.check_priv_related_extra(context, data_dict):
-#    create_related_extra_table(context)
-#    info = db.RelatedExtra.get(**data_dict)
-#    index = 0
-#    for i in range(len(info)):
-#        if info[i].key == 'privacy':
-#            index = i
-#    info[index].related_id = data_dict.get('related_id')
-#    
-#    logging.warning(info[index].value)
-#    return info[index].value == 'public'
-
-
 class DetailController(base.BaseController):  
     def list(self, id):
         """ List all related items for a specific dataset """
@@ -167,11 +152,8 @@ class DetailController(base.BaseController):
         owner_id = self.owner_id
         c.img = new_list[0]['image_url']
 
-<<<<<<< HEAD
         c.owner = related_extra.get_app_owner(context, {"related_id":c.id})
-=======
-        c.owner = get_app_owner(context, {"related_id":c.id})
->>>>>>> 5d5779fee7fdca5d2a5bf18b02c87db67f896ef9
+
         #model.Session.query(model.User).filter(model.User.id == owner_id).first().fullname
         ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == c.id).all()
         ds_id = []
