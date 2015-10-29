@@ -92,6 +92,13 @@ def mod_app_api(context, data_dict=None):
         datasets =  data_dict['datasets'] 
     except KeyError:
         datasets = ""
+    try:
+        owner = data_dict['owner'] 
+    except KeyError:
+        owner  = c.userobj.fullname
+
+
+
 
     old_data = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
     logic.get_action('related_show')(context,data_dict)
@@ -112,7 +119,8 @@ def mod_app_api(context, data_dict=None):
     old_data.image_url = image_url
     old_data.url = url
     old_data.private = private
-    _check_access('app_editall', context, data_dict)
+    data_dict["owner_id"] = old_data.owner_id
+    _check_access('app_edit', context, data_dict)
     data_dict2 = {'related_id':data_dict['id'],'key':'privacy'}
     __builtin__.value = private
 
@@ -122,74 +130,74 @@ def mod_app_api(context, data_dict=None):
     if datasets != "" or datasets != None:
         datasets = datasets.split(',')
         add_datasets(datasets, id)
+    related_extra.mod_app_owner(context, {'related_id':old_data.id,'key':'owner', 'value':owner})
     return _('done')
     
 @toolkit.side_effect_free    
 def new_app_api(context, data_dict=None):
-        '''Create a new application.
-
-            You must be authorized to create new application. '''
-        _check_access('app_create', context)
-        data_to_commit = model.related.Related()
-
-        try:
-            title = data_dict['title'] 
-        except KeyError:
-            title = ""
-        try:
-            description= data_dict['description']
-        except KeyError:
-            description  = ""
-        try:
-            url = data_dict['url']
-        except KeyError:
-            url = ""
-        try:
-            image_url = data_dict['image_url'] 
-        except KeyError:
-            image_url  = ""
-        try:
-            datasets = data_dict['datasets'] 
-        except KeyError:
-            datasets  = ""
-
-        data_to_commit.id = unicode(uuid.uuid4())
-        if len(title) == 0:
-            ed = {'message': 'Application name too short'}
-            raise logic.ValidationError(ed)
-           
-        datasets = datasets.split(',')
-        ds = []
-        for i in datasets:
-            tester = valid_dataset(i)
-            if tester == True:
-                ds.append(i)
-            elif type(tester) != bool:
-                ds.append(i)
-        if len(ds) == 0:
-            
-            ed = {'message': 'Failed to create application, at least 1 dataset is required'}
-            raise logic.ValidationError(ed)
-        owner_id = c.userobj.id
-
-        data_to_commit.title = title
-        data_to_commit.description = description
-        data_to_commit.url = url
-        data_to_commit.image_url = image_url
-        data_to_commit.created = datetime.datetime.now()
-        data_to_commit.owner_id = owner_id
-        data_to_commit.type = 'application'
-
-        data_dict2 = {'related_id':data_to_commit.id,'key':'privacy'}
-        model.Session.add(data_to_commit)
-        add_datasets(ds,  data_to_commit.id)
-
-        __builtin__.value = 'private'
-        related_extra.new_related_extra(context, data_dict2)
+    '''Create a new application.
+        You must be authorized to create new application. '''
+    _check_access('app_create', context)
+    data_to_commit = model.related.Related()
+    try:
+        title = data_dict['title'] 
+    except KeyError:
+        title = ""
+    try:
+        description= data_dict['description']
+    except KeyError:
+        description  = ""
+    try:
+        url = data_dict['url']
+    except KeyError:
+        url = ""
+    try:
+        image_url = data_dict['image_url'] 
+    except KeyError:
+        image_url  = ""
+    try:
+        datasets = data_dict['datasets'] 
+    except KeyError:
+        datasets  = ""
+    try:
+        owner = data_dict['owner'] 
+    except KeyError:
+        owner  = c.userobj.fullname
+    data_to_commit.id = unicode(uuid.uuid4())
+    if len(title) == 0:
+        ed = {'message': 'Application name too short'}
+        raise logic.ValidationError(ed)
+       
+    datasets = datasets.split(',')
+    ds = []
+    for i in datasets:
+        tester = valid_dataset(i)
+        if tester == True:
+            ds.append(i)
+        elif type(tester) != bool:
+            ds.append(i)
+    if len(ds) == 0:
         
-        model.Session.commit()
-        c.result =_('done')
-        return c.result
+        ed = {'message': 'Failed to create application, at least 1 dataset is required'}
+        raise logic.ValidationError(ed)
+    owner_id = c.userobj.id
+    data_to_commit.title = title
+    data_to_commit.description = description
+    data_to_commit.url = url
+    data_to_commit.image_url = image_url
+    data_to_commit.created = datetime.datetime.now()
+    data_to_commit.owner_id = owner_id
+    data_to_commit.type = 'application'
+    data_dict2 = {'related_id':data_to_commit.id,'key':'privacy'}
+    model.Session.add(data_to_commit)
+    add_datasets(ds,  data_to_commit.id)
+    __builtin__.value = 'private'
+    related_extra.new_related_extra(context, data_dict2)
+    related_extra.add_app_owner(context, {'related_id':data_to_commit.id,'key':'owner', 'value':owner})
+    
+    model.Session.commit()
+    c.result =_('done')
+    return c.result
 
 def datasets(id):
         ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == id).all()
@@ -213,18 +221,19 @@ def delete_app(context, data_dict=None):
         -id: String
         -header: Authorization
     '''
-
-    _check_access('app_edit', context, data_dict)
+    logic.get_action('related_show')(context,data_dict)
 
     rel = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
     rel_datasets = model.Session.query(model.RelatedDataset).filter(model.Related.id == data_dict['id']).all()
+    data_dict['owner_id'] = rel.owner_id
+    _check_access('app_edit', context, data_dict)
 
-    logic.get_action('related_show')(context,data_dict)
+    
 
     logging.warning(rel_datasets)
     model.Session.delete(rel)
     model.Session.commit()
-    related_extra.del_related_extra(context, data_dict)
+    related_extra.del_related_extra(context, {'related_id':data_dict['id']})
     model.Session.commit()
     c.result = _('done')
     return c.result
@@ -308,7 +317,7 @@ def list_apps(context, data_dict=None):
             user_id = public_list[i]['owner_id']
             public_list[i].pop('owner_id')
             full_name = model.Session.query(model.User).filter(model.User.id == user_id).first().fullname
-            public_list[i]['full_name'] = full_name
+            public_list[i]['full_name'] = related_extra.get_app_owner(context, {'related_id':public_list[i].get('id')})
 
         if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
             data = {}

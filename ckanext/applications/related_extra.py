@@ -65,7 +65,7 @@ def mod_app_owner(context, data_dict):
 @ckan.logic.side_effect_free
 def get_app_owner(context, data_dict):
     create_related_extra_table(context)
-    info = db.RelatedExtra.get(**data_dict)
+    info = db.RelatedExtra.get(**{'related_id':data_dict.get('related_id')})
     index = 0
     for i in range(len(info)):
         if info[i].key == 'owner':
