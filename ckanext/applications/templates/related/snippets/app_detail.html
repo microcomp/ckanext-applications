@@ -41,7 +41,7 @@ $(document).ready(function(){$('[data-toggle="DESC_tooltip"]').tooltip();});
 
 
           <div class="control-group">
-            <label class="control-label" style="width: 22%">{{_('Author')}} <a href="#" data-toggle="AUTHOR_tooltip" title="{{_('User, who added this application to database.')}}"><i class="fa fa-info-circle"></i></a></label>
+            <label class="control-label" style="width: 22%">{{_('Author')}} <a href="#" data-toggle="AUTHOR_tooltip" title="{{_('Applications owner user or organisation.')}}"><i class="fa fa-info-circle"></i></a></label>
             <div class="controls">
               <p style="padding-top: 0.25em; padding-left:1.5em;font-size:1em;">{% if owner==''%}{{_('no data')}}{%else%}{{owner}}{%endif%}</p>
               

@@ -678,6 +678,16 @@ msgstr "Prejsť na aplikáciu "
 #: ckanext/applications/templates/related/update.html:24
 #: ckanext/applications/templates/related/snippets/new_app.html:48
 #: ckanext/applications/templates/related/snippets/new_app.html:56
-msgid "owner"
+msgid "Owner"
 msgstr "Vlastník"
 
+#: ckanext/applications/templates/related/update.html:24
+#: ckanext/applications/templates/related/snippets/new_app.html:48
+#: ckanext/applications/templates/related/snippets/new_app.html:56
+msgid "owner"
+msgstr "vlastník"
+
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:44
+msgid "Applications owner user or organisation."
+msgstr "Vlastník aplikácie. (organizácia alebo užívateľ)"
