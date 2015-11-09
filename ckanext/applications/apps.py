@@ -27,6 +27,92 @@ abort = base.abort
 _get_action = logic.get_action
 _check_access = logic.check_access
 _related_id_exists = logic.validators.related_id_exists
+
+@toolkit.side_effect_free
+def ckan_stats(context, data_dict):
+    ''' Ckan stats API for mobile applications '''
+    result = {}
+    datasets = model.Session.query(model.Package).filter(model.Package.id != "").all()
+    result['dataset_num'] = len(datasets)
+    users = model.Session.query(model.User).filter(model.User.id != "").all()
+    result['user_count'] = len(users)
+    resources = model.Session.query(model.Resource).filter(model.Resource.id != '').all()
+    result['resources_count'] = len(resources)
+    organizations = model.Session.query(model.Group).filter(model.Group.id != '').all()
+    result['organizations_count'] = len(organizations)
+    new_30d = 0
+    new_7d = 0
+    mod_30d = 0
+    mod_7d = 0
+    today = datetime.datetime.now()
+    year = today.year
+    month = today.month
+    month2 = today.month
+
+    if month != 1:
+        month -= 1
+    else:
+        year-=1
+        month = 12
+    day = today.day
+    if day > 7:
+        day-= 7
+    else:
+        month2 -=1
+        day-=7
+        day = 30+day
+    l7d = ""+str(today.year)+"-"+str(month2)+"-"+str(day)+" "+str(today.hour)+":"+str(today.minute)+":"+str(today.second)
+    l30d = ""+str(year)+"-"+str(month)+"-"+str(today.day)+" "+str(today.hour)+":"+str(today.minute)+":"+str(today.second)
+    l30d =  datetime.datetime.strptime(l30d, '%Y-%m-%d %H:%M:%S')
+    l7d =  datetime.datetime.strptime(l7d, '%Y-%m-%d %H:%M:%S')
+
+    new_users_30d = 0
+    new_users_7d = 0
+    for i in users:
+        lm = datetime.datetime.strptime(str(i.created),'%Y-%m-%d %H:%M:%S.%f')
+        if  lm > l30d:
+            new_users_30d +=1
+        if lm > l7d:
+            new_users_7d += 1
+    result['new_users_7d'] = new_users_7d
+    result['new_users_30d'] = new_users_30d
+
+    new_orgs_30d = 0
+    new_orgs_7d = 0
+    for i in organizations:
+        lm = datetime.datetime.strptime(str(i.created),'%Y-%m-%d %H:%M:%S.%f')
+        if  lm > l30d:
+            new_orgs_30d +=1
+        if lm > l7d:
+            new_orgs_7d += 1
+    result['new_orgs_7d'] = new_orgs_7d
+    result['new_orgs_30d'] = new_orgs_30d
+
+    new_resources_30d = 0
+    new_resources_7d = 0
+    for i in resources:
+        lm = datetime.datetime.strptime(str(i.created),'%Y-%m-%d %H:%M:%S.%f')
+        if  lm > l30d:
+            new_resources_30d +=1
+        if lm > l7d:
+            new_resources_7d += 1
+    result['new_resources_7d'] = new_resources_7d
+    result['new_resources_30d'] = new_resources_30d
+    
+
+    for i in datasets:
+        lm = datetime.datetime.strptime(str(i.metadata_modified),'%Y-%m-%d %H:%M:%S.%f')
+        if  lm > l30d:
+            mod_30d +=1
+        if lm > l7d:
+            mod_7d += 1
+
+    result['modified_datasets_last_30d'] = mod_30d
+    result['modified_datasets_last_7d'] = mod_7d
+    
+    return result
+
+
 def valid_dataset(dataset_name):
         dataset =  model.Session.query(model.Package).filter(model.Package.name == dataset_name).first()
         if dataset != None:

@@ -49,7 +49,8 @@ class Applications(plugins.SingletonPlugin):
         return {'delete_app':apps.delete_app,
                 'list_apps': apps.list_apps,
                 'mod_app': apps.mod_app_api,
-                'new_app': apps.new_app_api}
+                'new_app': apps.new_app_api,
+                'statistics':apps.ckan_stats}
     def get_helpers(self):
         return {'own': apps.own,
                 'is_priv': related_extra.is_private,
