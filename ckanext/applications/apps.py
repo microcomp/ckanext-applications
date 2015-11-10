@@ -23,6 +23,9 @@ from pylons import config, request, response
 import related_extra
 import json
 
+
+import stats as stats_lib
+
 abort = base.abort
 _get_action = logic.get_action
 _check_access = logic.check_access
@@ -32,6 +35,39 @@ _related_id_exists = logic.validators.related_id_exists
 def ckan_stats(context, data_dict):
     ''' Ckan stats API for mobile applications '''
     result = {}
+    stats = stats_lib.Stats()
+    rev_stats = stats_lib.RevisionStats()
+
+    result['most_edited_packages'] = []
+    users = stats.most_edited_packages()
+    for i in users:
+        result['most_edited_packages'].append({'title':i[0].title, 'edits' : i[1]})
+
+    result['largest_groups'] = []
+    groups = stats.largest_groups()
+
+    for i in groups:
+        name = model.Session.query(model.Group).filter(model.Group.id == i[0].id).first().title
+        result['largest_groups'].append({'group_name':name, 'users_in_group':i[1]})
+
+    result['top_package_owners'] = []
+    owners = stats.top_package_owners()
+    oo = {}
+    for j in owners:
+        result['top_package_owners'].append({'username': j[0].fullname, 'packages' : j[1]})
+
+    result['new_packages_by_week'] = []
+    bv = rev_stats.get_by_week('new_packages')
+    for i in bv:
+        result['new_packages_by_week'].append({'date':i[0], 'new_packages':i[2], 'all_packages':i[3]})
+
+    #deleted packages
+    result['deleted_packages_by_week'] = []
+    dv = rev_stats.get_by_week('deleted_packages')
+
+    for i in dv:
+        result['deleted_packages_by_week'].append({'date':i[0], 'deleted_packages_this_week':i[2], 'all_deleted_packages':i[3]})
+
     datasets = model.Session.query(model.Package).filter(model.Package.id != "").all()
     result['dataset_num'] = len(datasets)
     users = model.Session.query(model.User).filter(model.User.id != "").all()
@@ -109,7 +145,6 @@ def ckan_stats(context, data_dict):
 
     result['modified_datasets_last_30d'] = mod_30d
     result['modified_datasets_last_7d'] = mod_7d
-    
     return result
 
 
