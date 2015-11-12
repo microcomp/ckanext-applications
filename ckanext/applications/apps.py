@@ -105,7 +105,7 @@ def ckan_stats(context, data_dict):
     new_users_30d = 0
     new_users_7d = 0
     for i in users:
-        lm = datetime.datetime.strptime(str(i.created),'%Y-%m-%d %H:%M:%S.%f')
+        lm = datetime.datetime.strptime(str(i.created).split('.')[0],'%Y-%m-%d %H:%M:%S')
         if  lm > l30d:
             new_users_30d +=1
         if lm > l7d:
@@ -116,7 +116,7 @@ def ckan_stats(context, data_dict):
     new_orgs_30d = 0
     new_orgs_7d = 0
     for i in organizations:
-        lm = datetime.datetime.strptime(str(i.created),'%Y-%m-%d %H:%M:%S.%f')
+        lm = datetime.datetime.strptime(str(i.created).split('.')[0],'%Y-%m-%d %H:%M:%S')
         if  lm > l30d:
             new_orgs_30d +=1
         if lm > l7d:
@@ -127,7 +127,7 @@ def ckan_stats(context, data_dict):
     new_resources_30d = 0
     new_resources_7d = 0
     for i in resources:
-        lm = datetime.datetime.strptime(str(i.created),'%Y-%m-%d %H:%M:%S.%f')
+        lm = datetime.datetime.strptime(str(i.created).split('.')[0],'%Y-%m-%d %H:%M:%S')
         if  lm > l30d:
             new_resources_30d +=1
         if lm > l7d:
@@ -137,7 +137,7 @@ def ckan_stats(context, data_dict):
     
 
     for i in datasets:
-        lm = datetime.datetime.strptime(str(i.metadata_modified),'%Y-%m-%d %H:%M:%S.%f')
+        lm = datetime.datetime.strptime(str(i.metadata_modified).split('.')[0],'%Y-%m-%d %H:%M:%S')
         if  lm > l30d:
             mod_30d +=1
         if lm > l7d:
