@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-applications 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-29 15:52+0100\n"
+"POT-Creation-Date: 2015-11-30 17:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,129 +18,129 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/applications/apps.py:140 ckanext/applications/apps.py:205
-#: ckanext/applications/apps.py:244
+#: ckanext/applications/apps.py:261 ckanext/applications/apps.py:326
+#: ckanext/applications/apps.py:365
 msgid "done"
 msgstr ""
 
-#: ckanext/applications/apps.py:304 ckanext/applications/apps.py:819
+#: ckanext/applications/apps.py:425 ckanext/applications/apps.py:940
 #: ckanext/applications/detail.py:97
 msgid "API"
 msgstr ""
 
-#: ckanext/applications/apps.py:305 ckanext/applications/apps.py:820
+#: ckanext/applications/apps.py:426 ckanext/applications/apps.py:941
 #: ckanext/applications/detail.py:98
 msgid "Application"
 msgstr ""
 
-#: ckanext/applications/apps.py:306 ckanext/applications/apps.py:821
+#: ckanext/applications/apps.py:427 ckanext/applications/apps.py:942
 #: ckanext/applications/detail.py:99
 msgid "Idea"
 msgstr ""
 
-#: ckanext/applications/apps.py:307 ckanext/applications/apps.py:822
+#: ckanext/applications/apps.py:428 ckanext/applications/apps.py:943
 #: ckanext/applications/detail.py:100
 msgid "News Article"
 msgstr ""
 
-#: ckanext/applications/apps.py:308 ckanext/applications/apps.py:823
+#: ckanext/applications/apps.py:429 ckanext/applications/apps.py:944
 #: ckanext/applications/detail.py:101
 msgid "Paper"
 msgstr ""
 
-#: ckanext/applications/apps.py:309 ckanext/applications/apps.py:824
+#: ckanext/applications/apps.py:430 ckanext/applications/apps.py:945
 #: ckanext/applications/detail.py:102
 msgid "Post"
 msgstr ""
 
-#: ckanext/applications/apps.py:310 ckanext/applications/apps.py:825
+#: ckanext/applications/apps.py:431 ckanext/applications/apps.py:946
 #: ckanext/applications/detail.py:103
 msgid "Visualization"
 msgstr ""
 
-#: ckanext/applications/apps.py:312 ckanext/applications/apps.py:583
-#: ckanext/applications/apps.py:657 ckanext/applications/apps.py:880
+#: ckanext/applications/apps.py:433 ckanext/applications/apps.py:704
+#: ckanext/applications/apps.py:778 ckanext/applications/apps.py:1001
 #: ckanext/applications/detail.py:155
 msgid "Most Viewed"
 msgstr ""
 
-#: ckanext/applications/apps.py:313 ckanext/applications/apps.py:584
-#: ckanext/applications/apps.py:658 ckanext/applications/apps.py:881
+#: ckanext/applications/apps.py:434 ckanext/applications/apps.py:705
+#: ckanext/applications/apps.py:779 ckanext/applications/apps.py:1002
 #: ckanext/applications/detail.py:156
 msgid "Least Viewed"
 msgstr ""
 
-#: ckanext/applications/apps.py:314 ckanext/applications/apps.py:585
-#: ckanext/applications/apps.py:659 ckanext/applications/apps.py:882
+#: ckanext/applications/apps.py:435 ckanext/applications/apps.py:706
+#: ckanext/applications/apps.py:780 ckanext/applications/apps.py:1003
 #: ckanext/applications/detail.py:157
 msgid "Newest"
 msgstr ""
 
-#: ckanext/applications/apps.py:315 ckanext/applications/apps.py:586
-#: ckanext/applications/apps.py:660 ckanext/applications/apps.py:883
+#: ckanext/applications/apps.py:436 ckanext/applications/apps.py:707
+#: ckanext/applications/apps.py:781 ckanext/applications/apps.py:1004
 #: ckanext/applications/detail.py:158
 msgid "Oldest"
 msgstr ""
 
-#: ckanext/applications/apps.py:357
+#: ckanext/applications/apps.py:478
 msgid "no results found"
 msgstr ""
 
-#: ckanext/applications/apps.py:390 ckanext/applications/apps.py:411
-#: ckanext/applications/apps.py:430 ckanext/applications/apps.py:486
-#: ckanext/applications/apps.py:675 ckanext/applications/apps.py:702
+#: ckanext/applications/apps.py:511 ckanext/applications/apps.py:532
+#: ckanext/applications/apps.py:551 ckanext/applications/apps.py:607
+#: ckanext/applications/apps.py:796 ckanext/applications/apps.py:823
 #: ckanext/applications/detail.py:63
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/applications/apps.py:582 ckanext/applications/apps.py:879
+#: ckanext/applications/apps.py:703 ckanext/applications/apps.py:1000
 #: ckanext/applications/detail.py:154
 msgid "Most viewed"
 msgstr ""
 
-#: ckanext/applications/apps.py:680
+#: ckanext/applications/apps.py:801
 msgid "The requested related item was not found"
 msgstr ""
 
-#: ckanext/applications/apps.py:700 ckanext/applications/apps.py:709
+#: ckanext/applications/apps.py:821 ckanext/applications/apps.py:830
 #: ckanext/applications/detail.py:61 ckanext/applications/detail.py:74
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/applications/apps.py:711 ckanext/applications/detail.py:76
+#: ckanext/applications/apps.py:832 ckanext/applications/detail.py:76
 #, python-format
 msgid "Unauthorized to read package %s"
 msgstr ""
 
-#: ckanext/applications/apps.py:735 ckanext/applications/apps.py:811
+#: ckanext/applications/apps.py:856 ckanext/applications/apps.py:932
 msgid "Related item not found"
 msgstr ""
 
-#: ckanext/applications/apps.py:745
+#: ckanext/applications/apps.py:866
 msgid "Not authorized"
 msgstr ""
 
-#: ckanext/applications/apps.py:750
+#: ckanext/applications/apps.py:871
 msgid "Package not found"
 msgstr ""
 
-#: ckanext/applications/apps.py:770
+#: ckanext/applications/apps.py:891
 msgid "Related item was successfully created"
 msgstr ""
 
-#: ckanext/applications/apps.py:772
+#: ckanext/applications/apps.py:893
 msgid "Related item was successfully updated"
 msgstr ""
 
-#: ckanext/applications/apps.py:777
+#: ckanext/applications/apps.py:898
 msgid "Integrity Error"
 msgstr ""
 
-#: ckanext/applications/apps.py:803
+#: ckanext/applications/apps.py:924
 msgid "Related item has been deleted."
 msgstr ""
 
-#: ckanext/applications/apps.py:809
+#: ckanext/applications/apps.py:930
 #, python-format
 msgid "Unauthorized to delete related item %s"
 msgstr ""
@@ -283,41 +283,6 @@ msgstr ""
 #: ckanext/applications/templates/package/related_list.html:20
 #: ckanext/applications/templates/related/snippets/related_list.html:29
 msgid "Add Related Application"
-msgstr ""
-
-#: ckanext/applications/templates/package/snippets/additional_info.html:3
-msgid "Additional Info"
-msgstr ""
-
-#: ckanext/applications/templates/package/snippets/additional_info.html:7
-msgid "Field"
-msgstr ""
-
-#: ckanext/applications/templates/package/snippets/additional_info.html:8
-msgid "Value"
-msgstr ""
-
-#: ckanext/applications/templates/package/snippets/additional_info.html:15
-msgid "Source"
-msgstr ""
-
-#: ckanext/applications/templates/package/snippets/additional_info.html:22
-#: ckanext/applications/templates/package/snippets/additional_info.html:27
-#: ckanext/applications/templates/related/snippets/app_detail.html:44
-msgid "Author"
-msgstr ""
-
-#: ckanext/applications/templates/package/snippets/additional_info.html:34
-#: ckanext/applications/templates/package/snippets/additional_info.html:39
-msgid "Maintainer"
-msgstr ""
-
-#: ckanext/applications/templates/package/snippets/additional_info.html:46
-msgid "Version"
-msgstr ""
-
-#: ckanext/applications/templates/package/snippets/additional_info.html:53
-msgid "State"
 msgstr ""
 
 #: ckanext/applications/templates/related/dashboard.html:15
@@ -513,6 +478,10 @@ msgstr ""
 
 #: ckanext/applications/templates/related/snippets/app_detail.html:36
 msgid "Date, when the application was added to database."
+msgstr ""
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:44
+msgid "Author"
 msgstr ""
 
 #: ckanext/applications/templates/related/snippets/app_detail.html:44
