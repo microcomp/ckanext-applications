@@ -182,10 +182,6 @@ msgid "Apps & Ideas"
 msgstr "Aplikácie & Nápady"
 
 #: ckanext/applications/templates/package/dashboard.html:22
-#, fuzzy, python-format
-#| msgid "" "\n" "              <p>Showing items <strong>%(first)s -
-#| %(last)s</strong> of " "<strong>%(item_count)s</strong> related items
-#| found</p>\n" "            "
 msgid ""
 "\n"
 "            <p>Showing items <strong>%(first)s - %(last)s</strong> of "
@@ -604,64 +600,3 @@ msgstr "nahlásené od"
 #: ckanext/applications/templates/reports/admin.html:32
 msgid "Remove report"
 msgstr "Odstrániť hlásenie"
-
-#~ msgid "app not found"
-#~ msgstr "aplikácia nebola nájdená"
-
-#~ msgid "not authorized"
-#~ msgstr "nemáte oprávnenie"
-
-#~ msgid "dataset not found"
-#~ msgstr "Dataset nebol nájdený."
-
-#~ msgid "title is required"
-#~ msgstr "názov je povinný"
-
-#~ msgid "add some datasets"
-#~ msgstr "pridajte nejaké datasety"
-
-#~ msgid "Comments"
-#~ msgstr "Komentáre"
-
-#~ msgid "show"
-#~ msgstr "ukázať"
-
-#~ msgid "hide"
-#~ msgstr "skrýť"
-
-#~ msgid "reply"
-#~ msgstr "odpovedať"
-
-#~ msgid "Reply"
-#~ msgstr "Odpoveď"
-
-#~ msgid "Post comment"
-#~ msgstr "Odošli komentár"
-
-#~ msgid "New comment"
-#~ msgstr "Nový komentár"
-
-#~ msgid "Type"
-#~ msgstr "Typ"
-
-#~ msgid "Additional Info"
-#~ msgstr "Dodatočné informácie"
-
-#~ msgid "Field"
-#~ msgstr "Pole"
-
-#~ msgid "Value"
-#~ msgstr "Hodnota"
-
-#~ msgid "Source"
-#~ msgstr "Zdroj"
-
-#~ msgid "Version"
-#~ msgstr "Verzia"
-
-#~ msgid "State"
-#~ msgstr "Stav"
-
-#~ msgid "User, who added this application to database."
-#~ msgstr "Užívateľ, ktorý pridal túto aplikáciu do databázy."
-
