@@ -453,14 +453,14 @@ msgstr "Status"
 #: ckanext/applications/templates/related/snippets/app_detail.html:64
 #: ckanext/applications/templates/related/snippets/related_item.html:10
 msgid "Private"
-msgstr "Súkromné"
+msgstr "Súkromný"
 
 #: ckanext/applications/templates/related/update.html:37
 #: ckanext/applications/templates/related/update.html:40
 #: ckanext/applications/templates/related/update.html:46
 #: ckanext/applications/templates/related/snippets/app_detail.html:64
 msgid "Public"
-msgstr "Verejné"
+msgstr "Verejný"
 
 #: ckanext/applications/templates/related/update.html:57
 #: ckanext/applications/templates/related/snippets/new_app.html:66
@@ -600,3 +600,5 @@ msgstr "nahlásené od"
 #: ckanext/applications/templates/reports/admin.html:32
 msgid "Remove report"
 msgstr "Odstrániť hlásenie"
+
+
