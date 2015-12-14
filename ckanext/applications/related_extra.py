@@ -54,6 +54,16 @@ def has_tag(context, data_dict):
     return data_dict['tag'] in result
 
 @ckan.logic.side_effect_free
+def mod_tag(context, data_dict):
+    create_related_extra_table(context) 
+    tags = db.RelatedExtra.get(**{'key':'tags', 'related_id':data_dict['related_id']})[0] #.value
+    tags.value = data_dict['tags']
+    session = context['session']
+    session.update(tags)
+    session.commit()
+    return data_dict['tag'] in result
+
+@ckan.logic.side_effect_free
 def new_related_extra(context, data_dict):
     create_related_extra_table(context)
     info = db.RelatedExtra()

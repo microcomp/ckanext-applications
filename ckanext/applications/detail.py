@@ -243,8 +243,7 @@ class DetailController(base.BaseController):
             tgs+= i+', '
         dat['tags'] = tgs[0:-2]
         tags_array = dat['tags'].split(', ')
-        #for j in tags_array:
-            #toolkit.get_action('tag_create')(context=context, data_dict={'name':j, 'vocabulary_id':})
+
         try:
             data2 = {'id': 'app_tag'}
             toolkit.get_action('vocabulary_show')(context, data2)
@@ -255,7 +254,7 @@ class DetailController(base.BaseController):
             vocab = toolkit.get_action('vocabulary_create')(context, data2)
             for tag in tags_array:
                 logging.info(
-                        "Adding tag {0} to vocab 'country_codes'".format(tag))
+                        "Adding tag {0} to vocab 'app_tag'".format(tag))
                 data2 = {'name': tag, 'vocabulary_id': vocab['id']}
                 toolkit.get_action('tag_create')(context, data2)
         except toolkit.ValidationError:
@@ -264,7 +263,7 @@ class DetailController(base.BaseController):
             vocab = toolkit.get_action('vocabulary_create')(context, data2)
             for tag in tags_array:
                 logging.info(
-                        "Adding tag {0} to vocab 'country_codes'".format(tag))
+                        "Adding tag {0} to vocab 'app_tag'".format(tag))
                 data2 = {'name': tag, 'vocabulary_id': vocab['id']}
                 toolkit.get_action('tag_create')(context, data2)
 

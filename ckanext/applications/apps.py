@@ -219,9 +219,10 @@ def mod_app_api(context, data_dict=None):
         owner = data_dict['owner'] 
     except KeyError:
         owner  = c.userobj.fullname
-
-
-
+    try:
+        tags = data_dict['tags'] 
+    except KeyError:
+        tags  = ""
 
     old_data = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
     logic.get_action('related_show')(context,data_dict)
@@ -307,6 +308,35 @@ def new_app_api(context, data_dict=None):
         
         ed = {'message': 'Failed to create application, at least 1 dataset is required'}
         raise logic.ValidationError(ed)
+    helper = [x.strip() for x in data['tags'].split(',') if x.strip()!='']
+    tgs = ""
+    for i in helper:
+        tgs+= i+', '
+    dat['tags'] = tgs[0:-2]
+    tags_array = dat['tags'].split(', ')
+
+    try:
+        data2 = {'id': 'app_tag'}
+        toolkit.get_action('vocabulary_show')(context, data2)
+        logging.info("Example genre vocabulary already exists, skipping.")
+    except toolkit.ObjectNotFound:
+        logging.info("Creating vocab 'app_tag'")
+        data2 = {'name': 'app_tag'}
+        vocab = toolkit.get_action('vocabulary_create')(context, data2)
+        for tag in tags_array:
+            logging.info(
+                    "Adding tag {0} to vocab 'app_tag'".format(tag))
+            data2 = {'name': tag, 'vocabulary_id': vocab['id']}
+            toolkit.get_action('tag_create')(context, data2)
+    except toolkit.ValidationError:
+        logging.info("Creating vocab 'app_tag'")
+        data2 = {'name': 'app_tag'}
+        vocab = toolkit.get_action('vocabulary_create')(context, data2)
+        for tag in tags_array:
+            logging.info(
+                    "Adding tag {0} to vocab 'app_tag'".format(tag))
+            data2 = {'name': tag, 'vocabulary_id': vocab['id']}
+            toolkit.get_action('tag_create')(context, data2)
     owner_id = c.userobj.id
     data_to_commit.title = title
     data_to_commit.description = description
