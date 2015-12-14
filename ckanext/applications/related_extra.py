@@ -11,14 +11,48 @@ import logging
 import __builtin__
 import json
 import os
+import logging
 
 import related_extra
 
 import ckan.logic
+'''
 
+'''
+import ckan.lib.jsonp as jsonp
+@toolkit.side_effect_free
+def all_tags_api(context, data_dict=None):
+    tags = all_app_tags(context, data_dict)
+    flt = ''
+    if 'q' in data_dict.keys():
+        flt = data_dict.get('q')
+    if flt != '' or flt != None:
+        rs =  [ { 'match_field': "name", 'match_displayed': x.strip(), 'name': x.strip(), 'title': x.strip() } for x in tags if flt in x]
+        return rs
+    return [ { 'match_field': "name", 'match_displayed': x.strip(), 'name': x.strip(), 'title': x.strip() } for x in tags ]
 def create_related_extra_table(context):
     if db.related_extra_table is None:
         db.init_db(context['model'])
+
+@ckan.logic.side_effect_free
+def all_app_tags(context, data_dict=None):
+    create_related_extra_table(context) 
+    tags = db.RelatedExtra.get(**{'key':'tags'})
+    tags = [x.value for x in tags]
+    tgs = "" 
+    for i in tags:
+        tgs+=i
+    result = [x for x in tgs.split(',') if x != '' ]
+    return result
+
+@ckan.logic.side_effect_free
+def has_tag(context, data_dict):
+    create_related_extra_table(context) 
+    tags = db.RelatedExtra.get(**{'key':'tags', 'related_id':data_dict['related_id']}) #.value
+    tags = tags[0].value
+    result = [x for x in tags.split(',') if x != '' ]
+    return data_dict['tag'] in result
+
 @ckan.logic.side_effect_free
 def new_related_extra(context, data_dict):
     create_related_extra_table(context)
@@ -29,6 +63,32 @@ def new_related_extra(context, data_dict):
     info.save()
     session = context['session']
     session.add(info)
+    session.commit()
+    return {"status":"success"}
+
+@ckan.logic.side_effect_free
+def add_extra_data(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra()
+    info.related_id = data_dict.get('related_id')
+    info.key = data_dict.get('key')
+    info.value =data_dict.get('value')
+    info.save()
+    session = context['session']
+    session.add(info)
+    session.commit()
+    return {"status":"success"}
+
+@ckan.logic.side_effect_free
+def mod_extra_data(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**{'related_id':data_dict['related_id'], 'key':data_dict['key']})
+    index = 0
+    info[index].related_id = data_dict.get('related_id')
+    info[index].key = data_dict.get('key')
+    info[index].value = data_dict.get('value')
+    info[index].save()
+    session = context['session']
     session.commit()
     return {"status":"success"}
 
@@ -75,6 +135,21 @@ def get_app_owner(context, data_dict):
     logging.warning(info[index])
     logging.warning(info)
     return info[index].value
+@ckan.logic.side_effect_free
+def get_extra_data(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**{'related_id':data_dict.get('related_id')})
+    
+    return info
+
+@ckan.logic.side_effect_free
+def get_data(context, data_dict):
+    create_related_extra_table(context)
+    info = db.RelatedExtra.get(**{'related_id':data_dict.get('related_id')})
+    result = {}
+    for i in info:
+        result[i.key] = i.value
+    return result
 
 @ckan.logic.side_effect_free
 def check_priv_related_extra(context, data_dict):

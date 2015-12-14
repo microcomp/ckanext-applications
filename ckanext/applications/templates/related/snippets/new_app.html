@@ -1,10 +1,7 @@
  
 <section class="module">
-<script>
+ 
 
-
-
-</script>
           <div class="module-content">
              <h1> {{ _('New app') }} </h1>
             <form name="new_app_form"  class="dataset-form form-horizontal" method="post" data-module="basic-form" action='/apps/new/in'>
@@ -50,19 +47,53 @@
                 {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value=data['description'], error="") }}
                  {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
                   {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=data['datasets'], error='', classes=['control-full'], attrs=tag_attrs) }}
+
+                  
+                  {% set t_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
+                  
+                   {{ form.input('tags', label=_('Tags'), id='field-tags', value=data['tags'], placeholder=_('tag1, tag2 ...'),  error="", classes=['control-full'], attrs=t_attrs) }}
+
+                   <label class="control-label" for="">{{_("Topic")}}</label>
+                   {#{ form.checkbox('public_transp', checked=data['transport'], label=_('Public transport'), id="ch_transport", classes=["min_padding"])}}
+                   {{ form.checkbox('business' , checked=data['business'], label=_('Business and Economics'), id="ch_business", classes=["min_padding"])}}
+                   {{ form.checkbox('agriculture', checked=data['agriculture'], label=_('Agriculture'),id="ch_agriculture", classes=["min_padding"])}}
+                   {{ form.checkbox('company', checked=data['company'], label=_('Company'),id="ch_company", classes=["min_padding"])}}
+                   {{ form.checkbox('medium', checked=data['medium'], label=_('Medium business'),id="ch_medium", classes=["min_padding"])}}
+                   {{ form.checkbox('education', checked=data['education'], label=_('Education'),id="ch_education", classes=["min_padding"])}}
+                   {{ form.checkbox('health', checked=data['health'], label=_('Health'),id="ch_health", classes=["min_padding"])}}
+                   {{ form.checkbox('other', checked=data['other'], label=_('Other'), id="ch_other", classes=["min_padding"])}#}
               {%else%}
                 {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value="", error="", classes=['control-full']) }}
                 {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value="", error="", classes=['control-full']) }}
                  {{ form.input('owner', label=_('Owner'), id='field-url', placeholder=_('owner'), value="", error="", classes=['control-full']) }}
+
                 {{ form.input('image_url', label=_('Image URL'), id='field-image-url', placeholder=_('http://example.com/image.png'), value="", error="", classes=['control-full']) }}
                 {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value="", error="") }}
                  {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
+
                   {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=dataset, error='', classes=['control-full'], attrs=tag_attrs) }}
+                  
+
+                  {% set t_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
+                  
+                   {{ form.input('tags', label=_('Tags'), id='field-tags', value="", placeholder=_('tag1, tag2 ...'),  error="", classes=['control-full'], attrs=t_attrs) }}
+
+                   <label class="control-label" for="">{{_("Topic")}}</label>
+
+                   {#{ form.checkbox('public_transp', checked=False, label=_('Public transport'), id="ch_transport", classes=["min_padding"])}}
+                   {{ form.checkbox('business' , checked=false, label=_('Business and Economics'), id="ch_business", classes=["min_padding"])}}
+                   {{ form.checkbox('agriculture', checked=false, label=_('Agriculture'),id="ch_agriculture", classes=["min_padding"])}}
+                   {{ form.checkbox('company', checked=false, label=_('Company'),id="ch_company", classes=["min_padding"])}}
+                   {{ form.checkbox('medium', checked=false, label=_('Medium business'),id="ch_medium", classes=["min_padding"])}}
+                   {{ form.checkbox('education', checked=false, label=_('Education'),id="ch_education", classes=["min_padding"])}}
+                   {{ form.checkbox('health', checked=false, label=_('Health'),id="ch_health", classes=["min_padding"])}}
+                   {{ form.checkbox('other', checked=false, label=_('Other'), id="ch_other", classes=["min_padding"])}#}
               {%endif%}
             {% endblock %}
               {% set errors = h.del_x()['errors'] %}
               {% set data = h.del_x()['data'] %}
               <div class="form-actions">
+
                 <button class="btn btn-primary" type="submit" name="save">{% block button_text %}{{ _('Save') }}{% endblock %}</button>
               </div>
             </form>

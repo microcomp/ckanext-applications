@@ -762,12 +762,19 @@ class AppsController(base.BaseController):
                 except logic.NotAuthorized:
                     logging.warning("access denied")
             
-            
+        tag = base.request.params.get('tag', '')
+        if tag != '':
+            public_list2 = []
+            for i in public_list:
+                if related_extra.has_tag(context, {'related_id': i['id'], 'tag':tag}):
+                    public_list2.append(i)  
+        else:
+            public_list2 = public_list
         c.page = h.Page(
-            collection=public_list,
+            collection=public_list2,
             page=page,
             url=pager_url,
-            item_count=len(public_list),
+            item_count=len(public_list2),
             items_per_page=9
         )
 

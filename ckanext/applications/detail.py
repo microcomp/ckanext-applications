@@ -32,20 +32,6 @@ _check_access = logic.check_access
 log = logging.getLogger('ckanext_applications')
 
 
-#@ckan.logic.side_effect_free
-#def related_extra.check_priv_related_extra(context, data_dict):
-#    create_related_extra_table(context)
-#    info = db.RelatedExtra.get(**data_dict)
-#    index = 0
-#    for i in range(len(info)):
-#        if info[i].key == 'privacy':
-#            index = i
-#    info[index].related_id = data_dict.get('related_id')
-#    
-#    logging.warning(info[index].value)
-#    return info[index].value == 'public'
-
-
 class DetailController(base.BaseController):  
     def list(self, id):
         """ List all related items for a specific dataset """
@@ -114,7 +100,10 @@ class DetailController(base.BaseController):
         
         id = base.request.params.get('id','')
         c.id = id
-
+        extra = related_extra.get_extra_data(context, {"related_id":id})
+        for i in extra:
+            if i.key == 'tags':
+                c.tags = i.value.split(',')
         params_nopage = [(k, v) for k, v in base.request.params.items()
                          if k != 'page']
         try:
@@ -123,7 +112,6 @@ class DetailController(base.BaseController):
             base.abort(400, ('"page" parameter must be an integer'))
     
         related_list = logic.get_action('related_list')(context, data_dict)
-        # Update ordering in the context
         
         new_list = [x for x in related_list if id == x['id']]
         
@@ -168,7 +156,7 @@ class DetailController(base.BaseController):
         c.img = new_list[0]['image_url']
 
         c.owner = related_extra.get_app_owner(context, {"related_id":c.id})
-        #model.Session.query(model.User).filter(model.User.id == owner_id).first().fullname
+
         ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == c.id).all()
         ds_id = []
         for i in ds_ids:
@@ -179,9 +167,6 @@ class DetailController(base.BaseController):
         for i in ds_id:
             pack = model.Session.query(model.Package).filter(model.Package.id == i).first()
             c.datasets.append(pack.name)
-        #c.datasets = c.data
-        
-
         data_dict2 = {'related_id':c.id,'key':'privacy'}
         privacy_list = related_extra.get_related_extra(context, data_dict2)
         if len(privacy_list) == 0:
@@ -252,11 +237,42 @@ class DetailController(base.BaseController):
         dat["url"] = data_to_commit.url
         dat["image_url"] = data_to_commit.image_url
         dat["datasets"] = data['datasets']
+        helper = [x.strip() for x in data['tags'].split(',') if x.strip()!='']
+        tgs = ""
+        for i in helper:
+            tgs+= i+', '
+        dat['tags'] = tgs[0:-2]
+        tags_array = dat['tags'].split(', ')
+        #for j in tags_array:
+            #toolkit.get_action('tag_create')(context=context, data_dict={'name':j, 'vocabulary_id':})
+        try:
+            data2 = {'id': 'app_tag'}
+            toolkit.get_action('vocabulary_show')(context, data2)
+            logging.info("Example genre vocabulary already exists, skipping.")
+        except toolkit.ObjectNotFound:
+            logging.info("Creating vocab 'app_tag'")
+            data2 = {'name': 'app_tag'}
+            vocab = toolkit.get_action('vocabulary_create')(context, data2)
+            for tag in tags_array:
+                logging.info(
+                        "Adding tag {0} to vocab 'country_codes'".format(tag))
+                data2 = {'name': tag, 'vocabulary_id': vocab['id']}
+                toolkit.get_action('tag_create')(context, data2)
+        except toolkit.ValidationError:
+            logging.info("Creating vocab 'app_tag'")
+            data2 = {'name': 'app_tag'}
+            vocab = toolkit.get_action('vocabulary_create')(context, data2)
+            for tag in tags_array:
+                logging.info(
+                        "Adding tag {0} to vocab 'country_codes'".format(tag))
+                data2 = {'name': tag, 'vocabulary_id': vocab['id']}
+                toolkit.get_action('tag_create')(context, data2)
+
 
         __builtin__.vars = {}
         c.errorrs = {}
         datasets = data['datasets'].split(',')
-        if len(data_to_commit.title) > 3 and len(data_to_commit.url) > 3:
+        if len(data_to_commit.title) > 3 and len(data_to_commit.url) > 3 and len(dat['tags']) >= 3 : #and topic_:
             model.Session.add(data_to_commit)
             
             datasets_bool  = self.add_datasets(datasets,  data_to_commit.id)
@@ -264,6 +280,9 @@ class DetailController(base.BaseController):
             __builtin__.value = 'private'
             related_extra.new_related_extra(context, data_dict)
             related_extra.add_app_owner(context, {'related_id': data_to_commit.id,'key':'owner', 'value': dat["owner"] })
+
+            related_extra.add_extra_data(context, {'related_id': data_to_commit.id,'value': dat['tags'], 'key':'tags'})
+
             if datasets_bool:
                 model.Session.commit()
 
@@ -279,7 +298,10 @@ class DetailController(base.BaseController):
                 errors['title'] = _("Title too short")
             if len(data_to_commit.url) < 3:
                 errors['url'] = _("URL incorrect")
-                
+            if topic_ == False:
+                errors['topic'] = _("At least 1 topic required.")  
+            if len(dat['tags']) < 3:
+                errors['tags'] = _("At least 1 tag required. (min. lenght 3 chars.)")  
             for i in datasets:
                 id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
                 if id_query == None:
@@ -344,10 +366,15 @@ class DetailController(base.BaseController):
         data["view_count"] = data_from_db.view_count
         data["featured"] = data_from_db.featured
         data["owner"] = related_extra.get_app_owner(context, {"related_id":id})
+        bf = related_extra.get_data(context, {"related_id":id})
         logging.warning(data)
+        data['tags'] = "" 
+        for tag in bf["tags"]:
+            data["tags"] += tag
+
         c.id = data["id"]
         c.data = data
-
+        c.tags = data['tags']
         c.errors  = errors
         c.error_summary = error_summary
         name_query = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == data["id"] ).all()
@@ -386,18 +413,52 @@ class DetailController(base.BaseController):
         old_data.description =data["description"]
         old_data.image_url =data["image_url"] 
         old_data.url =data["url"] 
-        #old_data.featured = data["featured"]
+
         c.data = old_data
         c.errors  = errors
         c.error_summary = error_summary
+
+        helper = [x.strip() for x in data['tags'].split(',') if x.strip()!='']
+        tgs = ""
+        for i in helper:
+            tgs+= i+', '
+        data['tags'] = tgs[0:-2]
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+
+        try:
+            data2 = {'id': 'app_tag'}
+            toolkit.get_action('vocabulary_show')(context, data2)
+            logging.info("Example genre vocabulary already exists, skipping.")
+        except toolkit.ObjectNotFound:
+            logging.info("Creating vocab 'app_tag'")
+            data2 = {'name': 'app_tag'}
+            vocab = toolkit.get_action('vocabulary_create')(context, data2)
+            for tag in tags_array:
+                logging.info(
+                        "Adding tag {0} to vocab 'country_codes'".format(tag))
+                data2 = {'name': tag, 'vocabulary_id': vocab['id']}
+                toolkit.get_action('tag_create')(context, data2)
+        except toolkit.ValidationError:
+            logging.info("Creating vocab 'app_tag'")
+            data2 = {'name': 'app_tag'}
+            vocab = toolkit.get_action('vocabulary_create')(context, data2)
+            for tag in tags_array:
+                logging.info(
+                        "Adding tag {0} to vocab 'country_codes'".format(tag))
+                data2 = {'name': tag, 'vocabulary_id': vocab['id']}
+                toolkit.get_action('tag_create')(context, data2)
         ds = []
-                
+
         if len(data['title']) < 3:
             errors['title'] = [_('Title too short')]
         if len(data['owner']) < 3:
             errors['owner'] = [_('Invalid owner')]
         if len(data['url']) < 3:
             errors['url'] = [_("URL incorrect")]
+        if len(data['tags']) < 3:
+            errors['tags'] = [_("At least 1 tag required. (min. lenght 3 chars.)")]
         for i in data['datasets'].split(','):
                 id_query = model.Session.query(model.Package).filter(model.Package.name == i).first()
                 if id_query == None:
@@ -420,6 +481,16 @@ class DetailController(base.BaseController):
 
         data_dict = {'related_id':id,'key':'privacy'}
 
+        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "transport", 'value': topic['transport']})
+        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "business", 'value': topic['business']})
+        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "agriculture", 'value': topic['agriculture']})
+        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "company", 'value': topic['company']})
+        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "medium", 'value': topic['medium']})
+        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "education", 'value': topic['education']})
+        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "health", 'value': topic['health']})
+        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "other", 'value': topic['other']})
+        
+        related_extra.mod_extra_data(context, {'related_id':id, 'key': "tags", 'value': data['tags']})
         try:
             _check_access('app_editall', context, data_dict)
             __builtin__.value = data['private']

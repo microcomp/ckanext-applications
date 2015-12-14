@@ -50,7 +50,8 @@ class Applications(plugins.SingletonPlugin):
                 'list_apps': apps.list_apps,
                 'mod_app': apps.mod_app_api,
                 'new_app': apps.new_app_api,
-                'statistics':apps.ckan_stats}
+                'statistics':apps.ckan_stats,
+                'all_tags_api': related_extra.all_tags_api}
     def get_helpers(self):
         return {'own': apps.own,
                 'is_priv': related_extra.is_private,
