@@ -53,15 +53,20 @@
                   
                    {{ form.input('tags', label=_('Tags'), id='field-tags', value=data['tags'], placeholder=_('tag1, tag2 ...'),  error="", classes=['control-full'], attrs=t_attrs) }}
 
+
                    <label class="control-label" for="">{{_("Topic")}}</label>
-                   {#{ form.checkbox('public_transp', checked=data['transport'], label=_('Public transport'), id="ch_transport", classes=["min_padding"])}}
-                   {{ form.checkbox('business' , checked=data['business'], label=_('Business and Economics'), id="ch_business", classes=["min_padding"])}}
-                   {{ form.checkbox('agriculture', checked=data['agriculture'], label=_('Agriculture'),id="ch_agriculture", classes=["min_padding"])}}
-                   {{ form.checkbox('company', checked=data['company'], label=_('Company'),id="ch_company", classes=["min_padding"])}}
-                   {{ form.checkbox('medium', checked=data['medium'], label=_('Medium business'),id="ch_medium", classes=["min_padding"])}}
-                   {{ form.checkbox('education', checked=data['education'], label=_('Education'),id="ch_education", classes=["min_padding"])}}
-                   {{ form.checkbox('health', checked=data['health'], label=_('Health'),id="ch_health", classes=["min_padding"])}}
-                   {{ form.checkbox('other', checked=data['other'], label=_('Other'), id="ch_other", classes=["min_padding"])}#}
+                   {%set topics = h.all_topics() %}
+                  {% for i in topics %}
+                    {% if i in data.keys() %}
+                      {{ form.checkbox(i['display_name'], checked=True, label=i['display_name'] ,id=i['display_name'], classes=["min_padding"])}}
+                    {%else%}
+                      {{ form.checkbox(i['display_name'], checked=False, label=i['display_name'] ,id=i['display_name'], classes=["min_padding"])}}
+                    {%endif%}
+                  {%endfor%}
+                    {{ form.input('other', id='field-other', label=_('Other topic'), placeholder=_('eg. default'), value=dataset, error='', classes=['control-full']) }}
+
+                  
+
               {%else%}
                 {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value="", error="", classes=['control-full']) }}
                 {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value="", error="", classes=['control-full']) }}
@@ -80,14 +85,11 @@
 
                    <label class="control-label" for="">{{_("Topic")}}</label>
 
-                   {#{ form.checkbox('public_transp', checked=False, label=_('Public transport'), id="ch_transport", classes=["min_padding"])}}
-                   {{ form.checkbox('business' , checked=false, label=_('Business and Economics'), id="ch_business", classes=["min_padding"])}}
-                   {{ form.checkbox('agriculture', checked=false, label=_('Agriculture'),id="ch_agriculture", classes=["min_padding"])}}
-                   {{ form.checkbox('company', checked=false, label=_('Company'),id="ch_company", classes=["min_padding"])}}
-                   {{ form.checkbox('medium', checked=false, label=_('Medium business'),id="ch_medium", classes=["min_padding"])}}
-                   {{ form.checkbox('education', checked=false, label=_('Education'),id="ch_education", classes=["min_padding"])}}
-                   {{ form.checkbox('health', checked=false, label=_('Health'),id="ch_health", classes=["min_padding"])}}
-                   {{ form.checkbox('other', checked=false, label=_('Other'), id="ch_other", classes=["min_padding"])}#}
+                  {%set topics = h.all_topics() %}
+                  {% for i in topics %}
+                      {{ form.checkbox(i['display_name'], checked=False, label=i['display_name'] ,id=i['display_name'], classes=["min_padding"])}}
+                  {%endfor%}
+                    {{ form.input('other', id='field-other', label=_('Other topic'), placeholder=_('eg. default'), value=dataset, error='', classes=['control-full']) }}
               {%endif%}
             {% endblock %}
               {% set errors = h.del_x()['errors'] %}

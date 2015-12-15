@@ -5,16 +5,16 @@ import sqlalchemy as sa
 from sqlalchemy.orm import class_mapper
 
 
-app_topic_table = None
-AppTopicTable = None
-__table_args__ = {'extend_existing': True}
+topic_rel_table = None
+TopicRelTable = None
+
 
 def make_uuid():
     return unicode(uuid.uuid4())
 
 
 def init_db(model):
-    class _AppTopicTable(model.DomainObject):
+    class _TopicRelTable(model.DomainObject):
         __table_args__ = {'extend_existing': True}
         @classmethod
         def get(cls, **kw):
@@ -35,7 +35,7 @@ def init_db(model):
 
 
         @classmethod
-        def app_topic(cls, **kw):
+        def topic_rel_table(cls, **kw):
             '''Finds a single entity in the register.'''
             order = kw.pop('order', False)
 
@@ -45,12 +45,13 @@ def init_db(model):
                 query = query.order_by(cls.order).filter(cls.order != '')
             return query.all()
 
-    global AppTopicTable
-    AppTopicTable = _AppTopicTable
+    global TopicRelTable
+    TopicRelTable = _TopicRelTable
     sql = '''
-                CREATE TABLE app_topic_table (
+                CREATE TABLE topic_rel_table (
                     id text NOT NULL,
-                    display_name text NOT NULL
+                    topic_id text NOT NULL,
+                    app_id text NOT NULL
                 );
     '''
     conn = model.Session.connection()
@@ -61,15 +62,16 @@ def init_db(model):
     model.Session.commit()
 
     types = sa.types
-    global app_topic_table
-    app_topic_table = sa.Table('app_topic_table', model.meta.metadata,
+    global topic_rel_table
+    topic_rel_table = sa.Table('topic_rel_table', model.meta.metadata,
         sa.Column('id', types.UnicodeText, primary_key=True, default=make_uuid),
-        sa.Column('display_name', types.UnicodeText, default=u'')
+        sa.Column('topic_id', types.UnicodeText, default=u''),
+        sa.Column('app_id', types.UnicodeText, default=u'')
     )
 
     model.meta.mapper(
-        AppTopicTable,
-        app_topic_table,
+        TopicRelTable,
+        topic_rel_table,
     )
 
 

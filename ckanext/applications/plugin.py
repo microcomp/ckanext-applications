@@ -8,6 +8,7 @@ import detail
 import related_extra
 import apps
 import db 
+import topic_functions
 import ckan.logic
 import ckan.model as model
 from ckan.common import _, c
@@ -50,8 +51,7 @@ class Applications(plugins.SingletonPlugin):
                 'list_apps': apps.list_apps,
                 'mod_app': apps.mod_app_api,
                 'new_app': apps.new_app_api,
-                'statistics':apps.ckan_stats,
-                'all_tags_api': related_extra.all_tags_api}
+                'statistics':apps.ckan_stats}
     def get_helpers(self):
         return {'own': apps.own,
                 'is_priv': related_extra.is_private,
@@ -64,4 +64,5 @@ class Applications(plugins.SingletonPlugin):
                 'reports_num': related_extra.reports_num,
                 'reported_by_user': related_extra.reported_by_user,
                 'reported_by': related_extra.reported_by,
-                'report_text': related_extra.report_text}
+                'report_text': related_extra.report_text,
+                'all_topics': topic_functions.all_topics}

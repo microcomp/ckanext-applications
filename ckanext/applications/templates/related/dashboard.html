@@ -83,7 +83,7 @@
   {% block related_list %}
   {%if c.action == 'detail' %}
     {#% if c.controller == 'ckanext.applications.detail:DetailController' %#}
-      {%snippet "related/snippets/app_detail.html" , title=c.title, id=c.id, description=c.description, created=c.created, owner=c.owner, urlx=c.url, datasets=c.datasets, private=c.private , userobj=c.userobj, tags=c.tags %}
+      {%snippet "related/snippets/app_detail.html" , title=c.title, id=c.id, description=c.description, created=c.created, owner=c.owner, urlx=c.url, datasets=c.datasets, private=c.private , userobj=c.userobj, tags=c.tags, topics=c.topics %}
       {%snippet "related/snippets/comments2.html", data = [c.id, c.user, c.id, c.userobj.id] %}
     {% else %}
       {{super()}}

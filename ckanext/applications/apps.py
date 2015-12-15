@@ -20,6 +20,7 @@ import __builtin__
 import db
 from pylons import config, request, response
 
+import topic_functions as tf
 import related_extra
 import json
 
@@ -753,6 +754,8 @@ class AppsController(base.BaseController):
 
         params_nopage = [(k, v) for k, v in base.request.params.items()
                          if k != 'page']
+        
+
         try:
             page = int(base.request.params.get('page', 1))
         except ValueError:
@@ -800,11 +803,23 @@ class AppsController(base.BaseController):
                     public_list2.append(i)  
         else:
             public_list2 = public_list
+
+        topic = base.request.params.get('topic', '')
+        public_list = []
+        
+        if topic != '':
+            public_list = []
+            for i in public_list2:
+                if tf.has_topic(context, {'app_id': i['id'], 'topic':topic}):
+                    public_list.append(i)  
+        else:
+            public_list = public_list2
+
         c.page = h.Page(
-            collection=public_list2,
+            collection=public_list,
             page=page,
             url=pager_url,
-            item_count=len(public_list2),
+            item_count=len(public_list),
             items_per_page=9
         )
 

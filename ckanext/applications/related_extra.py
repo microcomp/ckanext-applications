@@ -16,9 +16,7 @@ import logging
 import related_extra
 
 import ckan.logic
-'''
 
-'''
 import ckan.lib.jsonp as jsonp
 @toolkit.side_effect_free
 def all_tags_api(context, data_dict=None):

@@ -15,7 +15,7 @@ import ckan.plugins as p
 import ckan.plugins.toolkit as toolkit
 from ckan.common import _, c
 import logging
-
+import topic_functions as tf
 import json
 import os
 
@@ -164,6 +164,9 @@ class DetailController(base.BaseController):
         logging.warning(ds_id)
         c.datasets = []
 
+        ###############################################
+        c.topics = tf.get_apps_topics(context, {'app_id':id})
+        ###############################################
         for i in ds_id:
             pack = model.Session.query(model.Package).filter(model.Package.id == i).first()
             c.datasets.append(pack.name)
@@ -189,7 +192,9 @@ class DetailController(base.BaseController):
         return base.render("related/dashboard.html")
         
     def new_app(self):
-        context = {'user' : c.user}
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
         try:
             _check_access('app_create', context)
         except toolkit.NotAuthorized, e:
@@ -199,7 +204,11 @@ class DetailController(base.BaseController):
         for i in all_apps:
             c.app_names.append(i.name)
         logging.warning(c.app_names)
-
+        logging.warning("before topics init...")
+        data_dict = {}
+        #tf.create_topic_rel_table(context)
+        #tf.create_new_app_topic_db(context)
+        logging.warning("after topics init...")
         c.dataset = base.request.params.get('dataset','')
         
         return base.render("related/dashboard.html")
@@ -237,6 +246,31 @@ class DetailController(base.BaseController):
         dat["url"] = data_to_commit.url
         dat["image_url"] = data_to_commit.image_url
         dat["datasets"] = data['datasets']
+        logging.warning(data)
+        ###############################
+        other_topic = data['other']
+        topics = tf.get_all_topic_names(context, data_dict)
+        if len(other_topic) > 4:
+            if other_topic not in topics:
+                tf.add_new_app_topic(context, {'display_name':other_topic})
+            topics_data = tf.get_all_topics(context, data_dict)   
+            logging.warning("topics_data")
+            logging.warning(topics_data) 
+            for i in topics_data:
+                if i['display_name'] == other_topic:
+                    tf.add_new_topic_rel(context, {'topic_id':i['id'], 'app_id':data_to_commit.id})
+        topics_to_add = []
+        topics_data = tf.get_all_topics(context, data_dict)
+        logging.warning("topics_data2")
+        logging.warning(topics_data) 
+        for i in data.keys():
+            for j in topics_data:
+                if j['display_name'] == i:
+                    logging.warning("j['display_name'] == i"+i+"=="+j['display_name'])
+                    dat[i] = ''
+                    tf.add_new_topic_rel(context, {'topic_id':j['id'], 'app_id':data_to_commit.id})
+
+        ###############################
         helper = [x.strip() for x in data['tags'].split(',') if x.strip()!='']
         tgs = ""
         for i in helper:
@@ -297,8 +331,7 @@ class DetailController(base.BaseController):
                 errors['title'] = _("Title too short")
             if len(data_to_commit.url) < 3:
                 errors['url'] = _("URL incorrect")
-            if topic_ == False:
-                errors['topic'] = _("At least 1 topic required.")  
+            
             if len(dat['tags']) < 3:
                 errors['tags'] = _("At least 1 tag required. (min. lenght 3 chars.)")  
             for i in datasets:
@@ -376,6 +409,11 @@ class DetailController(base.BaseController):
         c.tags = data['tags']
         c.errors  = errors
         c.error_summary = error_summary
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        c.topics = tf.get_apps_topics(context, {'app_id':data['id']})
+
         name_query = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == data["id"] ).all()
         names = []
         for i in name_query:
@@ -415,8 +453,24 @@ class DetailController(base.BaseController):
 
         c.data = old_data
         c.errors  = errors
-        c.error_summary = error_summary
-
+        c.error_summary = other_topic
+        ########################################
+        error_summary = data['other']
+        topics = tf.get_all_topic_names(context, data_dict)
+        if len(other_topic) > 4:
+            if other_topic not in topics:
+                tf.add_new_app_topic(context, {'display_name':other_topic})
+            topics_data = tf.get_all_topics(context, data_dict)    
+            for i in topics_data:
+                if i['display_name'] == other_topic:
+                    tf.add_new_topic_rel(context, {'topic_id':i['id'], 'app_id':data_to_commit.id})
+        topics_to_add = []
+        topics_data = tf.get_all_topics(context, data_dict)
+        for i in data.keys():
+            for j in topics_data:
+                if j['display_name'] == i:
+                    tf.add_new_topic_rel(context, {'topic_id':j['id'], 'app_id':data_to_commit.id})
+        ########################################
         helper = [x.strip() for x in data['tags'].split(',') if x.strip()!='']
         tgs = ""
         for i in helper:

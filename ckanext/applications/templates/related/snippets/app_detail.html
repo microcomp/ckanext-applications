@@ -77,6 +77,18 @@ $(document).ready(function(){$('[data-toggle="DESC_tooltip"]').tooltip();});
               </ul>             
             </div>
           </div>
+          <div class="control-group">
+            <label class="control-label"style="width: 22%"> {{_('Topics')}} </label>
+            <div class="controls">
+             <ul class="tag-list well" style="padding:0px; margin-left: 1.5em;">
+                {%for i in topics%}
+                  <li>
+                      <a href='/apps?topic={{i}}' class="tag"> {{i}} </a>
+                  </li>
+                {%endfor%}
+              </ul>             
+            </div>
+          </div>
           </fieldset>
            <script src="/js/jquery.min.js"></script>
             <script src="/js/bootbox.js"></script>
