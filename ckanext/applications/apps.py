@@ -309,10 +309,19 @@ def new_app_api(context, data_dict=None):
         
         ed = {'message': 'Failed to create application, at least 1 dataset is required'}
         raise logic.ValidationError(ed)
-    helper = [x.strip() for x in data['tags'].split(',') if x.strip()!='']
+    #########################################################################################
+
+    try:
+        tags__ = data_dict['tags'] 
+    except KeyError:
+        ed = {'message': 'Failed to create application, at least 1 tag is required'}
+        raise logic.ValidationError(ed)
+
+    helper = [x.strip() for x in tags__.split(',') if x.strip()!='']
     tgs = ""
     for i in helper:
         tgs+= i+', '
+    dat = {}
     dat['tags'] = tgs[0:-2]
     tags_array = dat['tags'].split(', ')
 
@@ -338,6 +347,36 @@ def new_app_api(context, data_dict=None):
                     "Adding tag {0} to vocab 'app_tag'".format(tag))
             data2 = {'name': tag, 'vocabulary_id': vocab['id']}
             toolkit.get_action('tag_create')(context, data2)
+
+    #########################################################################################
+    try:
+        other_topic = data_dict['topics']
+    except KeyError:
+        ed = {'message': 'Failed to create application, at least 1 tag is required'}
+        raise logic.ValidationError(ed)
+
+    topics = tf.get_all_topic_names(context, data_dict)
+    if len(other_topic) > 4:
+        if other_topic not in topics:
+            tf.add_new_app_topic(context, {'display_name':other_topic})
+        topics_data = tf.get_all_topics(context, data_dict)   
+        logging.warning("topics_data")
+        logging.warning(topics_data) 
+        for i in topics_data:
+            if i['display_name'] == other_topic:
+                tf.add_new_topic_rel(context, {'topic_id':i['id'], 'app_id':data_to_commit.id})
+    topics_to_add = []
+    topics_data = tf.get_all_topics(context, data_dict)
+    logging.warning("topics_data2")
+    logging.warning(topics_data) 
+    #for i in data.keys():
+    #    for j in topics_data:
+    #        if j['display_name'] == i:
+    #            logging.warning("j['display_name'] == i"+i+"=="+j['display_name'])
+    #            dat[i] = ''
+    #            tf.add_new_topic_rel(context, {'topic_id':j['id'], 'app_id':data_to_commit.id})
+    #########################################################################################
+    
     owner_id = c.userobj.id
     data_to_commit.title = title
     data_to_commit.description = description
@@ -352,6 +391,7 @@ def new_app_api(context, data_dict=None):
     __builtin__.value = 'private'
     related_extra.new_related_extra(context, data_dict2)
     related_extra.add_app_owner(context, {'related_id':data_to_commit.id,'key':'owner', 'value':owner})
+    related_extra.add_extra_data(context, {'related_id': data_to_commit.id,'value': dat['tags'], 'key':'tags'})
     
     model.Session.commit()
     c.result =_('done')
@@ -401,7 +441,9 @@ def delete_app(context, data_dict=None):
 def list_apps(context, data_dict=None):
         """ List all related items regardless of dataset """
         
-        
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
         params_nopage = [(k, v) for k, v in base.request.params.items()
                          if k != 'page']
         try:
@@ -470,18 +512,35 @@ def list_apps(context, data_dict=None):
         g = []
         app_id = base.request.params.get('id', '')
         search_keyword = base.request.params.get('search', '')
+        tag = base.request.params.get('tag', '')
+        topic = base.request.params.get('topic', '')
+        tr=[]
         for i in range(len(public_list)):
             public_list[i]['datasets'] = datasets(public_list[i]['id'])
         for i in range(len(public_list)):
             user_id = public_list[i]['owner_id']
             public_list[i].pop('owner_id')
+            public_list[i].pop('view_count')
+            public_list[i].pop('featured')
+            public_list[i]['tags'] = related_extra.apps_tags(context, {'related_id':public_list[i]['id']})
+            public_list[i]['topics'] = tf.get_apps_topics(context, {'app_id':public_list[i]['id']})
+            if tag != '':
+                if tag not in public_list[i]['tags']:
+                    tr.append(i)
+            if topic != '':
+                if topic not in public_list[i]['topics']:
+                    tr.append(i)
             full_name = model.Session.query(model.User).filter(model.User.id == user_id).first().fullname
             public_list[i]['full_name'] = related_extra.get_app_owner(context, {'related_id':public_list[i].get('id')})
+        pl_buffer = []
+        for i in range(len(public_list)):
+            if i not in tr:
+                pl_buffer.append(public_list[i])
 
+        public_list = pl_buffer
         if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
             data = {}
-            data['help'] = 'all apps'
-            data['sucess'] =True
+
             data['result'] = public_list
             
             c.list = data
@@ -509,6 +568,8 @@ def list_apps(context, data_dict=None):
         if len(g) == 0:
             c.list =  _("no results found")
 
+
+        
         return c.list
 
 log = logging.getLogger('ckanext_applications')
@@ -1037,6 +1098,8 @@ class AppsController(base.BaseController):
             params = list(params_nopage)
             params.append(('page', page))
             return search_url(params)
+
+
 
         c.page = h.Page(
             collection=new_list,
