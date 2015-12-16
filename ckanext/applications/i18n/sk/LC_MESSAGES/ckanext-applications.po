@@ -165,6 +165,10 @@ msgstr "Názov príliš krátky"
 msgid "URL incorrect"
 msgstr "Nesprávna URL"
 
+#: ckanext/applications/detail.py:398
+msgid "Invalid owner"
+msgstr ""
+
 #: ckanext/applications/templates/header.html:17
 msgid "Change contrast"
 msgstr "Zmeniť kontrast"
@@ -182,6 +186,7 @@ msgid "Apps & Ideas"
 msgstr "Aplikácie & Nápady"
 
 #: ckanext/applications/templates/package/dashboard.html:22
+#, python-format
 msgid ""
 "\n"
 "            <p>Showing items <strong>%(first)s - %(last)s</strong> of "
@@ -554,7 +559,7 @@ msgstr "Permanentná URL"
 
 #: ckanext/applications/templates/related/snippets/app_detail.html:115
 msgid "Permanent URL of this page"
-msgstr ""
+msgstr "Permanentná URL aplikácie"
 
 #: ckanext/applications/templates/related/snippets/new_app.html:14
 msgid "The form contains invalid entries:"
@@ -601,4 +606,21 @@ msgstr "nahlásené od"
 msgid "Remove report"
 msgstr "Odstrániť hlásenie"
 
+#: ckanext/applications/templates/related/dashboard.html:179
+#: ckanext/applications/templates/related/snippets/app_detail.html:81
+msgid "Topics"
+msgstr "Tematický okruh"
 
+#: ckanext/applications/templates/related/dashboard.html:187
+msgid "No topics to show"
+msgstr "Žiadne data"
+
+#: ckanext/applications/templates/related/dashboard.html:201
+msgid "No tags to show"
+msgstr "Žiadne tagy"
+
+#: ckanext/applications/templates/related/update.html:43
+#: ckanext/applications/templates/related/snippets/new_app.html:66
+#: ckanext/applications/templates/related/snippets/new_app.html:92
+msgid "Other topic"
+msgstr "Iné"
