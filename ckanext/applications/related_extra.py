@@ -126,11 +126,11 @@ def add_app_owner(context, data_dict):
 @ckan.logic.side_effect_free
 def mod_app_owner(context, data_dict):
     create_related_extra_table(context)
-    info = db.RelatedExtra.get(**{'related_id':data_dict['related_id']})
+    info = db.RelatedExtra.get(**{'related_id':data_dict['related_id'], 'key': 'owner'})
     index = 0
-    for i in range(len(info)):
-        if info[i].key == 'owner':
-            index = i
+    #for i in range(len(info)):
+    #    if info[i].key == 'owner':
+    #        index = i
     info[index].related_id = data_dict.get('related_id')
     
     info[index].key = data_dict.get('key')
@@ -185,11 +185,11 @@ def check_priv_related_extra(context, data_dict):
 @ckan.logic.side_effect_free
 def mod_related_extra(context, data_dict):
     create_related_extra_table(context)
-    info = db.RelatedExtra.get(**data_dict)
+    info = db.RelatedExtra.get(**{'related_id': data_dict['related_id'], 'key':'privacy'})
     index = 0
-    for i in range(len(info)):
-        if info[i].key == 'privacy':
-            index = i
+    #for i in range(len(info)):
+    #    if info[i].key == 'privacy':
+    #        index = i
     info[index].related_id = data_dict.get('related_id')
     
     info[index].key = data_dict.get('key')

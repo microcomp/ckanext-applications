@@ -184,10 +184,7 @@ def add_datasets(datasets,  id):
 @toolkit.side_effect_free
 def mod_app_api(context, data_dict=None):
     ''' Mod_app_api- application modification '''
-    related_datasets = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == data_dict['id']).all()
-    for i in related_datasets:
-        model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.id == i.id).delete(synchronize_session=False)
-    model.Session.commit()
+    
     old_data = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
     logic.get_action('related_show')(context,data_dict)
     #all related items deleted...
@@ -225,6 +222,10 @@ def mod_app_api(context, data_dict=None):
     except KeyError:
         tags  = ""
 
+    try:
+        topics = data_dict['topics'] 
+    except KeyError:
+        topics  = ""
     old_data = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
     logic.get_action('related_show')(context,data_dict)
 
@@ -249,17 +250,77 @@ def mod_app_api(context, data_dict=None):
     data_dict2 = {'related_id':data_dict['id'],'key':'privacy'}
     __builtin__.value = private
 
-    if datasets != None or datasets != '':
-        related_extra.mod_related_extra(context, data_dict2)
-    model.Session.commit()
-    logging.warning(related_datasets)
-    if datasets != "" or datasets != None:
-        datasets = datasets.split(',')
-        logging.warning(datasets)
-        add_datasets(datasets, id)
-    else:
-        add_datasets(related_datasets, id)
+    #if private != None or private != '':
+    #    related_extra.mod_related_extra(context, data_dict2)
+    #    model.Session.commit()
+    #logging.warning(related_datasets)
+    if datasets != "":
+        related_datasets = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == data_dict['id']).all()
+        for i in related_datasets:
+            model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.id == i.id).delete(synchronize_session=False)
+        model.Session.commit()
+        datasets2 = datasets.split(',')
+        logging.warning(datasets2)
+        add_datasets(datasets2, data_dict['id'])
+    #else:
+    #    add_datasets(related_datasets, id)
     related_extra.mod_app_owner(context, {'related_id':old_data.id,'key':'owner', 'value':owner})
+
+    try:
+        other_topics = data_dict['topics']
+    except KeyError:
+        other_topics = ""
+
+
+    topics = tf.get_all_topic_names(context, {'app_id':data_dict['id']})
+    if len(other_topics) > 3:
+        tf.del_topic_rel(context, {'app_id':data_dict['id']})
+        other_topics_arr = [x.strip() for x in other_topics.split(',')]
+        for other_topic in other_topics_arr:
+            if other_topic not in topics:
+                tf.add_new_app_topic(context, {'display_name':other_topic})
+            topics_data = tf.get_all_topics(context, {'app_id':data_dict['id']})    
+            for i in topics_data:
+                if i['display_name'] == other_topic:
+                    tf.add_new_topic_rel(context, {'topic_id':i['id'], 'app_id':data_dict['id']})
+    data = {}
+    try:
+        data_s = data_dict['tags']
+    except KeyError:
+        data_s = ""
+    logging.warning(data_s)
+    if len(data_s) > 2:
+        logging.warning('len(data_s) > 2')
+        helper = [x.strip() for x in data_s.split(',') if x.strip()!='']
+        tgs = ""
+        for i in helper:
+            tgs+= i+', '
+        data['tags'] = tgs[0:-2]
+            
+       
+        try:
+            data2 = {'id': 'app_tag'}
+            toolkit.get_action('vocabulary_show')(context, data2)
+            logging.info("Example genre vocabulary already exists, skipping.")
+        except toolkit.ObjectNotFound:
+            logging.info("Creating vocab 'app_tag'")
+            data2 = {'name': 'app_tag'}
+            vocab = toolkit.get_action('vocabulary_create')(context, data2)
+            for tag in helper:
+                logging.info(
+                        "Adding tag {0} to vocab 'country_codes'".format(tag))
+                data2 = {'name': tag, 'vocabulary_id': vocab['id']}
+                toolkit.get_action('tag_create')(context, data2)
+        except toolkit.ValidationError:
+            logging.info("Creating vocab 'app_tag'")
+            data2 = {'name': 'app_tag'}
+            vocab = toolkit.get_action('vocabulary_create')(context, data2)
+            for tag in helper:
+                logging.info(
+                        "Adding tag {0} to vocab 'country_codes'".format(tag))
+                data2 = {'name': tag, 'vocabulary_id': vocab['id']}
+                toolkit.get_action('tag_create')(context, data2)
+        related_extra.mod_extra_data(context, {'related_id':data_dict['id'], 'key': "tags", 'value': data['tags']})
     return _('done')
     
 @toolkit.side_effect_free    
@@ -426,7 +487,7 @@ def delete_app(context, data_dict=None):
     data_dict['owner_id'] = rel.owner_id
     _check_access('app_edit', context, data_dict)
 
-    d_dtopic = {'app_id':id}
+    d_dtopic = {'app_id':data_dict['id']}
     tf.del_topic_rel(context, d_dtopic)
 
     logging.warning(rel_datasets)

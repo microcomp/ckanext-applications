@@ -430,6 +430,9 @@ class DetailController(base.BaseController):
         return base.render("related/update.html", extra_vars = vars)
 
     def edit_app_do(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
         data, errors, error_summary = {}, {}, {}
         id = base.request.params.get('id','')
         valid = model.Session.query(model.Related).filter(model.Related.id == id).first()
@@ -453,32 +456,31 @@ class DetailController(base.BaseController):
 
         c.data = old_data
         c.errors  = errors
-        c.error_summary = other_topic
+        c.error_summary = {}
         ########################################
-        error_summary = data['other']
-        topics = tf.get_all_topic_names(context, data_dict)
+        error_summary = {}
+        other_topic = data['other']
+        topics = tf.get_all_topic_names(context, {'app_id':data['id']})
         if len(other_topic) > 4:
             if other_topic not in topics:
                 tf.add_new_app_topic(context, {'display_name':other_topic})
-            topics_data = tf.get_all_topics(context, data_dict)    
+            topics_data = tf.get_all_topics(context, {'app_id':data['id']})    
             for i in topics_data:
                 if i['display_name'] == other_topic:
-                    tf.add_new_topic_rel(context, {'topic_id':i['id'], 'app_id':data_to_commit.id})
+                    tf.add_new_topic_rel(context, {'topic_id':i['id'], 'app_id':data['id']})
         topics_to_add = []
-        topics_data = tf.get_all_topics(context, data_dict)
+        topics_data = tf.get_all_topics(context, {'app_id':data['id']})
         for i in data.keys():
             for j in topics_data:
                 if j['display_name'] == i:
-                    tf.add_new_topic_rel(context, {'topic_id':j['id'], 'app_id':data_to_commit.id})
+                    tf.add_new_topic_rel(context, {'topic_id':j['id'], 'app_id':data['id']})
         ########################################
         helper = [x.strip() for x in data['tags'].split(',') if x.strip()!='']
         tgs = ""
         for i in helper:
             tgs+= i+', '
         data['tags'] = tgs[0:-2]
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
+        
 
         try:
             data2 = {'id': 'app_tag'}
