@@ -31,7 +31,7 @@ def init_db(model):
             query = model.Session.query(cls).autoflush(False).filter_by(**kw).all()
             for i in query:
                 model.Session.delete(i)
-            return
+            return True
 
 
         @classmethod

@@ -154,13 +154,13 @@
             </select>
           </div>
           {% if h.is_admin() %} 
-              <input type="checkbox" id="field-private" name="private" 
+              
+             <label for="field-private" style="display:inline"> {{ _('Only show private items') }} </label><input type="checkbox" id="field-private" name="private" style="margin-left:0.5em; margin-top: -1em;"
               {%if c.filters is mapping  %}
                 {% if c.filters.get('private') == 'on' %} checked="checked"{% endif %}>
               {% endif %}
-              {{ _('Only show private items') }} 
           {% endif %}
-         
+
          {% if request.url.split("?")[1] %}
             {% for i in request.url.split("?")[1].split("&") %}
                 {% if i.split('=')[0] == 'app_name' %}
@@ -173,6 +173,35 @@
             <a class="btn" href="/apps">{{ _('Cancel') }}</a>
           </div>
         </form>
+
+      </section>
+       <section class="module module-narrow module-shallow">
+        <h2 class="module-heading">{{ _('Topics') }}</h2>
+        {% set topics = h.all_topics()%}
+        <div>
+            <ul style="list-style:none;">
+                {% for i in topics%}
+                  <li><a href="/apps?topic={{i['display_name']}}">{{i['display_name']}}</a></li>
+                {%endfor%}
+                {%if topics|length == 0%}
+                  <p> {{_('No topics to show')}}
+                {%endif%}
+            </ul>
+        </div>
+      </section>
+      <section class="module module-narrow module-shallow">
+        <h2 class="module-heading">{{ _('Tags') }}</h2>
+        {% set tags = h.all_tags()%}
+        <div>
+            <ul style="list-style:none;">
+                {% for i in tags%}
+                  <li><a href="/apps?tag={{i}}">{{i}}</a></li>
+                {%endfor%}
+                {%if tags|length == 0%}
+                  <p> {{_('No tags to show')}}
+                {%endif%}
+            </ul>
+        </div>
       </section>
      {%endif%}
     {%endif%}

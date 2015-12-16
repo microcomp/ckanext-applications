@@ -18,7 +18,7 @@ import related_extra
 import ckan.logic
 
 import ckan.lib.jsonp as jsonp
-@toolkit.side_effect_free
+'''@toolkit.side_effect_free
 def all_tags_api(context, data_dict=None):
     tags = all_app_tags(context, data_dict)
     flt = ''
@@ -28,19 +28,23 @@ def all_tags_api(context, data_dict=None):
         rs =  [ { 'match_field': "name", 'match_displayed': x.strip(), 'name': x.strip(), 'title': x.strip() } for x in tags if flt in x]
         return rs
     return [ { 'match_field': "name", 'match_displayed': x.strip(), 'name': x.strip(), 'title': x.strip() } for x in tags ]
+'''
 def create_related_extra_table(context):
     if db.related_extra_table is None:
         db.init_db(context['model'])
 
-@ckan.logic.side_effect_free
-def all_app_tags(context, data_dict=None):
+#@ckan.logic.side_effect_free
+def all_app_tags():
+    context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
     create_related_extra_table(context) 
     tags = db.RelatedExtra.get(**{'key':'tags'})
     tags = [x.value for x in tags]
     tgs = "" 
     for i in tags:
-        tgs+=i
-    result = [x for x in tgs.split(',') if x != '' ]
+        tgs+=i+','
+    result = set(x for x in tgs.split(',') if x != '' )
     return result
 
 @ckan.logic.side_effect_free

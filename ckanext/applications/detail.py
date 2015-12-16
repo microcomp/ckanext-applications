@@ -534,15 +534,6 @@ class DetailController(base.BaseController):
 
         data_dict = {'related_id':id,'key':'privacy'}
 
-        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "transport", 'value': topic['transport']})
-        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "business", 'value': topic['business']})
-        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "agriculture", 'value': topic['agriculture']})
-        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "company", 'value': topic['company']})
-        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "medium", 'value': topic['medium']})
-        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "education", 'value': topic['education']})
-        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "health", 'value': topic['health']})
-        #related_extra.mod_extra_data(context, {'related_id':id, 'key': "other", 'value': topic['other']})
-        
         related_extra.mod_extra_data(context, {'related_id':id, 'key': "tags", 'value': data['tags']})
         try:
             _check_access('app_editall', context, data_dict)
@@ -560,7 +551,12 @@ class DetailController(base.BaseController):
         return toolkit.redirect_to(controller='ckanext.applications.apps:AppsController', action='dashboard')
         
     def delete_app(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        
         id = base.request.params.get('id','')
+
         logging.warning('deleting...')
         logging.warning(id)
 
@@ -569,7 +565,6 @@ class DetailController(base.BaseController):
             logging.warning('application not found')
             base.abort(404, _('Application not found'))
 
-        context = {'user' : c.user} 
         data_dict = {'owner_id' : valid.owner_id}
         try:
             _check_access('app_edit', context, data_dict)
@@ -584,10 +579,13 @@ class DetailController(base.BaseController):
         logging.warning(' related datasets >>>>')
         logging.warning(rel_datasets)
         data_dict = {'related_id':id}
+
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
         related_extra.del_related_extra(context, data_dict)
+        d_dtopic = {'app_id':id}
+        tf.del_topic_rel(context, d_dtopic)
         model.Session.commit()
         return toolkit.redirect_to(controller='ckanext.applications.apps:AppsController', action='dashboard')
 

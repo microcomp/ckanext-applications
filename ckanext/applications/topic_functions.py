@@ -52,9 +52,10 @@ def topic_rel_exists(context, data_dict):
 @ckan.logic.side_effect_free
 def del_topic_rel(context, data_dict):
     create_topic_rel_table(context)
-    to_remove = topic_rel_tables.TopicRelTable.get(**{'app_id':data_dict['app_id'], 'topic_id':data_dict['topic_id']})
+    logging.warning("deleting...")
     session = context['session']
-    session.remove(to_remove)
+    to_remove = topic_rel_tables.TopicRelTable.delete(**{'app_id':data_dict['app_id']})
+    logging.warning(to_remove)
     session.commit()
     return
 

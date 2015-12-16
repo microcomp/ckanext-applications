@@ -386,7 +386,8 @@ def delete_app(context, data_dict=None):
     data_dict['owner_id'] = rel.owner_id
     _check_access('app_edit', context, data_dict)
 
-    
+    d_dtopic = {'app_id':id}
+    tf.del_topic_rel(context, d_dtopic)
 
     logging.warning(rel_datasets)
     model.Session.delete(rel)

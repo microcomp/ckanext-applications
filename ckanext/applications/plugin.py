@@ -65,4 +65,5 @@ class Applications(plugins.SingletonPlugin):
                 'reported_by_user': related_extra.reported_by_user,
                 'reported_by': related_extra.reported_by,
                 'report_text': related_extra.report_text,
-                'all_topics': topic_functions.all_topics}
+                'all_topics': topic_functions.all_topics,
+                'all_tags': related_extra.all_app_tags}
