@@ -155,7 +155,7 @@ class DetailController(base.BaseController):
         owner_id = self.owner_id
         c.img = new_list[0]['image_url']
 
-        c.owner = related_extra.get_app_owner(context, {"related_id":c.id})
+        c.owner = new_list[0]['owner_id'] #related_extra.get_app_owner(context, {"related_id":c.id})
 
         ds_ids = model.Session.query(model.RelatedDataset).filter(model.RelatedDataset.related_id == c.id).all()
         ds_id = []
