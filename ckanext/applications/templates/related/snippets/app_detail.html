@@ -93,7 +93,8 @@ $(document).ready(function(){$('[data-toggle="DESC_tooltip"]').tooltip();});
            <script src="/js/jquery.min.js"></script>
             <script src="/js/bootbox.js"></script>
             <script src="/js/bootstrap.min.js"></script>
-          {%if h.check_access('app_edit', data_dict={'owner_id' : owner}) or user==owner %}
+
+          {%if h.check_access('app_edit', data_dict={'owner_id' : owner}) or user==creator %}
           <a class='btn btn-primary btn-small media-edit' href="/apps/update?id={{id}}" ><span class="fa fa-pencil" > </span> {{_('Edit')}}</a>
            
             <noscript><a class='btn btn-primary btn-small media-delete' href="'/apps/delete?id={{id}}'" data-bb="confirm"><span class="fa fa-trash" > </span> {{_('Delete')}}</a> </noscript>
