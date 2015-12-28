@@ -219,6 +219,9 @@ class DetailController(base.BaseController):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
+        context_ignore_auth = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True, 'ignore_auth': True}
         data_dict = {}
         data = {}
 
@@ -286,19 +289,19 @@ class DetailController(base.BaseController):
         except toolkit.ObjectNotFound:
             logging.info("Creating vocab 'app_tag'")
             data2 = {'name': 'app_tag'}
-            vocab = toolkit.get_action('vocabulary_create')(context, data2)
+            vocab = toolkit.get_action('vocabulary_create')(context_ignore_auth, data2)
             for tag in tags_array:
                 logging.info(
-                        "Adding tag {0} to vocab 'app_tag'".format(tag))
+                        "Adding tag to vocab 'app_tag'")
                 data2 = {'name': tag, 'vocabulary_id': vocab['id']}
                 toolkit.get_action('tag_create')(context, data2)
         except toolkit.ValidationError:
             logging.info("Creating vocab 'app_tag'")
             data2 = {'name': 'app_tag'}
-            vocab = toolkit.get_action('vocabulary_create')(context, data2)
+            vocab = toolkit.get_action('vocabulary_create')(context_ignore_auth, data2)
             for tag in tags_array:
                 logging.info(
-                        "Adding tag {0} to vocab 'app_tag'".format(tag))
+                        "Adding tag to vocab 'app_tag'")
                 data2 = {'name': tag, 'vocabulary_id': vocab['id']}
                 toolkit.get_action('tag_create')(context, data2)
 
