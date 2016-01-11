@@ -9,7 +9,22 @@
 <script type="text/javascript">
 function change_style(){
 	var style = document.getElementById("contrast");
-	if(style.href.indexOf("/high_contrast.css") > -1){ style.href = "/screen.css" }else { style.href = "/high_contrast.css" }
+	var cookies = document.cookie;
+	var contrast = "";
+	var cc = cookies.split('; ');
+	for(var i=0; i < cc.length; i++){
+		if(cc[i].split('=')[0] == 'contrast'){
+			contrast = cc[i].split('=')[1];
+		}
+	}
+	if(contrast === "high"){ 
+		style.href = "/screen.css"; 
+		document.cookie = "contrast=normal;" 
+	}else { 
+		style.href = "/high_contrast.css";
+		document.cookie = "contrast=high";
+	}
+
 }
 </script>
   <li>
