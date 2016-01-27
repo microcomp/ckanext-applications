@@ -629,7 +629,7 @@ def list_apps(context, data_dict=None):
         if len(g) == 0:
             c.list =  [_("no results found")]
         return c.list
-    except KeyError:
+    except IndexError:
         return []
 
 log = logging.getLogger('ckanext_applications')
