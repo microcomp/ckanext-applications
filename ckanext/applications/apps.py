@@ -500,8 +500,8 @@ def delete_app(context, data_dict=None):
 
 @toolkit.side_effect_free
 def list_apps(context, data_dict=None):
-        """ List all related items regardless of dataset """
-        
+    """ List all related items regardless of dataset """
+    try:
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
@@ -598,11 +598,11 @@ def list_apps(context, data_dict=None):
             if i not in tr:
                 pl_buffer.append(public_list[i])
 
-        public_list = pl_buffer
+        public_list = pl_buffer[:]
         if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
             data = {}
 
-            data['result'] = public_list
+            data['result'] = public_list[:]
             
             c.list = data
             return c.list
@@ -610,13 +610,13 @@ def list_apps(context, data_dict=None):
             for i in public_list:
                 if app_id == i['id']:
                    g.append(i) 
-                   c.list = i
+                   c.list = g[:]
         elif (app_id == '' or app_id == None) and (search_keyword !='' or search_keyword != None):
             for i in public_list:
                 if (search_keyword.lower() in i['title'].lower()) or (search_keyword.lower() in i['description'].lower()):
                     g.append(i)
             helper = []
-            c.list =  g
+            c.list =  g[:]
         else:
             for i in public_list:
                 if app_id == i['id']:
@@ -625,13 +625,12 @@ def list_apps(context, data_dict=None):
             for j in g:
                 if (search_keyword.lower() in j['title'].lower()) or (search_keyword.lower() in j['description'].lower()):
                     result.append(j)
-            c.list = result
+            c.list = result[:]
         if len(g) == 0:
-            c.list =  _("no results found")
-
-
-        
+            c.list =  [_("no results found")]
         return c.list
+    except KeyError:
+        return []
 
 log = logging.getLogger('ckanext_applications')
 
