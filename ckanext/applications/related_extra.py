@@ -58,9 +58,12 @@ def has_tag(context, data_dict):
 def apps_tags(context, data_dict):
     create_related_extra_table(context) 
     tags = db.RelatedExtra.get(**{'key':'tags', 'related_id':data_dict['related_id']}) #.value
-    tags = tags[0].value
-    result = [x for x in tags.split(',') if x != '' ]
-    return result
+    if len(tags) > 0:
+        tags = tags[0].value
+        result = [x for x in tags.split(',') if x != '' ]
+        return result
+    else:
+        return ""
 @ckan.logic.side_effect_free
 def mod_tag(context, data_dict):
     create_related_extra_table(context) 

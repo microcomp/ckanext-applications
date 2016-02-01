@@ -501,136 +501,134 @@ def delete_app(context, data_dict=None):
 @toolkit.side_effect_free
 def list_apps(context, data_dict=None):
     """ List all related items regardless of dataset """
+    
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    params_nopage = [(k, v) for k, v in base.request.params.items()
+                     if k != 'page']
     try:
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-        params_nopage = [(k, v) for k, v in base.request.params.items()
-                         if k != 'page']
-        try:
-            page = int(base.request.params.get('page', 1))
-        except ValueError:
-            base.abort(400, ('"page" parameter must be an integer'))
+        page = int(base.request.params.get('page', 1))
+    except ValueError:
+        base.abort(400, ('"page" parameter must be an integer'))
 
-        # Update ordering in the context
-        related_list = logic.get_action('related_list')(context, data_dict)
+    # Update ordering in the context
+    related_list = logic.get_action('related_list')(context, data_dict)
 
-        def search_url(params):
-            url = h.url_for(controller='ckanext.applications.apps:AppsController', action='dashboard')
-            params = [(k, v.encode('utf-8')
-                      if isinstance(v, basestring) else str(v))
-                      for k, v in params]
-            return url + u'?' + urllib.urlencode(params)
+    def search_url(params):
+        url = h.url_for(controller='ckanext.applications.apps:AppsController', action='dashboard')
+        params = [(k, v.encode('utf-8')
+                  if isinstance(v, basestring) else str(v))
+                  for k, v in params]
+        return url + u'?' + urllib.urlencode(params)
 
-        def pager_url(q=None, page=None):
-            params = list(params_nopage)
-            params.append(('page', page))
-            return search_url(params)
+    def pager_url(q=None, page=None):
+        params = list(params_nopage)
+        params.append(('page', page))
+        return search_url(params)
 
-        public_list = []
-        c.pr = []
-        c.priv_private = False
-        c.privonly = base.request.params.get('private', '') == 'on'
+    public_list = []
+    c.pr = []
+    c.priv_private = False
+    c.privonly = base.request.params.get('private', '') == 'on'
 
 
-        for i in related_list:
-            data_dict = {'related_id':i['id'],'key':'privacy'}
-            if related_extra.check_priv_related_extra(context, data_dict):
-                public_list.append(i)
-            else:
-                data_dict = {'owner_id': i['owner_id']}
-                try:
-                    logic.check_access('app_edit', context, data_dict)
-                    c.priv_private = True
-                    public_list.append(i)
-                except logic.NotAuthorized:
-                    logging.warning("access denied")
-            
-            
-        c.page = h.Page(
-            collection=public_list,
-            page=page,
-            url=pager_url,
-            item_count=len(public_list),
-            items_per_page=9
-        )
-
-        c.filters = dict(params_nopage)
-
-        c.type_options =({"text": _("API"), "value": "api"},
-                {"text": _("Application"), "value": "application"},
-                {"text": _("Idea"), "value": "idea"},
-                {"text": _("News Article"), "value": "news_article"},
-                {"text": _("Paper"), "value": "paper"},
-                {"text": _("Post"), "value": "post"},
-                {"text": _("Visualization"), "value": "visualization"})
-        c.sort_options = (
-            {'value': 'view_count_desc', 'text': _('Most Viewed')},
-            {'value': 'view_count_asc', 'text': _('Least Viewed')},
-            {'value': 'created_desc', 'text': _('Newest')},
-            {'value': 'created_asc', 'text': _('Oldest')}
-        )
-        g = []
-        app_id = base.request.params.get('id', '')
-        search_keyword = base.request.params.get('search', '')
-        tag = base.request.params.get('tag', '')
-        topic = base.request.params.get('topic', '')
-        tr=[]
-        for i in range(len(public_list)):
-            public_list[i]['datasets'] = datasets(public_list[i]['id'])
-        for i in range(len(public_list)):
-            user_id = public_list[i]['owner_id']
-            public_list[i].pop('owner_id')
-            public_list[i].pop('view_count')
-            public_list[i].pop('featured')
-            public_list[i]['tags'] = related_extra.apps_tags(context, {'related_id':public_list[i]['id']})
-            public_list[i]['topics'] = tf.get_apps_topics(context, {'app_id':public_list[i]['id']})
-            if tag != '':
-                if tag not in public_list[i]['tags']:
-                    tr.append(i)
-            if topic != '':
-                if topic not in public_list[i]['topics']:
-                    tr.append(i)
-            full_name = model.Session.query(model.User).filter(model.User.id == user_id).first().fullname
-            public_list[i]['full_name'] = related_extra.get_app_owner(context, {'related_id':public_list[i].get('id')})
-        pl_buffer = []
-        for i in range(len(public_list)):
-            if i not in tr:
-                pl_buffer.append(public_list[i])
-
-        public_list = pl_buffer[:]
-        if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
-            data = {}
-
-            data['result'] = public_list[:]
-            
-            c.list = data
-            return c.list
-        elif (app_id != '' or app_id != None) and (search_keyword =='' or search_keyword == None):
-            for i in public_list:
-                if app_id == i['id']:
-                   g.append(i) 
-                   c.list = g[:]
-        elif (app_id == '' or app_id == None) and (search_keyword !='' or search_keyword != None):
-            for i in public_list:
-                if (search_keyword.lower() in i['title'].lower()) or (search_keyword.lower() in i['description'].lower()):
-                    g.append(i)
-            helper = []
-            c.list =  g[:]
+    for i in related_list:
+        data_dict = {'related_id':i['id'],'key':'privacy'}
+        if related_extra.check_priv_related_extra(context, data_dict):
+            public_list.append(i)
         else:
-            for i in public_list:
-                if app_id == i['id']:
-                   g.append(i) 
-            result = [] 
-            for j in g:
-                if (search_keyword.lower() in j['title'].lower()) or (search_keyword.lower() in j['description'].lower()):
-                    result.append(j)
-            c.list = result[:]
-        if len(g) == 0:
-            c.list =  [_("no results found")]
+            data_dict = {'owner_id': i['owner_id']}
+            try:
+                logic.check_access('app_edit', context, data_dict)
+                c.priv_private = True
+                public_list.append(i)
+            except logic.NotAuthorized:
+                logging.warning("access denied")
+        
+        
+    c.page = h.Page(
+        collection=public_list,
+        page=page,
+        url=pager_url,
+        item_count=len(public_list),
+        items_per_page=9
+    )
+
+    c.filters = dict(params_nopage)
+
+    c.type_options =({"text": _("API"), "value": "api"},
+            {"text": _("Application"), "value": "application"},
+            {"text": _("Idea"), "value": "idea"},
+            {"text": _("News Article"), "value": "news_article"},
+            {"text": _("Paper"), "value": "paper"},
+            {"text": _("Post"), "value": "post"},
+            {"text": _("Visualization"), "value": "visualization"})
+    c.sort_options = (
+        {'value': 'view_count_desc', 'text': _('Most Viewed')},
+        {'value': 'view_count_asc', 'text': _('Least Viewed')},
+        {'value': 'created_desc', 'text': _('Newest')},
+        {'value': 'created_asc', 'text': _('Oldest')}
+    )
+    g = []
+    app_id = base.request.params.get('id', '')
+    search_keyword = base.request.params.get('search', '')
+    tag = base.request.params.get('tag', '')
+    topic = base.request.params.get('topic', '')
+    tr=[]
+    for i in range(len(public_list)):
+        public_list[i]['datasets'] = datasets(public_list[i]['id'])
+    for i in range(len(public_list)):
+        user_id = public_list[i]['owner_id']
+        public_list[i].pop('owner_id')
+        public_list[i].pop('view_count')
+        public_list[i].pop('featured')
+        public_list[i]['tags'] = related_extra.apps_tags(context, {'related_id':public_list[i]['id']})
+        public_list[i]['topics'] = tf.get_apps_topics(context, {'app_id':public_list[i]['id']})
+        if tag != '':
+            if tag not in public_list[i]['tags']:
+                tr.append(i)
+        if topic != '':
+            if topic not in public_list[i]['topics']:
+                tr.append(i)
+        full_name = model.Session.query(model.User).filter(model.User.id == user_id).first().fullname
+        public_list[i]['full_name'] = related_extra.get_app_owner(context, {'related_id':public_list[i].get('id')})
+    pl_buffer = []
+    for i in range(len(public_list)):
+        if i not in tr:
+            pl_buffer.append(public_list[i])
+
+    public_list = pl_buffer[:]
+    if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
+        data = {}
+
+        data['result'] = public_list[:]
+        
+        c.list = data
         return c.list
-    except IndexError:
-        return []
+    elif (app_id != '' or app_id != None) and (search_keyword =='' or search_keyword == None):
+        for i in public_list:
+            if app_id == i['id']:
+               g.append(i) 
+               c.list = g[:]
+    elif (app_id == '' or app_id == None) and (search_keyword !='' or search_keyword != None):
+        for i in public_list:
+            if (search_keyword.lower() in i['title'].lower()) or (search_keyword.lower() in i['description'].lower()):
+                g.append(i)
+        helper = []
+        c.list =  g[:]
+    else:
+        for i in public_list:
+            if app_id == i['id']:
+               g.append(i) 
+        result = [] 
+        for j in g:
+            if (search_keyword.lower() in j['title'].lower()) or (search_keyword.lower() in j['description'].lower()):
+                result.append(j)
+        c.list = result[:]
+    if len(g) == 0:
+        c.list =  [_("no results found")]
+    return c.list
 
 log = logging.getLogger('ckanext_applications')
 
