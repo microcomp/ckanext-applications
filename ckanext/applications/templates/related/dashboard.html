@@ -38,7 +38,7 @@
         {% block page_heading %}
 
             {% if c.action == 'dashboard' and h.check_access('app_create') %}
-              {{ _('Applications') }} <a class="btn btn-primary" href="/apps/new" style="color:white;float:right;"><span class="fa fa-plus-square"></span> {{_('New app')}}</a>
+              <span class="apps_title">{{ _('Applications') }} </span><a class="btn btn-primary" href="/apps/new" style="color:white;float:right;"><span class="fa fa-plus-square"></span> {{_('New app')}}</a>
             {% elif c.action == 'detail' %}
               
             {% else %}

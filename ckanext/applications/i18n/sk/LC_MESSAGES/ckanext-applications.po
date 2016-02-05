@@ -623,3 +623,13 @@ msgstr "Žiadne tagy"
 #: ckanext/applications/templates/related/snippets/new_app.html:92
 msgid "Other topic"
 msgstr "Iné"
+
+#: ckanext/applications/detail.py:336 ckanext/applications/detail.py:516
+msgid "At least 1 tag required. (min. lenght 3 chars.)"
+msgstr "Zadajte prosím minimálne 1 tag."
+
+#: ckanext/applications/templates/related/update.html:34
+#: ckanext/applications/templates/related/snippets/new_app.html:57
+#: ckanext/applications/templates/related/snippets/new_app.html:86
+msgid "Topic"
+msgstr "Tematický okruh"
