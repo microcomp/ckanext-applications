@@ -339,7 +339,7 @@ msgstr "Ešte neboli pridané žiadne aplikácie."
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:48
 #: ckanext/apps_and_ideas/templates/related/dashboard.html:333
 msgid "What are applications?"
-msgstr "Co sú to aplikácie?"
+msgstr "Čo sú to aplikácie?"
 
 
 #: ckanext/apps_and_ideas/templates/package/dashboard.html:58
