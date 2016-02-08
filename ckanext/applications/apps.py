@@ -587,7 +587,7 @@ def list_apps(context, data_dict=None):
         public_list[i]['topics'] = tf.get_apps_topics(context, {'app_id':public_list[i]['id']})
         if tag != '':
             if tag not in public_list[i]['tags']:
-                tr.append(i)
+                tr.append(i.strip())
         if topic != '':
             if topic not in public_list[i]['topics']:
                 tr.append(i)

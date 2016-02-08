@@ -178,7 +178,7 @@
         <div>
             <ul style="list-style:none;">
                 {% for i in topics%}
-                  <li><a href="/apps?topic={{i['display_name']}}">{{i['display_name']}}</a></li>
+                  <li><a href="{{h.url_for(controller='ckanext.applications.apps:AppsController', action='dashboard', tag=i['display_name'] )}}">{{i['display_name']}}</a></li>
                 {%endfor%}
                 {%if topics|length == 0%}
                   <p> {{_('No topics to show')}}
@@ -192,7 +192,7 @@
         <div>
             <ul style="list-style:none;">
                 {% for i in tags%}
-                  <li><a href="/apps?tag={{i}}">{{i}}</a></li>
+                  <li><a href="{{h.url_for(controller='ckanext.applications.apps:AppsController', action='dashboard', tag=i )}}">{{i}}</a></li>
                 {%endfor%}
                 {%if tags|length == 0%}
                   <p> {{_('No tags to show')}}
