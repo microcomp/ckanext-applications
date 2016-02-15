@@ -1,0 +1,33 @@
+{% ckan_extends %}
+
+
+{% block primary_content_inner %}
+
+  {{ super() }}
+  {% if h.check_access('app_create') %}
+	<a href="/apps/new?dataset={{c.pkg.name}}" class="btn btn-primary" id="add_new_button" style="float:right;"><i class="fa fa-plus-square"></i> {{_('Add new application')}}</a>
+  {% endif %}
+
+
+
+<h2>{{_('Related items')}}</h2>
+  {% block related_list %}
+    {% if c.pkg.related %}
+
+      {% snippet "related/snippets/related_list.html", related_items=c.pkg.related, pkg_id=c.pkg.name %}
+    {% else %}
+      <p class="empty">{{ _('No related items') }}
+      
+      </p>
+    {% endif %}
+  {% endblock %}
+  {% block form_actions %}
+  {% endblock %}
+    {% block extras scoped %}
+       
+      {% endblock %}
+
+{% endblock %}
+{% block secondary_content %}
+  {{ super() }}
+{% endblock %}

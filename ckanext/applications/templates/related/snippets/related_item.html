@@ -1,0 +1,36 @@
+
+{% set placeholder_map = {
+'application': h.url_for_static('/base/images/placeholder-application.png')
+} %}
+{% set tooltip = _('Go to {related_item_type}').format(related_item_type=related.type|replace('_', ' ')|title) %}
+
+{% if h.is_priv(related.id) == 'public' or h.can_v(related.id) %}
+<li class="related-item media-item" data-module="related-item" style="height: 280px;">
+  <div><img src="{{ related.image_url or placeholder_map[related.type] or h.url_for_static('/base/images/placeholder-image.png') }}" alt="{{ related.title }}" class="media-image"></div>
+  <h3 class="media-heading">{{ related.title }} {%if h.is_priv(related.id) != 'public' %} <i class='label red'>{{_('Private')}}</i>{%endif%} 
+{%if h.reports_num(related.id) > 3 %} <span class="label" style="background-color: red">{{_('This app was reported by users')}}</span>{%endif%}
+
+  </h3>
+  {% if related.description %}
+    <div class="prose">{{ h.render_markdown(related.description) }}</div>
+  {% endif %}
+  <a class="media-view" href="/apps/detail?id={{related.id}}{#{ related.url }#}" title="{{ tooltip }}">
+    <span>{{ tooltip }}</span>
+    <span class="banner">
+      {%- if related.type == 'application' -%}
+        app 
+      {%- elif related.type == 'visualization' -%}
+        viz
+      {%- else -%}
+        {{ related.type | replace('news_', '') }}
+      {%- endif -%}
+    </span>
+  </a>
+  {% if pkg_id %}
+    {{ h.nav_link(_('Edit'), controller='ckanext.applications.detail:DetailController', action='edit_app',  id=related.id, class_='btn btn-primary btn-small media-edit') }}
+</li>
+{%endif%}
+{% if position is divisibleby 3 %}
+  <li class="clearfix js-hide"></li>
+{% endif %}
+{%endif%}

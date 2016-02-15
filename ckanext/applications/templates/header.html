@@ -1,0 +1,42 @@
+{% ckan_extends %}
+
+{% block content_primary_nav %}
+ 
+{% endblock %}
+
+{% block header_site_navigation_tabs %}
+{{super()}}
+<script type="text/javascript">
+function change_style(){
+	var style = document.getElementById("contrast");
+	var cookies = document.cookie;
+	var contrast = "";
+	var cc = cookies.split('; ');
+	for(var i=0; i < cc.length; i++){
+		if(cc[i].split('=')[0] == 'contrast'){
+			contrast = cc[i].split('=')[1];
+		}
+	}
+	if(contrast === "high"){ 
+		style.href = "/screen.css"; 
+		document.cookie = "contrast=normal;" 
+	}else { 
+		style.href = "/high_contrast.css";
+		document.cookie = "contrast=high";
+	}
+
+}
+</script>
+  <li>
+   <a onclick="change_style()" href="#">
+      <i class="fa fa-edit"></i>{{_("Change contrast")}}
+    </a>
+  </li>
+
+<!--
+
+-->            
+ 	
+{% endblock %}
+{% block header_site_search %}
+{%endblock%}

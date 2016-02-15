@@ -1,0 +1,205 @@
+{% ckan_extends %}
+{% import 'macros/form.html' as form %}
+{% set page = c.page %}
+{%if h.extra_v() != {} %}
+  {% set errors = h.extra_v()['errors'] %}
+  {% set data = h.extra_v()['data'] %}
+{%endif%}
+
+{% block subtitle %}
+    {{ _('Apps') }}
+{% endblock %}
+
+{% block breadcrumb_content %}
+
+  {% if c.controller == 'ckanext.applications.apps:AppsController' %}
+    <li class="active"><a href='{{h.url_for(controller="ckanext.applications.apps:AppsController", action="dashboard")}}' alt="{{_('Applications')}}">{{ _('Applications') }}</a>  </li>
+  {% elif c.action == 'detail' %}
+    <li><a href='{{h.url_for(controller="ckanext.applications.apps:AppsController", action="dashboard")}}' alt="{{_('Applications')}}">{{ _('Applications') }}</a></li>
+    <li class="active"><a href='{{h.url_for(controller="ckanext.applications.detail:DetailController", action="detail", id=c.id)}}' alt="{{_('Applications')}}" >{{ c.title }}</a></li>
+  {% elif c.action == 'new_app' %}
+     <li><a href='{{h.url_for(controller="ckanext.applications.apps:AppsController", action="dashboard")}}' alt="{{_('Applications')}}">{{ _('Applications') }}</a></li>
+      <li class="active">{{_('New app')}}</li>
+  {% elif c.action == 'edit_app' %}
+        <li><a href='{{h.url_for(controller="ckanext.applications.apps:AppsController", action="dashboard")}}' alt="{{_('Applications')}}">{{ _('Applications') }}</a></li>
+        <li class="active"><a href='{{h.url_for(controller="ckanext.applications.detail:DetailController", action="detail", id=c.id)}}' alt="{{_('Applications')}}" >{{ data['title'] }}</a></li>
+  {% else %}
+    <li>{{ _('Apps') }}</li>
+  {% endif %}
+{% endblock %}
+
+{% block primary_content %}
+{% if c.action == "new_app" %}
+    {%snippet 'related/snippets/new_app.html', app_names=c.app_names, form = form, dataset = c.dataset, error_summary=error_summary, count=count, errors=errors, data=data%}
+{% else %}
+  <article class="module">
+    <div class="module-content">
+      <h1 class="page-heading">
+        {% block page_heading %}
+
+            {% if c.action == 'dashboard' and h.check_access('app_create') %}
+              <span class="apps_title">{{ _('Applications') }} </span><a class="btn btn-primary" href="/apps/new" style="color:white;float:right;"><span class="fa fa-plus-square"></span> {{_('New app')}}</a>
+            {% elif c.action == 'detail' %}
+              
+            {% else %}
+              {{ _('Apps') }}
+            {% endif %}
+        {% endblock %}
+      </h1>
+  {% if c.controller != 'ckanext.applications.detail:DetailController' %}
+
+
+{%if c.action != 'detail' %}
+    <form class="section site-search simple-input" action="/apps/search" method="get" >
+            <!--div class="field"!-->
+              {% if request.url.split("?")[1] %}
+                {% for i in request.url.split("?")[1].split("&") %}
+                {% if i.split('=')[0] != 'app_name' %}
+                   <input id="{{i.split('=')[0]}}" type="text" name="{{i.split('=')[0]}}" value="{{i.split('=')[1]}}" style="display: none;"/> {%endif%}
+                {%endfor%}
+              {%endif%}
+              <label for="field-sitewide-search">{{_('Search Applications')}}</label>
+              <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}{{_('Search')}}{%else%}{{c.name}}{%endif%}"  style="display:inline; width: 70%; height: 3.25em; margin-bottom: 0em;"/>
+              
+              <button class="btn-search" type="submit" style="display:inline;">{{_('Search')}}</button>        
+    </form>
+    {% endif %}
+  {% endif %}
+
+  {% block related_items %}
+  {%if c.action != 'detail' %}
+        {% if item_count %}
+          {% trans first=page.first_item, last=page.last_item, item_count=item_count %}
+              <p>Showing items <strong>{{ first }} - {{ last }}</strong> of <strong>{{ item_count }}</strong> related items found</p>
+            {% endtrans %}
+        {% elif c.filters.type %}
+          {% trans item_count=item_count %}
+            <p><strong>{{ item_count }}</strong> related items found</p>
+          {% endtrans %}
+        {% else %}
+          <p class="empty">{{ _('There have been no apps submitted yet.') }}
+        {% endif %}
+      {%endif%}
+  {% endblock %}
+
+  {% block related_list %}
+  {%if c.action == 'detail' %}
+      {%snippet "related/snippets/app_detail.html" , title=c.title, id=c.id, description=c.description, created=c.created, user=c.userobj.id, owner=c.owner, creator =c.creator, urlx=c.url, datasets=c.datasets, private=c.private , userobj=c.userobj, tags=c.tags, topics=c.topics %}
+      {%snippet "related/snippets/comments2.html", data = [c.id, c.user, c.id, c.userobj.id] %}
+    {% else %}
+      {{super()}}
+    {%endif%}
+  {% endblock %}
+          </div>
+
+  {% block page_pagination %}
+            {%if c.action != 'detail' %}
+           {#% if c.controller != 'ckanext.applications.detail:DetailController' %#}
+              {{ page.pager() }}
+            {%endif%}
+  {% endblock %}
+        </article>
+    {%endif%}
+
+{% endblock %}
+
+{% block secondary_content %}
+{%if c.action!= 'new_app' %}
+    {#%if c.controller == 'ckanext.applications.detail:DetailController'%#}
+    {%if c.action == 'detail' %}
+        {%if c.img != ''%}
+          <aside class="secondary span3">
+            <section class="module module-narrow module-shallow">
+              <h2 class="module-heading"> {{_('Image')}}: </h2>
+                <div class="module-content">
+                  <img src="{{c.img}}" alt="app custom image" />
+                </div>
+            </section>
+          </aside>
+          {%endif%}
+    {%elif c.action == 'edit_app' %}
+    {% else %}
+      <section class="module module-narrow module-shallow">
+        <h2 class="module-heading">{{ _('What are applications?') }}</h2>
+        <div class="module-content">
+	 <p>
+          {{_('These are applications built with the datasets as well as ideas for things that could be done with them.')}}
+	</p>
+        </div>
+      </section>
+
+      <section class="module module-narrow module-shallow">
+        <h2 class="module-heading">{{ _('Filter Results') }}</h2>
+        <form action="/apps/search" method="get" class="module-content form-inline form-narrow section site-search simple-input">
+
+          <input type='hidden' name='page' value='1'/>
+         <div class="control-group" >
+    {% if c.controller == 'ckanext.applications.apps:AppsController' %}
+          <div class="control-group" hidden>
+    {%else %}
+    <div class="control-group">
+    {% endif %}
+          </div>
+
+
+            <label for="field-sort">{{ _('Sort by') }}</label>
+            <select id="field-sort" name="sort">
+              <option value="">{{ _('Default') }}</option>
+              {% for option in c.sort_options %}
+                <option value="{{ option.value }}"{% if c.filters.sort == option.value %} selected="selected"{% endif %}>{{ option.text or option.value }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          {% if h.is_admin() %} 
+              
+             <label for="field-private" style="display:inline"> {{ _('Only show private items') }} </label><input type="checkbox" id="field-private" name="private" style="margin-left:0.5em; margin-top: -1em;"
+              {%if c.filters is mapping  %}
+                {% if c.filters.get('private') == 'on' %} checked="checked"{% endif %}>
+              {% endif %}
+          {% endif %}
+
+         {% if request.url.split("?")[1] %}
+            {% for i in request.url.split("?")[1].split("&") %}
+                {% if i.split('=')[0] == 'app_name' %}
+                    <input id="{{i.split('=')[0]}}" type="text" name="{{i.split('=')[0]}}" value="{{i.split('=')[1]}}" style="display: none;"/> 
+                {%endif%}
+            {%endfor%}
+          {%endif%}
+          <div class="form-actions">
+            <button class="btn btn-primary">{{ _('Apply') }}</button>
+            <a class="btn" href="/apps">{{ _('Cancel') }}</a>
+          </div>
+        </form>
+
+      </section>
+       <section class="module module-narrow module-shallow">
+        <h2 class="module-heading">{{ _('Topics') }}</h2>
+        {% set topics = h.all_topics()%}
+        <div>
+            <ul style="list-style:none;">
+                {% for i in topics%}
+                  <li><a href="{{h.url_for(controller='ckanext.applications.apps:AppsController', action='dashboard', tag=i['display_name'] )}}">{{i['display_name']}}</a></li>
+                {%endfor%}
+                {%if topics|length == 0%}
+                  <p> {{_('No topics to show')}}
+                {%endif%}
+            </ul>
+        </div>
+      </section>
+      <section class="module module-narrow module-shallow">
+        <h2 class="module-heading">{{ _('Tags') }}</h2>
+        {% set tags = h.all_tags()%}
+        <div>
+            <ul style="list-style:none;">
+                {% for i in tags%}
+                  <li><a href="{{h.url_for(controller='ckanext.applications.apps:AppsController', action='dashboard', tag=i )}}">{{i}}</a></li>
+                {%endfor%}
+                {%if tags|length == 0%}
+                  <p> {{_('No tags to show')}}
+                {%endif%}
+            </ul>
+        </div>
+      </section>
+     {%endif%}
+    {%endif%}
+{% endblock %}

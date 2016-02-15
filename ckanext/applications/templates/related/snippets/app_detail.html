@@ -1,0 +1,150 @@
+<script>
+$(document).ready(function(){$('[data-toggle="URL_tooltip"]').tooltip(); });
+$(document).ready(function(){$('[data-toggle="AUTHOR_tooltip"]').tooltip();});
+$(document).ready(function(){$('[data-toggle="DATASET_tooltip"]').tooltip();});
+$(document).ready(function(){$('[data-toggle="STATUS_tooltip"]').tooltip();});
+$(document).ready(function(){$('[data-toggle="PERMURL_tooltip"]').tooltip();});
+$(document).ready(function(){$('[data-toggle="DT_tooltip"]').tooltip();});
+$(document).ready(function(){$('[data-toggle="DESC_tooltip"]').tooltip();});
+</script>
+
+  <form class="form-horizontal">
+          <fieldset>
+
+          
+          <legend>{{title}} </legend>
+                  
+          <div class="control-group">
+            <label class="control-label" style="width: 25%">{{_('Go to application')}}<a href="#" data-toggle="AUTHOR_tooltip" title="{{_('URL where the application can be found.')}}"><i class="fa fa-info-circle"></i></a></label>
+            <div class="controls" style="padding-top: 0.25em; font-size: 1.2em; ">
+              &nbsp;<a href="{% if url==''%}#{%else%}{{urlx}}{%endif%}"  target="_blank">{% if urlx==''%}{{_('no data')}}{%else%}{{urlx}}{%endif%}</a>
+              
+             
+            </div>
+
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" style="width: 25%">{{_('Description')}} <a href="#" data-toggle="DESC_tooltip" title="{{_('Detailed description of the application.')}}"><i class="fa fa-info-circle"></i></a></label>
+            <div class="controls" style="padding-top:0.25em; padding-left:1.5em;font-size:1em;">
+              {% if description==''%}<p >{{_('no data')}}</p>{%else%}{{h.render_markdown(description)}}{%endif%}
+            </div>
+          </div> 
+
+
+          <div class="control-group">
+            <label class="control-label" style="width: 25%">{{_('Date of creation')}} <a href="#" data-toggle="DT_tooltip" title="{{_('Date, when the application was added to database.')}}"><i class="fa fa-info-circle"></i></a></label>
+            <div class="controls">
+              <p style="padding-top: 0.25em; padding-left:1.5em;font-size:1em;">{% if created==''%}{{_('no data')}}{%else%}{{created}}{%endif%}</p>
+            </div>
+          </div>
+
+
+          <div class="control-group">
+            <label class="control-label" style="width: 25%">{{_('Author')}} <a href="#" data-toggle="AUTHOR_tooltip" title="{{_('Applications owner user or organisation.')}}"><i class="fa fa-info-circle"></i></a></label>
+            <div class="controls">
+              <p style="padding-top: 0.25em; padding-left:1.5em;font-size:1em;">{% if owner==''%}{{_('no data')}}{%else%}{{owner}}{%endif%}</p>
+              
+            </div>
+          </div>
+
+
+
+
+          <div class="control-group">
+            <label class="control-label" style="width: 25%">{{_('Datasets')}} <a href="#" data-toggle="DATASET_tooltip" title="{{_('Datasets, where the application is mentioned.')}}"><i class="fa fa-info-circle"></i></a></label>
+            <div class="controls" style="padding-top: 0.25em; padding-left:1.5em;font-size:1em;">
+                {% for x in datasets%}  <a href="/dataset/{{x}}" target="_blank"> {{x}}</a>,{% endfor %}
+
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"style="width: 25%"> {{_('Status')}} <a href="#" data-toggle="STATUS_tooltip" title="{{_('Application status. (private/public)')}}"><i class="fa fa-info-circle"></i></a></label>
+            <div class="controls">
+             <p style="padding-top: 0.25em; padding-left:1.5em;font-size:1em;">{%if private=='private'%}{{_('Private')}}{%else%}{{_('Public')}}{%endif%}</p>
+             
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"style="width: 25%"> {{_('Tags')}}</label>
+            <div class="controls">
+             <ul class="tag-list well" style="padding:0px; margin-left: 2em;">
+                {%for i in tags%}
+                  <li>
+                      <a href='/apps?tag={{i}}' class="tag"> {{i}} </a>
+                  </li>
+                {%endfor%}
+              </ul>             
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label"style="width: 25%"> {{_('Topics')}}</label>
+            <div class="controls">
+             <ul class="tag-list well" style="padding:0px; margin-left: 2em;">
+                {%for i in topics%}
+                  <li>
+                      <a href='/apps?topic={{i}}' class="tag"> {{i}} </a>
+                  </li>
+                {%endfor%}
+              </ul>             
+            </div>
+          </div>
+          </fieldset>
+           <script src="/js/jquery.min.js"></script>
+            <script src="/js/bootbox.js"></script>
+            <script src="/js/bootstrap.min.js"></script>
+
+          {%if h.check_access('app_edit', data_dict={'owner_id' : owner}) or user==creator %}
+          <a class='btn btn-primary btn-small media-edit' href="/apps/update?id={{id}}" ><span class="fa fa-pencil" > </span> {{_('Edit')}}</a>
+           
+            <noscript><a class='btn btn-primary btn-small media-delete' href="'/apps/delete?id={{id}}'" data-bb="confirm"><span class="fa fa-trash" > </span> {{_('Delete')}}</a> </noscript>
+
+          <a class='btn btn-primary btn-small media-delete' href="#" data-bb="confirm" onclick="bootbox.confirm('{{_("Are you sure?")}}', function(result){if(result){window.location.href='/apps/delete?id={{id}}';}})"><span class="fa fa-trash" > </span> {{_('Delete')}}</a>
+
+        {%endif%}
+        <script type="text/javascript">
+                            function opendialog(){
+                             bootbox.dialog({
+                                  title: "{{_('Error report')}}",
+                                  message: "<form method='post' action='/apps/report'><fieldset>{{_('Report app issue')}}</fieldset>" +
+                                      "<input type='text' name='app_id' value='{{id}}' style='display:none' >" +
+                                      "<textarea rows='7' name='report_text' maxlength='500' placeholder='{{_('Error description')}}' style='width:100%;'>"+
+                                      "{%if userobj != None %}{%if h.reported_by_user(userobj.id, id)== False%}{% for i in h.report_text(userobj.id, id).split('\n')%}{{i}}"+
+                                      "&#10;{%endfor%}"+
+                                      "{%endif%}{%endif%}</textarea>" +
+                                      "<button type='submit' class='btn btn-primary'> {{_('Send')}}</button>" +
+                                      "</form>"
+                                  }
+                              
+                          );}
+        </script>
+        {%if userobj%}
+
+          <a class='btn btn-primary btn-small media-delete' href="#" data-bb="custom_form" onclick="opendialog()"><span class="fa fa-exclamation" > </span> {{_('Report problem')}}</a>
+        
+        {%endif%}
+      </form>
+      
+     
+          {%if userobj %}
+      <noscript>
+      <form method="get" action="/apps/report">
+        <fieldset>{{_('Report app issue')}}</fieldset>
+        <input type='text' name="app_id" value="{{id}}" style="display:none" >
+        <textarea rows="4" name="report_text" placeholder="{{_('Error description')}}" style="width:100%;"></textarea>
+        <button type="submit" class="mybutton"> {{_('Send')}}</button>
+      </form>{%endif%}
+      </noscript>
+                <div class="control-group">
+            <label class="control-label" style="width: 25%">{{_('Permanent URL')}} <a href="#" data-toggle="PERMURL_tooltip" title="{{_('Permanent URL of this page')}}"> <i class="fa fa-info-circle"></i></a></label>
+            <div class="controls">
+              <p style="padding-top: 0.3em;font-size:1.2em;"><!--textarea style="width:100%; resize: none;" >{{ request.host_url }}/apps/detail?id={{id}}</textarea!-->
+                <input style="width:100%; resize: none; margin-bottom: 0.3em;"  value="{{ request.host_url }}/apps/detail?id={{id}}" onclick="CopyToClipboard('{{ request.host_url }}/apps/detail?id={{id}}')"/></p>
+            </div>
+          </div> 
+          <script language="JavaScript">
+              function CopyToClipboard(text) {
+                  prompt('ctrl+c+enter',text);}
+        </script>
+      <hr>
+

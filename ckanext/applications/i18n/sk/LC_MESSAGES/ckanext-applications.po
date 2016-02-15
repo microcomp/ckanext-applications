@@ -1,0 +1,635 @@
+# Slovak translations for ckanext-apps_and_ideas.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the
+# ckanext-apps_and_ideas
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-apps_and_ideas 0.1\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2015-11-30 17:03+0100\n"
+"PO-Revision-Date: 2015-01-14 15:46+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: sk <LL@li.org>\n"
+"Plural-Forms: 	nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2 \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: ckanext/applications/apps.py:261 ckanext/applications/apps.py:326
+#: ckanext/applications/apps.py:365
+msgid "done"
+msgstr "Hotovo"
+
+#: ckanext/applications/apps.py:425 ckanext/applications/apps.py:940
+#: ckanext/applications/detail.py:97
+msgid "API"
+msgstr "API"
+
+#: ckanext/applications/apps.py:426 ckanext/applications/apps.py:941
+#: ckanext/applications/detail.py:98
+msgid "Application"
+msgstr "Aplikácia"
+
+#: ckanext/applications/apps.py:427 ckanext/applications/apps.py:942
+#: ckanext/applications/detail.py:99
+msgid "Idea"
+msgstr "Nápad"
+
+#: ckanext/applications/apps.py:428 ckanext/applications/apps.py:943
+#: ckanext/applications/detail.py:100
+msgid "News Article"
+msgstr "Nový článok"
+
+#: ckanext/applications/apps.py:429 ckanext/applications/apps.py:944
+#: ckanext/applications/detail.py:101
+msgid "Paper"
+msgstr "Práca"
+
+#: ckanext/applications/apps.py:430 ckanext/applications/apps.py:945
+#: ckanext/applications/detail.py:102
+msgid "Post"
+msgstr "Post"
+
+#: ckanext/applications/apps.py:431 ckanext/applications/apps.py:946
+#: ckanext/applications/detail.py:103
+msgid "Visualization"
+msgstr "Vizualizácia"
+
+#: ckanext/applications/apps.py:433 ckanext/applications/apps.py:704
+#: ckanext/applications/apps.py:778 ckanext/applications/apps.py:1001
+#: ckanext/applications/detail.py:155
+msgid "Most Viewed"
+msgstr "Najviac zobrazované"
+
+#: ckanext/applications/apps.py:434 ckanext/applications/apps.py:705
+#: ckanext/applications/apps.py:779 ckanext/applications/apps.py:1002
+#: ckanext/applications/detail.py:156
+msgid "Least Viewed"
+msgstr "Najmenej zobrazované"
+
+#: ckanext/applications/apps.py:435 ckanext/applications/apps.py:706
+#: ckanext/applications/apps.py:780 ckanext/applications/apps.py:1003
+#: ckanext/applications/detail.py:157
+msgid "Newest"
+msgstr "Najnovšie"
+
+#: ckanext/applications/apps.py:436 ckanext/applications/apps.py:707
+#: ckanext/applications/apps.py:781 ckanext/applications/apps.py:1004
+#: ckanext/applications/detail.py:158
+msgid "Oldest"
+msgstr "Najstaršie"
+
+#: ckanext/applications/apps.py:478
+msgid "no results found"
+msgstr "žiadne výsledky"
+
+#: ckanext/applications/apps.py:511 ckanext/applications/apps.py:532
+#: ckanext/applications/apps.py:551 ckanext/applications/apps.py:607
+#: ckanext/applications/apps.py:796 ckanext/applications/apps.py:823
+#: ckanext/applications/detail.py:63
+msgid "Not authorized to see this page"
+msgstr "Nemáte oprávnenie na zobrazenie tejto stránky."
+
+#: ckanext/applications/apps.py:703 ckanext/applications/apps.py:1000
+#: ckanext/applications/detail.py:154
+msgid "Most viewed"
+msgstr "Najviac zobrazované"
+
+#: ckanext/applications/apps.py:801
+msgid "The requested related item was not found"
+msgstr "Požadovaná súvisiaca aplikácie nebola nájdená."
+
+#: ckanext/applications/apps.py:821 ckanext/applications/apps.py:830
+#: ckanext/applications/detail.py:61 ckanext/applications/detail.py:74
+msgid "Dataset not found"
+msgstr "Dataset nebol nájdený."
+
+#: ckanext/applications/apps.py:832 ckanext/applications/detail.py:76
+#, python-format
+msgid "Unauthorized to read package %s"
+msgstr "Nemáte povolenie čítať dataset %s"
+
+#: ckanext/applications/apps.py:856 ckanext/applications/apps.py:932
+msgid "Related item not found"
+msgstr "Súvisiaca aplikácia nebola nájdená."
+
+#: ckanext/applications/apps.py:866
+msgid "Not authorized"
+msgstr "Nemáte povolenie"
+
+#: ckanext/applications/apps.py:871
+msgid "Package not found"
+msgstr "Dataset nebol nájdený"
+
+#: ckanext/applications/apps.py:891
+msgid "Related item was successfully created"
+msgstr "Súvisiaca aplikácia bola úspešne vytvorená."
+
+#: ckanext/applications/apps.py:893
+msgid "Related item was successfully updated"
+msgstr "Súvisiaca aplikácia bola úspešne aktualizovaná."
+
+#: ckanext/applications/apps.py:898
+msgid "Integrity Error"
+msgstr "Integračná chyba"
+
+#: ckanext/applications/apps.py:924
+msgid "Related item has been deleted."
+msgstr "Súvisiaca aplikácia bola vymazaná."
+
+#: ckanext/applications/apps.py:930
+#, python-format
+msgid "Unauthorized to delete related item %s"
+msgstr "Nemáte povolenie odtrániť súvisiacu aplikáciu %s"
+
+#: ckanext/applications/detail.py:161 ckanext/applications/detail.py:324
+#: ckanext/applications/detail.py:373 ckanext/applications/detail.py:446
+msgid "Application not found"
+msgstr "Aplikácia nebola nájdená"
+
+#: ckanext/applications/detail.py:273 ckanext/applications/detail.py:287
+#: ckanext/applications/detail.py:404
+msgid "Invalid dataset(s)"
+msgstr "Neplatný dataset"
+
+#: ckanext/applications/detail.py:279 ckanext/applications/detail.py:396
+msgid "Title too short"
+msgstr "Názov príliš krátky"
+
+#: ckanext/applications/detail.py:281 ckanext/applications/detail.py:400
+msgid "URL incorrect"
+msgstr "Nesprávna URL"
+
+#: ckanext/applications/detail.py:398
+msgid "Invalid owner"
+msgstr ""
+
+#: ckanext/applications/templates/header.html:17
+msgid "Change contrast"
+msgstr "Zmeniť kontrast"
+
+#: ckanext/applications/templates/package/dashboard.html:6
+#: ckanext/applications/templates/package/dashboard.html:9
+#: ckanext/applications/templates/related/dashboard.html:10
+#: ckanext/applications/templates/related/dashboard.html:19
+#: ckanext/applications/templates/related/dashboard.html:37
+msgid "Apps"
+msgstr "Aplikácie"
+
+#: ckanext/applications/templates/package/dashboard.html:16
+msgid "Apps & Ideas"
+msgstr "Aplikácie & Nápady"
+
+#: ckanext/applications/templates/package/dashboard.html:22
+#, python-format
+msgid ""
+"\n"
+"            <p>Showing items <strong>%(first)s - %(last)s</strong> of "
+"<strong>%(item_count)s</strong> related items found</p>\n"
+"          "
+msgstr ""
+"\n"
+"              <p>Zobrazené položky <strong>%(first)s - %(last)s</strong> "
+"z\n"
+"<strong>%(item_count)s</strong>  súvisiace položky nájdené.</p>"
+"            "
+
+#: ckanext/applications/templates/package/dashboard.html:29
+#: ckanext/applications/templates/related/dashboard.html:74
+#, python-format
+msgid ""
+"\n"
+"            <p><strong>%(item_count)s</strong> related items found</p>\n"
+"          "
+msgstr ""
+"\n"
+"            <p><strong>%(item_count)</strong> súvisiace položky "
+"nájdené.</p>\n"
+"          "
+
+#: ckanext/applications/templates/package/dashboard.html:33
+#: ckanext/applications/templates/related/dashboard.html:78
+msgid "There have been no apps submitted yet."
+msgstr "Ešte neboli pridané žiadne aplikácie."
+
+#: ckanext/applications/templates/package/dashboard.html:52
+#: ckanext/applications/templates/related/dashboard.html:123
+msgid "What are applications?"
+msgstr "Čo sú to aplikácie?"
+
+#: ckanext/applications/templates/package/dashboard.html:54
+msgid ""
+"\n"
+"        These are applications built with the datasets as well as ideas "
+"for\n"
+"        things that could be done with them.\n"
+"      "
+msgstr ""
+"\n"
+"        Toto sú aplikácie zostavené datasetmi ako aj nápadmi pre ich iné "
+"využitie.      "
+
+#: ckanext/applications/templates/package/dashboard.html:62
+#: ckanext/applications/templates/related/dashboard.html:135
+msgid "Filter Results"
+msgstr "Filtrovať výsledky"
+
+#: ckanext/applications/templates/package/dashboard.html:67
+msgid "Filter by type"
+msgstr "Filtrovať podľa typu"
+
+#: ckanext/applications/templates/package/dashboard.html:69
+msgid "All"
+msgstr "Všetky"
+
+#: ckanext/applications/templates/package/dashboard.html:77
+#: ckanext/applications/templates/related/dashboard.html:148
+msgid "Sort by"
+msgstr "Zoradiť podľa"
+
+#: ckanext/applications/templates/package/dashboard.html:79
+#: ckanext/applications/templates/related/dashboard.html:150
+msgid "Default"
+msgstr "Štandard"
+
+#: ckanext/applications/templates/package/dashboard.html:89
+msgid "Only show featured items"
+msgstr "Ukázať iba"
+
+#: ckanext/applications/templates/package/dashboard.html:94
+#: ckanext/applications/templates/related/dashboard.html:172
+msgid "Apply"
+msgstr "Použiť"
+
+#: ckanext/applications/templates/package/read.html:8
+msgid "Add new application"
+msgstr "Pridať novú aplikáciu"
+
+#: ckanext/applications/templates/package/read.html:13
+msgid "Related items"
+msgstr "Súvisiace aplikácie"
+
+#: ckanext/applications/templates/package/read.html:19
+#: ckanext/applications/templates/package/related_list.html:15
+msgid "No related items"
+msgstr "Žiadne súvisiace aplikácie"
+
+#: ckanext/applications/templates/package/read_base.html:3
+msgid "Dataset"
+msgstr "Dataset"
+
+#: ckanext/applications/templates/package/read_base.html:5
+msgid "Activity Stream"
+msgstr "Prehľad aktivít"
+
+#: ckanext/applications/templates/package/related_list.html:5
+msgid "Related"
+msgstr "Súvisiace"
+
+#: ckanext/applications/templates/package/related_list.html:8
+msgid "Related Media for {dataset}"
+msgstr "Súvisiace média s {dataset}"
+
+#: ckanext/applications/templates/package/related_list.html:20
+#: ckanext/applications/templates/related/snippets/related_list.html:29
+msgid "Add Related Application"
+msgstr "Pridať súvisiacu aplikáciu"
+
+#: ckanext/applications/templates/related/dashboard.html:15
+#: ckanext/applications/templates/related/dashboard.html:17
+#: ckanext/applications/templates/related/dashboard.html:33
+msgid "Applications"
+msgstr "Aplikácie"
+
+#: ckanext/applications/templates/related/dashboard.html:33
+#: ckanext/applications/templates/related/snippets/new_app.html:9
+msgid "New app"
+msgstr "Nová aplikácia"
+
+#: ckanext/applications/templates/related/dashboard.html:53
+msgid "Search Applications"
+msgstr "Vyhľadať aplikácie"
+
+#: ckanext/applications/templates/related/dashboard.html:54
+#: ckanext/applications/templates/related/dashboard.html:56
+msgid "Search"
+msgstr "Hľadať"
+
+#: ckanext/applications/templates/related/dashboard.html:68
+#, python-format
+msgid ""
+"\n"
+"              <p>Showing items <strong>%(first)s - %(last)s</strong> of "
+"<strong>%(item_count)s</strong> related items found</p>\n"
+"            "
+msgstr ""
+"\n"
+"              <p>Zobrazené položky <strong>%(first)s - %(last)s</strong> "
+"z\n"
+"<strong>%(item_count)s</strong>  súvisiace položky nájdené.</p>"
+"            "
+
+#: ckanext/applications/templates/related/dashboard.html:113
+msgid "Image"
+msgstr "Obrázok"
+
+#: ckanext/applications/templates/related/dashboard.html:128
+msgid ""
+"These are applications built with the datasets as well as ideas for "
+"things that could be done with them."
+msgstr "Toto sú aplikácie zostavené datasetmi ako aj nápadmi pre ich iné využitie."
+
+#: ckanext/applications/templates/related/dashboard.html:161
+msgid "Only show private items"
+msgstr "Ukázať iba súkromné záznamy"
+
+#: ckanext/applications/templates/related/dashboard.html:173
+#: ckanext/applications/templates/related/update.html:56
+#: ckanext/applications/templates/related/snippets/related_form.html:20
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#: ckanext/applications/templates/related/new.html:2
+msgid "Create a related item"
+msgstr "Vytvortiť súvisiaci záznam"
+
+#: ckanext/applications/templates/related/new.html:4
+msgid "Create Related"
+msgstr "Vytvoriť súvisiace"
+
+#: ckanext/applications/templates/related/new.html:7
+msgid "Create Related Item"
+msgstr "Vytvoriť súvisiacu položku"
+
+#: ckanext/applications/templates/related/update.html:7
+msgid "Edit application"
+msgstr "Editovať aplikáciu"
+
+#: ckanext/applications/templates/related/update.html:22
+#: ckanext/applications/templates/related/snippets/new_app.html:46
+#: ckanext/applications/templates/related/snippets/new_app.html:54
+msgid "Title"
+msgstr "Názov"
+
+#: ckanext/applications/templates/related/update.html:22
+#: ckanext/applications/templates/related/snippets/new_app.html:46
+#: ckanext/applications/templates/related/snippets/new_app.html:54
+msgid "My Related Item"
+msgstr "Moje súvisiace aplikácie"
+
+#: ckanext/applications/templates/related/update.html:23
+#: ckanext/applications/templates/related/snippets/new_app.html:47
+#: ckanext/applications/templates/related/snippets/new_app.html:55
+msgid "URL"
+msgstr "URL"
+
+#: ckanext/applications/templates/related/update.html:23
+#: ckanext/applications/templates/related/snippets/new_app.html:47
+#: ckanext/applications/templates/related/snippets/new_app.html:55
+msgid "http://example.com/"
+msgstr "http://example.com/"
+
+#: ckanext/applications/templates/related/update.html:24
+#: ckanext/applications/templates/related/snippets/new_app.html:48
+#: ckanext/applications/templates/related/snippets/new_app.html:56
+msgid "Owner"
+msgstr "Vlastník"
+
+#: ckanext/applications/templates/related/update.html:24
+#: ckanext/applications/templates/related/snippets/new_app.html:48
+#: ckanext/applications/templates/related/snippets/new_app.html:56
+msgid "owner"
+msgstr "vlastník"
+
+#: ckanext/applications/templates/related/update.html:25
+#: ckanext/applications/templates/related/snippets/new_app.html:49
+#: ckanext/applications/templates/related/snippets/new_app.html:57
+msgid "Image URL"
+msgstr "Obrázok (URL)"
+
+#: ckanext/applications/templates/related/update.html:25
+#: ckanext/applications/templates/related/snippets/new_app.html:49
+#: ckanext/applications/templates/related/snippets/new_app.html:57
+msgid "http://example.com/image.png"
+msgstr "http://example.com/image.png"
+
+#: ckanext/applications/templates/related/update.html:27
+#: ckanext/applications/templates/related/snippets/app_detail.html:28
+#: ckanext/applications/templates/related/snippets/new_app.html:50
+#: ckanext/applications/templates/related/snippets/new_app.html:58
+msgid "Description"
+msgstr "Popis"
+
+#: ckanext/applications/templates/related/update.html:27
+#: ckanext/applications/templates/related/snippets/new_app.html:50
+#: ckanext/applications/templates/related/snippets/new_app.html:58
+msgid "A little information about the item..."
+msgstr "Výstižný popis aplikácie..."
+
+#: ckanext/applications/templates/related/update.html:29
+#: ckanext/applications/templates/related/snippets/app_detail.html:55
+#: ckanext/applications/templates/related/snippets/new_app.html:52
+#: ckanext/applications/templates/related/snippets/new_app.html:60
+#: ckanext/applications/templates/related/snippets/related_form.html:12
+msgid "Datasets"
+msgstr "Datasety"
+
+#: ckanext/applications/templates/related/update.html:29
+#: ckanext/applications/templates/related/snippets/new_app.html:52
+#: ckanext/applications/templates/related/snippets/new_app.html:60
+#: ckanext/applications/templates/related/snippets/related_form.html:12
+msgid "eg. default"
+msgstr "napr. dataset"
+
+#: ckanext/applications/templates/related/update.html:33
+#: ckanext/applications/templates/related/update.html:45
+#: ckanext/applications/templates/related/snippets/app_detail.html:62
+msgid "Status"
+msgstr "Status"
+
+#: ckanext/applications/templates/related/update.html:36
+#: ckanext/applications/templates/related/update.html:39
+#: ckanext/applications/templates/related/update.html:46
+#: ckanext/applications/templates/related/snippets/app_detail.html:64
+#: ckanext/applications/templates/related/snippets/related_item.html:10
+msgid "Private"
+msgstr "Súkromný"
+
+#: ckanext/applications/templates/related/update.html:37
+#: ckanext/applications/templates/related/update.html:40
+#: ckanext/applications/templates/related/update.html:46
+#: ckanext/applications/templates/related/snippets/app_detail.html:64
+msgid "Public"
+msgstr "Verejný"
+
+#: ckanext/applications/templates/related/update.html:57
+#: ckanext/applications/templates/related/snippets/new_app.html:66
+#: ckanext/applications/templates/related/snippets/related_form.html:21
+msgid "Save"
+msgstr "Uložiť"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:18
+msgid "Go to application"
+msgstr "Prejsť na aplikáciu "
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:18
+msgid "URL where the application can be found."
+msgstr "URL adresa aplikácie."
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:20
+#: ckanext/applications/templates/related/snippets/app_detail.html:30
+#: ckanext/applications/templates/related/snippets/app_detail.html:38
+#: ckanext/applications/templates/related/snippets/app_detail.html:46
+msgid "no data"
+msgstr "žiadne dáta"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:28
+msgid "Detailed description of the application."
+msgstr "Podrobný popis aplikácie."
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:36
+msgid "Date of creation"
+msgstr "Dátum vytvorenia"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:36
+msgid "Date, when the application was added to database."
+msgstr "Dátum, kedy bola pridaná aplikácia do databázy."
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:44
+msgid "Author"
+msgstr "Autor"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:44
+msgid "Applications owner user or organisation."
+msgstr "Vlastník aplikácie. (organizácia alebo užívateľ)"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:55
+msgid "Datasets, where the application is mentioned."
+msgstr "Zoznam datasetov."
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:62
+msgid "Application status. (private/public)"
+msgstr "Stav aplikácie. (Verejný/Súkromný)"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:74
+#: ckanext/applications/templates/related/snippets/related_item.html:30
+msgid "Edit"
+msgstr "Upraviť"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:76
+#: ckanext/applications/templates/related/snippets/app_detail.html:78
+msgid "Delete"
+msgstr "Vymazať"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:78
+msgid "Are you sure?"
+msgstr "Ste si istý?"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:84
+msgid "Error report"
+msgstr "Hlásenie chyby"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:85
+#: ckanext/applications/templates/related/snippets/app_detail.html:108
+msgid "Report app issue"
+msgstr "Nahlásiť problém s aplikáciou"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:87
+#: ckanext/applications/templates/related/snippets/app_detail.html:110
+msgid "Error description"
+msgstr "Popis chyby"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:91
+#: ckanext/applications/templates/related/snippets/app_detail.html:111
+msgid "Send"
+msgstr "Poslať"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:99
+msgid "Report problem"
+msgstr "Nahlásiť problém"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:115
+msgid "Permanent URL"
+msgstr "Permanentná URL"
+
+#: ckanext/applications/templates/related/snippets/app_detail.html:115
+msgid "Permanent URL of this page"
+msgstr "Permanentná URL aplikácie"
+
+#: ckanext/applications/templates/related/snippets/new_app.html:14
+msgid "The form contains invalid entries:"
+msgstr "Formulár obsahuje nevalídne vstupy:"
+
+#: ckanext/applications/templates/related/snippets/related_item.html:5
+msgid "Go to {related_item_type}"
+msgstr "Choď na {related_item_type}"
+
+#: ckanext/applications/templates/related/snippets/related_item.html:11
+msgid "This app was reported by users"
+msgstr "Táto aplikácia bola nahlásená užívateľmi"
+
+#: ckanext/applications/templates/reports/admin.html:3
+#: ckanext/applications/templates/reports/admin.html:6
+msgid "Reports"
+msgstr "Hlásenia"
+
+#: ckanext/applications/templates/reports/admin.html:23
+msgid "Report(s) found"
+msgstr "Nájdenych hlásení"
+
+#: ckanext/applications/templates/reports/admin.html:24
+msgid "Showing"
+msgstr "Zobrazujúce"
+
+#: ckanext/applications/templates/reports/admin.html:24
+msgid "of"
+msgstr "Z/Od"
+
+#: ckanext/applications/templates/reports/admin.html:24
+msgid "report(s) found"
+msgstr "nájdených hlásení"
+
+#: ckanext/applications/templates/reports/admin.html:26
+msgid "Delete all reports"
+msgstr "Vymazať všetky hlásenia"
+
+#: ckanext/applications/templates/reports/admin.html:30
+msgid "reported by "
+msgstr "nahlásené od"
+
+#: ckanext/applications/templates/reports/admin.html:32
+msgid "Remove report"
+msgstr "Odstrániť hlásenie"
+
+#: ckanext/applications/templates/related/dashboard.html:179
+#: ckanext/applications/templates/related/snippets/app_detail.html:81
+msgid "Topics"
+msgstr "Tematický okruh"
+
+#: ckanext/applications/templates/related/dashboard.html:187
+msgid "No topics to show"
+msgstr "Žiadne data"
+
+#: ckanext/applications/templates/related/dashboard.html:201
+msgid "No tags to show"
+msgstr "Žiadne tagy"
+
+#: ckanext/applications/templates/related/update.html:43
+#: ckanext/applications/templates/related/snippets/new_app.html:66
+#: ckanext/applications/templates/related/snippets/new_app.html:92
+msgid "Other topic"
+msgstr "Iné"
+
+#: ckanext/applications/detail.py:336 ckanext/applications/detail.py:516
+msgid "At least 1 tag required. (min. lenght 3 chars.)"
+msgstr "Zadajte prosím minimálne 1 tag."
+
+#: ckanext/applications/templates/related/update.html:34
+#: ckanext/applications/templates/related/snippets/new_app.html:57
+#: ckanext/applications/templates/related/snippets/new_app.html:86
+msgid "Topic"
+msgstr "Tematický okruh"
