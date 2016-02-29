@@ -546,7 +546,7 @@ def list_apps(context, data_dict=None):
             except logic.NotAuthorized:
                 logging.warning("access denied")
         
-        
+    
     c.page = h.Page(
         collection=public_list,
         page=page,
@@ -602,7 +602,7 @@ def list_apps(context, data_dict=None):
     if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
         data = {}
 
-        data['result'] = public_list[:]
+        data['result'] = public_list[(page-1)*9:page*9]
         
         c.list = data
         return c.list
@@ -625,9 +625,10 @@ def list_apps(context, data_dict=None):
         for j in g:
             if (search_keyword.lower() in j['title'].lower()) or (search_keyword.lower() in j['description'].lower()):
                 result.append(j)
-        c.list = result[:]
+        c.list = result[(page-1)*9:page*9]
     if len(g) == 0:
         c.list =  [_("no results found")]
+
     return c.list
 
 log = logging.getLogger('ckanext_applications')
