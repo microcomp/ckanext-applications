@@ -602,7 +602,7 @@ def list_apps(context, data_dict=None):
     if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
         data = {}
 
-        data['result'] = public_list[(page-1)*9:page*9]
+        data = public_list[(page-1)*9:page*9]
         
         c.list = data
         return c.list
