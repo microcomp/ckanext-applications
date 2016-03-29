@@ -23,7 +23,7 @@ from pylons import config, request, response
 import topic_functions as tf
 import related_extra
 import json
-
+_get_or_bust = logic.get_or_bust
 
 import stats as stats_lib
 
@@ -184,7 +184,7 @@ def add_datasets(datasets,  id):
 @toolkit.side_effect_free
 def mod_app_api(context, data_dict=None):
     ''' Mod_app_api- application modification '''
-    
+    dt_id = _get_or_bust(data_dict,'id')
     old_data = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
     logic.get_action('related_show')(context,data_dict)
     #all related items deleted...
@@ -216,6 +216,8 @@ def mod_app_api(context, data_dict=None):
     try:
         owner = data_dict['owner'] 
     except KeyError:
+        if c.userobj == None:
+            raise logic.NotAuthorized
         owner  = c.userobj.fullname
     try:
         tags = data_dict['tags'] 
@@ -602,7 +604,7 @@ def list_apps(context, data_dict=None):
     if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
         data = {}
 
-        data['result'] = public_list[(page-1)*9:page*9]
+        data = public_list[(page-1)*9:page*9]
         
         c.list = data
         return c.list
