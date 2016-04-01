@@ -48,8 +48,10 @@ def ckan_stats(context, data_dict):
     groups = stats.largest_groups()
 
     for i in groups:
-        name = model.Session.query(model.Group).filter(model.Group.id == i[0].id).first().title
-        result['largest_groups'].append({'group_name':name, 'users_in_group':i[1]})
+        group = model.Session.query(model.Group).filter(model.Group.id == i[0].id).first()
+        name = group.title
+        group_id = group.id
+        result['largest_groups'].append({'group_name':name, 'package_count':i[1], "org_id": group_id})
 
     result['top_package_owners'] = []
     owners = stats.top_package_owners()
@@ -91,17 +93,25 @@ def ckan_stats(context, data_dict):
     else:
         year-=1
         month = 12
-    day = today.day
+
+    if today.day > 28:
+        day = 28
+    else:
+        day = today.day
+
     if day > 7:
         day-= 7
     else:
         month2 -=1
         day-=7
-        day = 30+day
+        day = 28+day
+
+
     l7d = ""+str(today.year)+"-"+str(month2)+"-"+str(day)+" "+str(today.hour)+":"+str(today.minute)+":"+str(today.second)
-    l30d = ""+str(year)+"-"+str(month)+"-"+str(today.day)+" "+str(today.hour)+":"+str(today.minute)+":"+str(today.second)
-    l30d =  datetime.datetime.strptime(l30d, '%Y-%m-%d %H:%M:%S')
     l7d =  datetime.datetime.strptime(l7d, '%Y-%m-%d %H:%M:%S')
+
+    l30d = ""+str(year)+"-"+str(month)+"-"+str(day)+" "+str(today.hour)+":"+str(today.minute)+":"+str(today.second)
+    l30d =  datetime.datetime.strptime(l30d, '%Y-%m-%d %H:%M:%S')
 
     new_users_30d = 0
     new_users_7d = 0
@@ -432,13 +442,6 @@ def new_app_api(context, data_dict=None):
     topics_data = tf.get_all_topics(context, data_dict)
     logging.warning("topics_data2")
     logging.warning(topics_data) 
-    #for i in data.keys():
-    #    for j in topics_data:
-    #        if j['display_name'] == i:
-    #            logging.warning("j['display_name'] == i"+i+"=="+j['display_name'])
-    #            dat[i] = ''
-    #            tf.add_new_topic_rel(context, {'topic_id':j['id'], 'app_id':data_to_commit.id})
-    #########################################################################################
     
     owner_id = c.userobj.id
     data_to_commit.title = title
