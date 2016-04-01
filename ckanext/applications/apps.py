@@ -50,7 +50,7 @@ def ckan_stats(context, data_dict):
     for i in groups:
         group = model.Session.query(model.Group).filter(model.Group.id == i[0].id).first()
         name = group.title
-        group_id = group.id
+        group_id = group.name
         result['largest_groups'].append({'group_name':name, 'package_count':i[1], "org_id": group_id})
 
     result['top_package_owners'] = []
