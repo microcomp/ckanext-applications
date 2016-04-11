@@ -23,7 +23,7 @@ from pylons import config, request, response
 import topic_functions as tf
 import related_extra
 import json
-
+_get_or_bust = logic.get_or_bust
 
 import stats as stats_lib
 
@@ -48,8 +48,10 @@ def ckan_stats(context, data_dict):
     groups = stats.largest_groups()
 
     for i in groups:
-        name = model.Session.query(model.Group).filter(model.Group.id == i[0].id).first().title
-        result['largest_groups'].append({'group_name':name, 'users_in_group':i[1]})
+        group = model.Session.query(model.Group).filter(model.Group.id == i[0].id).first()
+        name = group.title
+        group_id = group.name
+        result['largest_groups'].append({'group_name':name, 'package_count':i[1], "org_id": group_id})
 
     result['top_package_owners'] = []
     owners = stats.top_package_owners()
@@ -91,17 +93,25 @@ def ckan_stats(context, data_dict):
     else:
         year-=1
         month = 12
-    day = today.day
+
+    if today.day > 28:
+        day = 28
+    else:
+        day = today.day
+
     if day > 7:
         day-= 7
     else:
         month2 -=1
         day-=7
-        day = 30+day
+        day = 28+day
+
+
     l7d = ""+str(today.year)+"-"+str(month2)+"-"+str(day)+" "+str(today.hour)+":"+str(today.minute)+":"+str(today.second)
-    l30d = ""+str(year)+"-"+str(month)+"-"+str(today.day)+" "+str(today.hour)+":"+str(today.minute)+":"+str(today.second)
-    l30d =  datetime.datetime.strptime(l30d, '%Y-%m-%d %H:%M:%S')
     l7d =  datetime.datetime.strptime(l7d, '%Y-%m-%d %H:%M:%S')
+
+    l30d = ""+str(year)+"-"+str(month)+"-"+str(day)+" "+str(today.hour)+":"+str(today.minute)+":"+str(today.second)
+    l30d =  datetime.datetime.strptime(l30d, '%Y-%m-%d %H:%M:%S')
 
     new_users_30d = 0
     new_users_7d = 0
@@ -184,7 +194,7 @@ def add_datasets(datasets,  id):
 @toolkit.side_effect_free
 def mod_app_api(context, data_dict=None):
     ''' Mod_app_api- application modification '''
-    
+    dt_id = _get_or_bust(data_dict,'id')
     old_data = model.Session.query(model.Related).filter(model.Related.id == data_dict['id']).first()
     logic.get_action('related_show')(context,data_dict)
     #all related items deleted...
@@ -216,6 +226,8 @@ def mod_app_api(context, data_dict=None):
     try:
         owner = data_dict['owner'] 
     except KeyError:
+        if c.userobj == None:
+            raise logic.NotAuthorized
         owner  = c.userobj.fullname
     try:
         tags = data_dict['tags'] 
@@ -430,13 +442,6 @@ def new_app_api(context, data_dict=None):
     topics_data = tf.get_all_topics(context, data_dict)
     logging.warning("topics_data2")
     logging.warning(topics_data) 
-    #for i in data.keys():
-    #    for j in topics_data:
-    #        if j['display_name'] == i:
-    #            logging.warning("j['display_name'] == i"+i+"=="+j['display_name'])
-    #            dat[i] = ''
-    #            tf.add_new_topic_rel(context, {'topic_id':j['id'], 'app_id':data_to_commit.id})
-    #########################################################################################
     
     owner_id = c.userobj.id
     data_to_commit.title = title
@@ -546,7 +551,7 @@ def list_apps(context, data_dict=None):
             except logic.NotAuthorized:
                 logging.warning("access denied")
         
-        
+    
     c.page = h.Page(
         collection=public_list,
         page=page,
@@ -602,7 +607,7 @@ def list_apps(context, data_dict=None):
     if (app_id == '' or app_id == None) and (search_keyword =='' or search_keyword == None):
         data = {}
 
-        data['result'] = public_list[:]
+        data = public_list[(page-1)*9:page*9]
         
         c.list = data
         return c.list
@@ -625,9 +630,10 @@ def list_apps(context, data_dict=None):
         for j in g:
             if (search_keyword.lower() in j['title'].lower()) or (search_keyword.lower() in j['description'].lower()):
                 result.append(j)
-        c.list = result[:]
+        c.list = result[(page-1)*9:page*9]
     if len(g) == 0:
         c.list =  [_("no results found")]
+
     return c.list
 
 log = logging.getLogger('ckanext_applications')

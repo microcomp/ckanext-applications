@@ -22,7 +22,7 @@
       <li class="active">{{_('New app')}}</li>
   {% elif c.action == 'edit_app' %}
         <li><a href='{{h.url_for(controller="ckanext.applications.apps:AppsController", action="dashboard")}}' alt="{{_('Applications')}}">{{ _('Applications') }}</a></li>
-        <li class="active"><a href='{{h.url_for(controller="ckanext.applications.detail:DetailController", action="detail", id=c.id)}}' alt="{{_('Applications')}}" >{{ data['title'] }}</a></li>
+        <li class="active"><a href='{{h.url_for(controller="ckanext.applications.detail:DetailController", action="detail", id=c.id)}}' alt="{{_('Applications')}}" >{{ c.data['title'] }}</a></li>
   {% else %}
     <li>{{ _('Apps') }}</li>
   {% endif %}
