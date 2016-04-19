@@ -1,15 +1,15 @@
 # Translations template for ckanext-applications.
-# Copyright (C) 2015 ORGANIZATION
+# Copyright (C) 2016 ORGANIZATION
 # This file is distributed under the same license as the ckanext-applications
 # project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-applications 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-12-16 15:16+0100\n"
+"POT-Creation-Date: 2016-04-19 08:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,168 +18,168 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/applications/apps.py:324 ckanext/applications/apps.py:458
-#: ckanext/applications/apps.py:498
+#: ckanext/applications/apps.py:336 ckanext/applications/apps.py:463
+#: ckanext/applications/apps.py:503
 msgid "done"
 msgstr ""
 
-#: ckanext/applications/apps.py:560 ckanext/applications/apps.py:1115
+#: ckanext/applications/apps.py:565 ckanext/applications/apps.py:1118
 #: ckanext/applications/detail.py:83
 msgid "API"
 msgstr ""
 
-#: ckanext/applications/apps.py:561 ckanext/applications/apps.py:1116
+#: ckanext/applications/apps.py:566 ckanext/applications/apps.py:1119
 #: ckanext/applications/detail.py:84
 msgid "Application"
 msgstr ""
 
-#: ckanext/applications/apps.py:562 ckanext/applications/apps.py:1117
+#: ckanext/applications/apps.py:567 ckanext/applications/apps.py:1120
 #: ckanext/applications/detail.py:85
 msgid "Idea"
 msgstr ""
 
-#: ckanext/applications/apps.py:563 ckanext/applications/apps.py:1118
+#: ckanext/applications/apps.py:568 ckanext/applications/apps.py:1121
 #: ckanext/applications/detail.py:86
 msgid "News Article"
 msgstr ""
 
-#: ckanext/applications/apps.py:564 ckanext/applications/apps.py:1119
+#: ckanext/applications/apps.py:569 ckanext/applications/apps.py:1122
 #: ckanext/applications/detail.py:87
 msgid "Paper"
 msgstr ""
 
-#: ckanext/applications/apps.py:565 ckanext/applications/apps.py:1120
+#: ckanext/applications/apps.py:570 ckanext/applications/apps.py:1123
 #: ckanext/applications/detail.py:88
 msgid "Post"
 msgstr ""
 
-#: ckanext/applications/apps.py:566 ckanext/applications/apps.py:1121
+#: ckanext/applications/apps.py:571 ckanext/applications/apps.py:1124
 #: ckanext/applications/detail.py:89
 msgid "Visualization"
 msgstr ""
 
-#: ckanext/applications/apps.py:568 ckanext/applications/apps.py:858
-#: ckanext/applications/apps.py:953 ckanext/applications/apps.py:1178
+#: ckanext/applications/apps.py:573 ckanext/applications/apps.py:861
+#: ckanext/applications/apps.py:956 ckanext/applications/apps.py:1181
 #: ckanext/applications/detail.py:143
 msgid "Most Viewed"
 msgstr ""
 
-#: ckanext/applications/apps.py:569 ckanext/applications/apps.py:859
-#: ckanext/applications/apps.py:954 ckanext/applications/apps.py:1179
+#: ckanext/applications/apps.py:574 ckanext/applications/apps.py:862
+#: ckanext/applications/apps.py:957 ckanext/applications/apps.py:1182
 #: ckanext/applications/detail.py:144
 msgid "Least Viewed"
 msgstr ""
 
-#: ckanext/applications/apps.py:570 ckanext/applications/apps.py:860
-#: ckanext/applications/apps.py:955 ckanext/applications/apps.py:1180
+#: ckanext/applications/apps.py:575 ckanext/applications/apps.py:863
+#: ckanext/applications/apps.py:958 ckanext/applications/apps.py:1183
 #: ckanext/applications/detail.py:145
 msgid "Newest"
 msgstr ""
 
-#: ckanext/applications/apps.py:571 ckanext/applications/apps.py:861
-#: ckanext/applications/apps.py:956 ckanext/applications/apps.py:1181
+#: ckanext/applications/apps.py:576 ckanext/applications/apps.py:864
+#: ckanext/applications/apps.py:959 ckanext/applications/apps.py:1184
 #: ckanext/applications/detail.py:146
 msgid "Oldest"
 msgstr ""
 
-#: ckanext/applications/apps.py:630
+#: ckanext/applications/apps.py:635
 msgid "no results found"
 msgstr ""
 
-#: ckanext/applications/apps.py:665 ckanext/applications/apps.py:686
-#: ckanext/applications/apps.py:705 ckanext/applications/apps.py:761
-#: ckanext/applications/apps.py:971 ckanext/applications/apps.py:998
+#: ckanext/applications/apps.py:668 ckanext/applications/apps.py:689
+#: ckanext/applications/apps.py:708 ckanext/applications/apps.py:764
+#: ckanext/applications/apps.py:974 ckanext/applications/apps.py:1001
 #: ckanext/applications/detail.py:49
 msgid "Not authorized to see this page"
 msgstr ""
 
-#: ckanext/applications/apps.py:857 ckanext/applications/apps.py:1177
+#: ckanext/applications/apps.py:860 ckanext/applications/apps.py:1180
 #: ckanext/applications/detail.py:142
 msgid "Most viewed"
 msgstr ""
 
-#: ckanext/applications/apps.py:976
+#: ckanext/applications/apps.py:979
 msgid "The requested related item was not found"
 msgstr ""
 
-#: ckanext/applications/apps.py:996 ckanext/applications/apps.py:1005
+#: ckanext/applications/apps.py:999 ckanext/applications/apps.py:1008
 #: ckanext/applications/detail.py:47 ckanext/applications/detail.py:60
 msgid "Dataset not found"
 msgstr ""
 
-#: ckanext/applications/apps.py:1007 ckanext/applications/detail.py:62
+#: ckanext/applications/apps.py:1010 ckanext/applications/detail.py:62
 #, python-format
 msgid "Unauthorized to read package %s"
 msgstr ""
 
-#: ckanext/applications/apps.py:1031 ckanext/applications/apps.py:1107
+#: ckanext/applications/apps.py:1034 ckanext/applications/apps.py:1110
 msgid "Related item not found"
 msgstr ""
 
-#: ckanext/applications/apps.py:1041
+#: ckanext/applications/apps.py:1044
 msgid "Not authorized"
 msgstr ""
 
-#: ckanext/applications/apps.py:1046
+#: ckanext/applications/apps.py:1049
 msgid "Package not found"
 msgstr ""
 
-#: ckanext/applications/apps.py:1066
+#: ckanext/applications/apps.py:1069
 msgid "Related item was successfully created"
 msgstr ""
 
-#: ckanext/applications/apps.py:1068
+#: ckanext/applications/apps.py:1071
 msgid "Related item was successfully updated"
 msgstr ""
 
-#: ckanext/applications/apps.py:1073
+#: ckanext/applications/apps.py:1076
 msgid "Integrity Error"
 msgstr ""
 
-#: ckanext/applications/apps.py:1099
+#: ckanext/applications/apps.py:1102
 msgid "Related item has been deleted."
 msgstr ""
 
-#: ckanext/applications/apps.py:1105
+#: ckanext/applications/apps.py:1108
 #, python-format
 msgid "Unauthorized to delete related item %s"
 msgstr ""
 
-#: ckanext/applications/detail.py:149 ckanext/applications/detail.py:378
-#: ckanext/applications/detail.py:440 ckanext/applications/detail.py:568
+#: ckanext/applications/detail.py:149 ckanext/applications/detail.py:382
+#: ckanext/applications/detail.py:444 ckanext/applications/detail.py:572
 msgid "Application not found"
 msgstr ""
 
-#: ckanext/applications/detail.py:325 ckanext/applications/detail.py:341
-#: ckanext/applications/detail.py:520
+#: ckanext/applications/detail.py:329 ckanext/applications/detail.py:345
+#: ckanext/applications/detail.py:524
 msgid "Invalid dataset(s)"
 msgstr ""
 
-#: ckanext/applications/detail.py:331 ckanext/applications/detail.py:510
+#: ckanext/applications/detail.py:335 ckanext/applications/detail.py:514
 msgid "Title too short"
 msgstr ""
 
-#: ckanext/applications/detail.py:333 ckanext/applications/detail.py:514
+#: ckanext/applications/detail.py:337 ckanext/applications/detail.py:518
 msgid "URL incorrect"
 msgstr ""
 
-#: ckanext/applications/detail.py:336 ckanext/applications/detail.py:516
+#: ckanext/applications/detail.py:340 ckanext/applications/detail.py:520
 msgid "At least 1 tag required. (min. lenght 3 chars.)"
 msgstr ""
 
-#: ckanext/applications/detail.py:512
+#: ckanext/applications/detail.py:516
 msgid "Invalid owner"
 msgstr ""
 
-#: ckanext/applications/templates/header.html:17
+#: ckanext/applications/templates/header.html:32
 msgid "Change contrast"
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:6
 #: ckanext/applications/templates/package/dashboard.html:9
 #: ckanext/applications/templates/related/dashboard.html:10
-#: ckanext/applications/templates/related/dashboard.html:19
-#: ckanext/applications/templates/related/dashboard.html:37
+#: ckanext/applications/templates/related/dashboard.html:27
+#: ckanext/applications/templates/related/dashboard.html:45
 msgid "Apps"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:29
-#: ckanext/applications/templates/related/dashboard.html:74
+#: ckanext/applications/templates/related/dashboard.html:76
 #, python-format
 msgid ""
 "\n"
@@ -206,7 +206,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:33
-#: ckanext/applications/templates/related/dashboard.html:78
+#: ckanext/applications/templates/related/dashboard.html:80
 msgid "There have been no apps submitted yet."
 msgstr ""
 
@@ -224,7 +224,7 @@ msgid ""
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:62
-#: ckanext/applications/templates/related/dashboard.html:135
+#: ckanext/applications/templates/related/dashboard.html:132
 msgid "Filter Results"
 msgstr ""
 
@@ -237,12 +237,12 @@ msgid "All"
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:77
-#: ckanext/applications/templates/related/dashboard.html:148
+#: ckanext/applications/templates/related/dashboard.html:145
 msgid "Sort by"
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:79
-#: ckanext/applications/templates/related/dashboard.html:150
+#: ckanext/applications/templates/related/dashboard.html:147
 msgid "Default"
 msgstr ""
 
@@ -251,12 +251,15 @@ msgid "Only show featured items"
 msgstr ""
 
 #: ckanext/applications/templates/package/dashboard.html:94
-#: ckanext/applications/templates/related/dashboard.html:172
+#: ckanext/applications/templates/related/dashboard.html:169
 msgid "Apply"
 msgstr ""
 
 #: ckanext/applications/templates/package/read.html:8
-msgid "Add new application"
+#: ckanext/applications/templates/related/dashboard.html:22
+#: ckanext/applications/templates/related/dashboard.html:41
+#: ckanext/applications/templates/related/snippets/new_app.html:6
+msgid "Register new application"
 msgstr ""
 
 #: ckanext/applications/templates/package/read.html:13
@@ -289,27 +292,26 @@ msgstr ""
 msgid "Add Related Application"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:15
-#: ckanext/applications/templates/related/dashboard.html:17
-#: ckanext/applications/templates/related/dashboard.html:33
+#: ckanext/applications/templates/related/dashboard.html:16
+#: ckanext/applications/templates/related/dashboard.html:18
+#: ckanext/applications/templates/related/dashboard.html:19
+#: ckanext/applications/templates/related/dashboard.html:21
+#: ckanext/applications/templates/related/dashboard.html:24
+#: ckanext/applications/templates/related/dashboard.html:25
+#: ckanext/applications/templates/related/dashboard.html:41
 msgid "Applications"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:33
-#: ckanext/applications/templates/related/snippets/new_app.html:6
-msgid "New app"
-msgstr ""
-
-#: ckanext/applications/templates/related/dashboard.html:53
+#: ckanext/applications/templates/related/dashboard.html:61
 msgid "Search Applications"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:54
-#: ckanext/applications/templates/related/dashboard.html:56
+#: ckanext/applications/templates/related/dashboard.html:62
+#: ckanext/applications/templates/related/dashboard.html:64
 msgid "Search"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:68
+#: ckanext/applications/templates/related/dashboard.html:72
 #, python-format
 msgid ""
 "\n"
@@ -322,32 +324,32 @@ msgstr ""
 msgid "Image"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:128
+#: ckanext/applications/templates/related/dashboard.html:126
 msgid ""
 "These are applications built with the datasets as well as ideas for things "
 "that could be done with them."
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:158
+#: ckanext/applications/templates/related/dashboard.html:155
 msgid "Only show private items"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:173
+#: ckanext/applications/templates/related/dashboard.html:170
 #: ckanext/applications/templates/related/update.html:68
 #: ckanext/applications/templates/related/snippets/related_form.html:20
 msgid "Cancel"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:179
+#: ckanext/applications/templates/related/dashboard.html:176
 #: ckanext/applications/templates/related/snippets/app_detail.html:81
 msgid "Topics"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:187
+#: ckanext/applications/templates/related/dashboard.html:184
 msgid "No topics to show"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:193
+#: ckanext/applications/templates/related/dashboard.html:190
 #: ckanext/applications/templates/related/update.html:32
 #: ckanext/applications/templates/related/snippets/app_detail.html:69
 #: ckanext/applications/templates/related/snippets/new_app.html:54
@@ -355,7 +357,7 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
-#: ckanext/applications/templates/related/dashboard.html:201
+#: ckanext/applications/templates/related/dashboard.html:198
 msgid "No tags to show"
 msgstr ""
 
@@ -542,48 +544,48 @@ msgstr ""
 msgid "Application status. (private/public)"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:97
+#: ckanext/applications/templates/related/snippets/app_detail.html:98
 #: ckanext/applications/templates/related/snippets/related_item.html:30
 msgid "Edit"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:99
-#: ckanext/applications/templates/related/snippets/app_detail.html:101
+#: ckanext/applications/templates/related/snippets/app_detail.html:100
+#: ckanext/applications/templates/related/snippets/app_detail.html:102
 msgid "Delete"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:101
+#: ckanext/applications/templates/related/snippets/app_detail.html:102
 msgid "Are you sure?"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:107
+#: ckanext/applications/templates/related/snippets/app_detail.html:108
 msgid "Error report"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:108
-#: ckanext/applications/templates/related/snippets/app_detail.html:131
+#: ckanext/applications/templates/related/snippets/app_detail.html:109
+#: ckanext/applications/templates/related/snippets/app_detail.html:132
 msgid "Report app issue"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:110
-#: ckanext/applications/templates/related/snippets/app_detail.html:133
+#: ckanext/applications/templates/related/snippets/app_detail.html:111
+#: ckanext/applications/templates/related/snippets/app_detail.html:134
 msgid "Error description"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:114
-#: ckanext/applications/templates/related/snippets/app_detail.html:134
+#: ckanext/applications/templates/related/snippets/app_detail.html:115
+#: ckanext/applications/templates/related/snippets/app_detail.html:135
 msgid "Send"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:122
+#: ckanext/applications/templates/related/snippets/app_detail.html:123
 msgid "Report problem"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:138
+#: ckanext/applications/templates/related/snippets/app_detail.html:139
 msgid "Permanent URL"
 msgstr ""
 
-#: ckanext/applications/templates/related/snippets/app_detail.html:138
+#: ckanext/applications/templates/related/snippets/app_detail.html:139
 msgid "Permanent URL of this page"
 msgstr ""
 

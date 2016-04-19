@@ -19,7 +19,7 @@
     <li class="active"><a href='{{h.url_for(controller="ckanext.applications.detail:DetailController", action="detail", id=c.id)}}' alt="{{_('Applications')}}" >{{ c.title }}</a></li>
   {% elif c.action == 'new_app' %}
      <li><a href='{{h.url_for(controller="ckanext.applications.apps:AppsController", action="dashboard")}}' alt="{{_('Applications')}}">{{ _('Applications') }}</a></li>
-      <li class="active">{{_('New app')}}</li>
+      <li class="active">{{_('Register new application')}}</li>
   {% elif c.action == 'edit_app' %}
         <li><a href='{{h.url_for(controller="ckanext.applications.apps:AppsController", action="dashboard")}}' alt="{{_('Applications')}}">{{ _('Applications') }}</a></li>
         <li class="active"><a href='{{h.url_for(controller="ckanext.applications.detail:DetailController", action="detail", id=c.id)}}' alt="{{_('Applications')}}" >{{ c.data['title'] }}</a></li>
@@ -38,7 +38,7 @@
         {% block page_heading %}
 
             {% if c.action == 'dashboard' and h.check_access('app_create') %}
-              <span class="apps_title">{{ _('Applications') }} </span><a class="btn btn-primary" href="/apps/new" style="color:white;float:right;"><span class="fa fa-plus-square"></span> {{_('New app')}}</a>
+              <span class="apps_title">{{ _('Applications') }} </span><a class="btn btn-primary" href="/apps/new" style="color:white;float:right;"><span class="fa fa-plus-square"></span> {{_('Register new application')}}</a>
             {% elif c.action == 'detail' %}
               
             {% else %}

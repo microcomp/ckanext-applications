@@ -633,3 +633,10 @@ msgstr "Zadajte prosím minimálne 1 tag."
 #: ckanext/applications/templates/related/snippets/new_app.html:86
 msgid "Topic"
 msgstr "Tematický okruh"
+
+#: ckanext/applications/templates/package/read.html:8
+#: ckanext/applications/templates/related/dashboard.html:22
+#: ckanext/applications/templates/related/dashboard.html:41
+#: ckanext/applications/templates/related/snippets/new_app.html:6
+msgid "Register new application"
+msgstr "Registrácia novej aplikácie"
