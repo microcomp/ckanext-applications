@@ -3,7 +3,7 @@
 {% block subtitle %}{{ _('Reports') }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li class="active">{% link_for _('Reports'), controller='home', action='about' %}</li>
+  <li class="active">{% link_for _('Reports'), controller='ckanext.applications.apps:AppsController', action='list_reports' %}</li>
 {% endblock %}
 {%set query =  h.list_reports(c.page|int, c.filter) %}
 {%set count = query['count'] %}
