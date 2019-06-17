@@ -31,7 +31,6 @@ _get_action = logic.get_action
 _check_access = logic.check_access
 log = logging.getLogger('ckanext_applications')
 
-
 class DetailController(base.BaseController):  
     def list(self, id):
         """ List all related items for a specific dataset """
@@ -210,8 +209,10 @@ class DetailController(base.BaseController):
         #tf.create_topic_rel_table(context)
         #tf.create_new_app_topic_db(context)
         logging.warning("after topics init...")
-        c.dataset = base.request.params.get('dataset','')
-        
+        c.dataset = base.request.params.get('dataset','')        
+        if base.request.cookies.has_key("edemo_vars"):
+            __builtin__.vars = json.loads(base.request.cookies.pop("edemo_vars"))
+            base.response.delete_cookie("edemo_vars")
         return base.render("related/dashboard.html")
 
 
@@ -329,6 +330,7 @@ class DetailController(base.BaseController):
                 errors['datasets'] = _("Invalid dataset(s)")
                 vars = {'errors': errors, 'data':dat}    
                 __builtin__.vars = vars
+                base.response.set_cookie("edemo_vars",json.dumps(vars))                
                 return toolkit.redirect_to(controller='ckanext.applications.detail:DetailController', action='new_app')
         else:
             if len(data_to_commit.title) < 3:
@@ -344,7 +346,8 @@ class DetailController(base.BaseController):
                     logging.warning('redirecting...')
                     errors['datasets'] = _("Invalid dataset(s)")
             vars = {'errors': errors, 'data':dat}    
-            __builtin__.vars = vars
+            __builtin__.vars = vars           
+            base.response.set_cookie("edemo_vars",json.dumps(vars))            
 
             return toolkit.redirect_to(controller='ckanext.applications.detail:DetailController', action='new_app')
 
