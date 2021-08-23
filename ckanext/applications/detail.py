@@ -18,6 +18,7 @@ import logging
 import topic_functions as tf
 import json
 import os
+from pylons import config
 
 import related_extra
 
@@ -323,8 +324,26 @@ class DetailController(base.BaseController):
 
             if datasets_bool:
                 model.Session.commit()
-
+                
                 __builtin__.vars = {}
+                recipients_string = config.get('ckanext.edem.apps.notification_recipients')
+                if recipients_string:
+                    recipients = [(x,'') for x in recipients_string.split(',')]
+                    subject = 'EDEMO: Registrácia novej aplikácie'
+                    message=u'''Nová aplikácia bola zaregistrovaná.
+                    
+Názov: {title}
+Popis: {description}
+Vlastník: {owner}
+Adresa: {url}
+                    '''
+                    message = message.format(title=data_to_commit.title,description=data_to_commit.description,owner=data["owner"],url=data_to_commit.url)
+                    data_notification = {'entity_id' : c.userobj.id,
+                    'entity_type' : 'user',
+                    'subject' : subject,
+                    'message' : message,
+                    'recipients' : recipients}
+                    toolkit.get_action('send_general_notification')(context, data_notification)
                 return toolkit.redirect_to(controller='ckanext.applications.apps:AppsController', action='dashboard')
             else:
                 errors['datasets'] = _("Invalid dataset(s)")

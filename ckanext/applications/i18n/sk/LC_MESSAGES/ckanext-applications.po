@@ -640,3 +640,6 @@ msgstr "Tematický okruh"
 #: ckanext/applications/templates/related/snippets/new_app.html:6
 msgid "Register new application"
 msgstr "Registrácia novej aplikácie"
+
+msgid "Registered application will be saved as private, and will be made public once approval by the administrator or data curator has been granted."
+msgstr "Zaregistrovaná aplikácia bude uložená ako súkromná, a až po odsúhlasení správcom alebo dátovým kurátorom bude nastavená ako verejná"

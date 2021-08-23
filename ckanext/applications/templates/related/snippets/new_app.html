@@ -4,6 +4,7 @@
 
           <div class="module-content">
              <h1> {{ _('Register new application') }} </h1>
+             <p style="color:#bd0a26; margin-bottom: 2em;">{{ _('Registered application will be saved as private, and will be made public once approval by the administrator or data curator has been granted.') }}</p>
             <form name="new_app_form"  class="dataset-form form-horizontal" method="post" data-module="basic-form" action='/apps/new/in'>
               {% block error_summary %}
                 {% if error_summary | count %}

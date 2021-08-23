@@ -262,6 +262,9 @@ msgstr ""
 msgid "Register new application"
 msgstr ""
 
+msgid "Registered application will be saved as private, and will be made public once approval by the administrator or data curator has been granted."
+msgstr ""
+
 #: ckanext/applications/templates/package/read.html:13
 msgid "Related items"
 msgstr ""
